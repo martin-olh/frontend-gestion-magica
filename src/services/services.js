@@ -1,4 +1,4 @@
-const urlBase = 'http://localhost:5239/api'
+const urlBase = 'https://localhost:7250/api'
 
 
 export const loginService = (email, password) => {
@@ -20,11 +20,9 @@ export const loginService = (email, password) => {
     return fetch(`${urlBase}/Usuarios/login`, requestOptions)
         .then(response => response.json())
         .then(result => {
-            console.log(result)
             if (result.codigo != 200) {
                 return Promise.reject(result);
             } else {
-                //console.log("Exito llamada" + result)
                 return result;
             }
         })
