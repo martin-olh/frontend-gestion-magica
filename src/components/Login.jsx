@@ -8,7 +8,6 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Alert from 'react-bootstrap/Alert'
-import { jwtHelper } from '../helpers/jwtHelper'
 
 export const Login = () => {
 
@@ -33,14 +32,14 @@ export const Login = () => {
 
         try {
             const resultado = await loginService(user, pass)
-            let localStorage = window.localStorage
-            //const tokenDecoded = jwtHelper(resultado)
+            let sessionStorage = window.sessionStorage
 
-            localStorage.setItem("token", resultado.token)
-            localStorage.setItem("id", resultado.usuario.id)
-            localStorage.setItem("email", resultado.usuario.email)
-            localStorage.setItem("nombre", resultado.usuario.nombre)
-            localStorage.setItem("apellido", resultado.usuario.apellido)
+            sessionStorage.setItem("token", resultado.token)
+            sessionStorage.setItem("id", resultado.usuario.id)
+            sessionStorage.setItem("email", resultado.usuario.email)
+            sessionStorage.setItem("nombre", resultado.usuario.nombre)
+            sessionStorage.setItem("apellido", resultado.usuario.apellido)
+            sessionStorage.setItem("tipoUsuario", resultado.usuario.tipoUsuario)
 
             setAlerta(`Bienvenido ${resultado.usuario.nombre}!`)
             //navigate('/dashboard')
@@ -52,14 +51,14 @@ export const Login = () => {
 
 
     return (
-        <Container className='container-fluid'>
-            <Row className='justify-content-center'>
-                <Col xs={6}>
-                    <h2>Login</h2>
+        <Container className='container-fluid mt-4'>
+            <Row className='justify-content-center mb-3'>
+                <Col xs={10} sm={10} md={8} lg={6}>
+                    <h2>Iniciar sesión</h2>
                 </Col>
             </Row>
             <Row className='justify-content-center'>
-                <Col xs={6}>
+                <Col xs={10} sm={10} md={8} lg={6}>
                     {
                         alerta ? <Alert variant='danger'>{alerta}</Alert>
                             : <></>
@@ -67,19 +66,19 @@ export const Login = () => {
                 </Col>
             </Row>
             <Row className='justify-content-center mb-3'>
-                <Col xs={6}>
+                <Col xs={10} sm={10} md={8} lg={6}>
                     <Card  >
                         <Card.Body>
                             <Form onSubmit={onSubmit}>
                                 <Form.Group className="mb-3" controlId="formBasicUser">
                                     <Form.Label>Email</Form.Label>
-                                    <Form.Control onChange={handleUserChange} type="email" placeholder="Ingrese nombre" />
+                                    <Form.Control className='custom-input' onChange={handleUserChange} type="email" placeholder="Ingrese email" />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="formBasicPassword">
-                                    <Form.Label>Password</Form.Label>
-                                    <Form.Control onChange={handlePassChange} type="password" placeholder="Password" />
+                                    <Form.Label>Contraseña</Form.Label>
+                                    <Form.Control className='custom-input' onChange={handlePassChange} type="password" placeholder="Ingrese contraseña" />
                                 </Form.Group>
-                                <Button variant="primary" type="submit" disabled={loginDisabled}>
+                                <Button className='bg-naranja' variant="primary" type="submit" disabled={loginDisabled}>
                                     Ingresar
                                 </Button>
                             </Form>
@@ -88,13 +87,18 @@ export const Login = () => {
                     </Card>
                 </Col>
             </Row>
-            <Row className='justify-content-center mb-5'>
-                <Col xs={6}>
+            <Row className='justify-content-center mb-3'>
+                <Col xs={10} sm={10} md={8} lg={6}>
                     <Card>
                         <Card.Body>
                             <p>No tiene usuario? <a href='/registro'>Registrarse</a></p>
                         </Card.Body>
                     </Card>
+                </Col>
+            </Row>
+            <Row className='justify-content-center'>
+                <Col className='text-center' xs={10} sm={10} md={8} lg={6}>
+                    <img src="src/assets/logo.jpg" align='center' width="180px" />
                 </Col>
             </Row>
         </Container>

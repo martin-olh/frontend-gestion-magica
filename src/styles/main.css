@@ -1,0 +1,74 @@
+/*PALETA DE COLORES*/
+:root {
+    --violeta: #a51e6b;
+    --naranja: #ef7c16;
+    --naranja-dark: #c65c00;
+    --naranja-disabled: #ef7b1658;
+    --negro: #1B2432;
+    --blanco: #E6E8E6;
+    --primary: #ef7c16
+}
+
+/*Clases colores*/
+.violeta {
+    color: var(--violeta);
+}
+
+.naranja {
+    color: var(--naranja)
+}
+
+.negro {
+    color: var(--negro)
+}
+
+.blanco {
+    color: var(--blanco)
+}
+
+.bg-violeta {
+    background-color: var(--violeta)
+}
+
+.bg-naranja {
+    background-color: var(--naranja)
+}
+
+.bg-negro {
+    background-color: var(--negro)
+}
+
+.bg-blanco {
+    background-color: var(--blanco)
+}
+
+/*BODY*/
+body {
+    color: var(--negro);
+}
+
+/*Botones*/
+.btn-primary {
+    background-color: var(--naranja);
+    border: 0;
+}
+
+.btn-primary:disabled {
+    background-color: var(--naranja);
+    border: 0;
+}
+
+.btn-primary:hover {
+    background-color: var(--naranja-dark)
+}
+
+/*Links*/
+a {
+    color: var(--naranja);
+}
+
+/*Inputs*/
+.custom-input:focus {
+    border-color: var(--naranja);
+    box-shadow: 0 0 0 0.1rem var(--naranja);
+}
