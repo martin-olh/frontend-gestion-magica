@@ -42,7 +42,7 @@ export const Login = () => {
             sessionStorage.setItem("tipoUsuario", resultado.usuario.tipoUsuario)
 
             setAlerta(`Bienvenido ${resultado.usuario.nombre}!`)
-            //navigate('/dashboard')
+            navigate('/dashboard')
         } catch (error) {
             setAlerta(error.message)
 
@@ -83,15 +83,6 @@ export const Login = () => {
                                 </Button>
                             </Form>
 
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
-            <Row className='justify-content-center mb-3'>
-                <Col xs={10} sm={10} md={8} lg={6}>
-                    <Card>
-                        <Card.Body>
-                            <p>No tiene usuario? <a href='/registro'>Registrarse</a></p>
                         </Card.Body>
                     </Card>
                 </Col>
