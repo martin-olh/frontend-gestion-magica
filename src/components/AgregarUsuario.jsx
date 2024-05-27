@@ -1,11 +1,9 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 export const AgregarUsuario = () => {
-    return (
-        <>
-            <div>AgregarUsuario</div>
-            <h2>Solo ADMIN puede acceder</h2>
-        </>
 
+    return (
+        <div>Agregar un usuario</div>
     )
 }
