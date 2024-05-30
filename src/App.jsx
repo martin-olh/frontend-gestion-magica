@@ -23,7 +23,7 @@ export const App = () => {
         <Route path="/" element={<Dashboard />}>
           <Route index element={<Home />}></Route>
           <Route path="/home" element={<Home />}></Route>
-          <Route path="/alumno/agregar" element={<ProtectedRoute component={AgregarAlumno} allowedRoles={['Administrador', 'Maestro']} />}></Route>
+          <Route path="/alumno/agregar" element={<ProtectedRoute component={AgregarAlumno} allowedRoles={['Administrador', 'Maestro', 'Coordinador']} />}></Route>
           <Route path="/usuario/agregar" element={<ProtectedRoute component={AgregarUsuario} allowedRoles={['Administrador']} />}></Route>
         </Route>
         <Route path="*" element={<Navigate replace to={"/"}></Navigate>} />
