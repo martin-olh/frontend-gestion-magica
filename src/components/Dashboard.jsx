@@ -5,7 +5,8 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import Row from 'react-bootstrap/Row'
 import Alert from 'react-bootstrap/Alert'
 import { Header } from './Header'
-
+import { obtenerUsuariosService } from '../services/services'
+import { cargaInicialUsuarios } from '../redux/features/usuariosSlice'
 
 
 export const Dashboard = () => {
@@ -18,19 +19,35 @@ export const Dashboard = () => {
 
     useEffect(() => {
 
+        const id = sessionStorage.getItem('id');
         const loggedAux = sessionStorage.getItem('token')
+
         setLogged(loggedAux)
 
         if (!loggedAux) {
             navigate("/login")
         }
         else {
+            obtenerUsuariosCall(loggedAux)
             // obtenerDepartamentosCall(loggedAux, id)
             // obtenerCiudadesCall(loggedAux, id)
             // obtenerPersonasCall(loggedAux, id)
             // obtenerOcupacionesCall(loggedAux, id)
         }
     }, [])
+
+    const obtenerUsuariosCall = async (token) => {
+
+        try {
+            const usuarios = await obtenerUsuariosService(token);
+            console.log(usuarios)
+            dispatch(cargaInicialUsuarios(usuarios));
+
+        } catch (error) {
+            //setAlerta(error.message);
+            alert(error.message);
+        }
+    }
 
     return (
 
