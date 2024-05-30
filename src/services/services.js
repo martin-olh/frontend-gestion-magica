@@ -32,3 +32,33 @@ export const loginService = (email, password) => {
             }
         );
 }
+
+export const obtenerUsuariosService = (token) => {
+
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${token}`);
+
+    let requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+    };
+
+    return fetch(`${urlBase}/usuarios`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error ? error : "Hubo un error");
+                });
+            }
+            return response.json();
+        })
+        .then(result => result)
+        .catch(
+            (error) => {
+                throw new Error(error ? error : "Hubo un error");
+            }
+        );
+
+
+}
