@@ -9,6 +9,7 @@
     --primary: #ef7c16
 }
 
+
 /*Clases colores*/
 .violeta {
     color: var(--violeta);
@@ -23,7 +24,7 @@
 }
 
 .blanco {
-    color: var(--blanco)
+    color: var(--blanco);
 }
 
 .bg-violeta {
@@ -71,4 +72,75 @@ a {
 .custom-input:focus {
     border-color: var(--naranja);
     box-shadow: 0 0 0 0.1rem var(--naranja);
+}
+
+/*Menu*/
+
+.menu {
+    height: 100vh;
+    background-color: var(--negro);
+    color: var(--blanco);
+
+}
+
+.accordion {
+    --bs-accordion-color: var(--blanco);
+    --bs-accordion-bg: var(--negro);
+    --bs-accordion-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, border-radius 0.15s ease;
+    --bs-accordion-border-color: var(--bs-border-color);
+    --bs-accordion-border-width: 0;
+    --bs-accordion-border-radius: var(--bs-border-radius);
+    --bs-accordion-inner-border-radius: calc(var(--bs-border-radius) - (var(--bs-border-width)));
+    --bs-accordion-btn-padding-x: 1.25rem;
+    --bs-accordion-btn-padding-y: 1rem;
+    --bs-accordion-btn-color: var(--blanco);
+    --bs-accordion-btn-bg: var(--negro);
+    --bs-accordion-btn-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23E6E8E6' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
+    --bs-accordion-btn-icon-width: 1.25rem;
+    --bs-accordion-btn-icon-transform: rotate(-180deg);
+    --bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23E6E8E6' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
+    --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    --bs-accordion-body-padding-x: 1.25rem;
+    --bs-accordion-body-padding-y: 1rem;
+    --bs-accordion-active-color: var(--blanco);
+    --bs-accordion-active-bg: var(--negro)
+}
+
+.accordion-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: var(--bs-accordion-btn-padding-y) var(--bs-accordion-btn-padding-x);
+    font-size: 1rem;
+    color: var(--blanco);
+    font-weight: bold;
+    text-align: left;
+    background-color: var(--bs-accordion-btn-bg);
+    border: 0;
+    border-radius: 0;
+    overflow-anchor: none;
+    transition: var(--bs-accordion-transition)
+}
+
+.accordion-button:focus {
+    z-index: 8;
+    outline: 2;
+    box-shadow: var(--naranja)
+}
+
+.accordion-item {
+    color: var(--blanco);
+    background-color: var(--bs-accordion-bg);
+    border: var(--bs-accordion-border-width) solid var(--bs-accordion-border-color)
+}
+
+.nav-link-custom {
+    color: var(--blanco);
+}
+
+.nav-link-custom:hover,
+.nav-link-custom:active,
+.nav-link-custom:focus {
+    color: var(--violeta);
 }

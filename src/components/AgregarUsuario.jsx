@@ -1,9 +1,154 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { agregarUsuario } from '../redux/features/usuariosSlice';
+import { agregarUsuarioService } from '../services/services';
+import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
 
 export const AgregarUsuario = () => {
 
+
+    const dispatch = useDispatch()
+
+    const [alerta, setAlerta] = useState('');
+    const [exito, setExito] = useState('');
+
+    const usuarioVacio = {
+        id: 0,
+        email: "",
+        password: "",
+        nombre: "",
+        apellido: "",
+        telefono: "",
+        direccion: "",
+        tipoUsuario: ""
+    }
+
+    const [usuario, setUsuario] = useState(usuarioVacio)
+
+    const handleChange = (e) => {
+        setUsuario({ ...usuario, [e.target.name]: e.target.value })
+    }
+
+    const onSubmit = async (event) => {
+        event.preventDefault()
+        try {
+
+            if (usuario.email == "") {
+                throw new Error("El email no puede estar vacío")
+            }
+            if (usuario.password == "") {
+                throw new Error("El password no puede estar vacío")
+            }
+            if (usuario.nombre == "") {
+                throw new Error("El nombre no puede estar vacío")
+            }
+            if (usuario.apellido == "") {
+                throw new Error("El apellido no puede estar vacío")
+            }
+            if (usuario.tipoUsuario == "") {
+                throw new Error("El tipo de usuario no puede estar vacío")
+            }
+
+
+            const resultado = await agregarUsuarioService(sessionStorage.getItem('token'), usuario)
+            usuario.id = resultado.id //guardo id del usuario creado, devuelto por la API
+            dispatch(agregarUsuario(usuario));
+            setUsuario(usuarioVacio);
+            setExito("Usuario creado con éxito");
+            setAlerta('');
+
+
+        } catch (error) {
+            setAlerta(error.message);
+            setExito('');
+
+        }
+    }
+
+
     return (
-        <div>Agregar un usuario</div>
+        <Container className='container-fluid'>
+            <Row>
+                <h2>Crear usuario</h2>
+            </Row>
+            <Row>
+                <Col xs={12} md={10} lg={10}>
+                    {
+                        alerta ? <Alert variant='danger'>{alerta}</Alert>
+                            : <></>
+                    }
+                </Col>
+            </Row>
+            <Row>
+                <Col xs={12} md={10} lg={10}>
+                    {
+                        exito ? <Alert variant='success'>{exito}</Alert>
+                            : <></>
+                    }
+                </Col>
+            </Row>
+            <Row>
+                <Col xs={12} md={10} lg={10}>
+                    <Form onSubmit={onSubmit}>
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control onChange={handleChange} type="email" placeholder="Ingrese email" value={usuario.email} name="email" />
+                        </Form.Group >
+                        <Form.Group className="mb-3" controlId="formPassword">
+                            <Form.Label>Contraseña</Form.Label>
+                            <Form.Control onChange={handleChange} type="text" placeholder="Ingrese password" value={usuario.password} name="password" />
+                        </Form.Group >
+                        <Form.Group className="mb-3" controlId="formNombre">
+                            <Form.Label>Nombre(s)</Form.Label>
+                            <Form.Control onChange={handleChange} type="text" placeholder="Ingrese nombre" value={usuario.nombre} name="nombre" />
+                        </Form.Group >
+                        <Form.Group className="mb-3" controlId="formApellido">
+                            <Form.Label>Apellido(s)</Form.Label>
+                            <Form.Control onChange={handleChange} type="text" placeholder="Ingrese apellido" value={usuario.apellido} name="apellido" />
+                        </Form.Group >
+                        <Form.Group className="mb-3" controlId="formTelefono">
+                            <Form.Label>Télefono</Form.Label>
+                            <Form.Control onChange={handleChange} type="text" placeholder="Ingrese télefono" value={usuario.telefono} name="telefono" />
+                        </Form.Group >
+                        <Form.Group className="mb-3" controlId="formDireccion">
+                            <Form.Label>Dirección</Form.Label>
+                            <Form.Control onChange={handleChange} type="text" placeholder="Ingrese dirección" value={usuario.direccion} name="direccion" />
+                        </Form.Group >
+                        <Form.Group className="mb-3" controlId="formTipoUsuario">
+                            <Form.Label>Dirección</Form.Label>
+                            <Form.Select onChange={handleChange} value={usuario.tipoUsuario} name="tipoUsuario">
+                                <option>Seleccione tipo de usuario</option>
+                                <option key={'Administrador'} value={'Administrador'}>Administrador</option>
+                                <option key={'Coordinador'} value={'Coordinador'}>Coordinador</option>
+                                <option key={'Maestro'} value={'Maestro'}>Maestro</option>
+
+
+                            </Form.Select>
+
+                        </Form.Group >
+
+                        <Button variant="primary" type="submit">
+                            Crear usuario
+                        </Button>
+                    </Form>
+
+
+                </Col>
+            </Row>
+
+
+        </Container>
     )
 }
+
+// const usuarioVacio = {
+//     id: "",
+//     email: "",
+//     password: "",
+//     nombre: "",
+//     apellido: "",
+//     telefono: "",
+//     direccion: "",
+//     tipoUsuario: ""
+// }

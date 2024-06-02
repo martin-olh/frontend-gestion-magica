@@ -7,6 +7,8 @@ import Alert from 'react-bootstrap/Alert'
 import { Header } from './Header'
 import { obtenerUsuariosService } from '../services/services'
 import { cargaInicialUsuarios } from '../redux/features/usuariosSlice'
+import { Menu } from './Menu'
+import { Col } from 'react-bootstrap'
 
 
 export const Dashboard = () => {
@@ -40,12 +42,11 @@ export const Dashboard = () => {
 
         try {
             const usuarios = await obtenerUsuariosService(token);
-            console.log(usuarios)
             dispatch(cargaInicialUsuarios(usuarios));
 
         } catch (error) {
-            //setAlerta(error.message);
-            alert(error.message);
+            setAlerta(error.mensaje);
+            //alert(error.message);
         }
     }
 
@@ -59,11 +60,19 @@ export const Dashboard = () => {
                         <>
                             <Header></Header>
                             <Row className='justify-content-center'>
-                                {
-                                    alerta && <Alert variant='danger'>{alerta}</Alert>
-                                }
+                                <Col xs={2}>
+                                    <Menu></Menu>
+
+                                </Col>
+                                <Col>
+                                    {
+                                        alerta && <Alert variant='danger'>{alerta}</Alert>
+                                    }
+
+                                    <Outlet></Outlet>
+                                </Col>
+
                             </Row>
-                            <Outlet></Outlet>
                         </>
                     )
                     : <h2>Esperando autenticación</h2>

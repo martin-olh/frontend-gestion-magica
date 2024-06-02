@@ -13,7 +13,7 @@ export const Header = () => {
 
     return (
         <>
-            <Navbar className="bg-violeta mb-4">
+            <Navbar className="bg-violeta">
                 <Container>
 
                     <Navbar.Brand >

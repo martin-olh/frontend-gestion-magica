@@ -7,12 +7,22 @@ const usuariosSlice = createSlice({
     reducers: {
 
         cargaInicialUsuarios: (state, action) => {
-            //console.log('payload', action.payload)
             const listaUsuarios = action.payload;
             return listaUsuarios;
         },
 
+        agregarUsuario: (state, action) => {
+            const usuario = action.payload
+            return [...state, usuario]
+        },
+
+        eliminarUsuario: (state, action) => {
+            const id = action.payload;
+            const listaFiltrada = state.filter(p => p.id != id);
+            return listaFiltrada;
+        }
+
     },
 });
-export const { cargaInicialUsuarios } = usuariosSlice.actions;
+export const { cargaInicialUsuarios, agregarUsuario, eliminarUsuario } = usuariosSlice.actions;
 export default usuariosSlice.reducer;

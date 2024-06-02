@@ -45,7 +45,6 @@ export const Login = () => {
             navigate('/dashboard')
         } catch (error) {
             setAlerta(error.message)
-
         }
     }
 
