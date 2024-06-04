@@ -1,17 +1,17 @@
 import React from 'react'
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { agregarUsuario } from '../redux/features/usuariosSlice';
-import { agregarUsuarioService } from '../services/services';
-import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { agregarUsuario } from '../redux/features/usuariosSlice'
+import { agregarUsuarioService } from '../services/services'
+import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap'
 
 export const AgregarUsuario = () => {
 
 
     const dispatch = useDispatch()
 
-    const [alerta, setAlerta] = useState('');
-    const [exito, setExito] = useState('');
+    const [alerta, setAlerta] = useState('')
+    const [exito, setExito] = useState('')
 
     const usuarioVacio = {
         id: 0,
@@ -28,6 +28,8 @@ export const AgregarUsuario = () => {
 
     const handleChange = (e) => {
         setUsuario({ ...usuario, [e.target.name]: e.target.value })
+        setAlerta('')
+        setExito('')
     }
 
     const onSubmit = async (event) => {
@@ -38,7 +40,10 @@ export const AgregarUsuario = () => {
                 throw new Error("El email no puede estar vacío")
             }
             if (usuario.password == "") {
-                throw new Error("El password no puede estar vacío")
+                throw new Error("La contraseña no puede estar vacía")
+            }
+            if (usuario.password.length < 8) {
+                throw new Error("La contraseña debe tener al menos 8 caracteres")
             }
             if (usuario.nombre == "") {
                 throw new Error("El nombre no puede estar vacío")
@@ -53,15 +58,15 @@ export const AgregarUsuario = () => {
 
             const resultado = await agregarUsuarioService(sessionStorage.getItem('token'), usuario)
             usuario.id = resultado.id //guardo id del usuario creado, devuelto por la API
-            dispatch(agregarUsuario(usuario));
-            setUsuario(usuarioVacio);
-            setExito("Usuario creado con éxito");
-            setAlerta('');
+            dispatch(agregarUsuario(usuario))
+            setUsuario(usuarioVacio)
+            setExito("Usuario creado con éxito")
+            setAlerta('')
 
 
         } catch (error) {
-            setAlerta(error.message);
-            setExito('');
+            setAlerta(error.message)
+            setExito('')
 
         }
     }
@@ -116,7 +121,7 @@ export const AgregarUsuario = () => {
                             <Form.Control onChange={handleChange} type="text" placeholder="Ingrese dirección" value={usuario.direccion} name="direccion" />
                         </Form.Group >
                         <Form.Group className="mb-3" controlId="formTipoUsuario">
-                            <Form.Label>Dirección</Form.Label>
+                            <Form.Label>Tipo de usuario</Form.Label>
                             <Form.Select onChange={handleChange} value={usuario.tipoUsuario} name="tipoUsuario">
                                 <option>Seleccione tipo de usuario</option>
                                 <option key={'Administrador'} value={'Administrador'}>Administrador</option>
@@ -141,14 +146,3 @@ export const AgregarUsuario = () => {
         </Container>
     )
 }
-
-// const usuarioVacio = {
-//     id: "",
-//     email: "",
-//     password: "",
-//     nombre: "",
-//     apellido: "",
-//     telefono: "",
-//     direccion: "",
-//     tipoUsuario: ""
-// }
