@@ -3,10 +3,13 @@ import { Alert, Button, Container, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { eliminarUsuarioService } from '../services/services'
 import { eliminarUsuario } from '../redux/features/usuariosSlice'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 export const ListadoUsuarios = () => {
 
     const dispatch = useDispatch()
+
+    const navigate = useNavigate()
 
     const [alert, setAlert] = useState()
 
@@ -27,17 +30,7 @@ export const ListadoUsuarios = () => {
     }
 
     const handleEditar = async (id) => {
-        // const token = sessionStorage.getItem('token')
-        // try {
-        //     const confirmar = window.confirm("Esta seguro de eliminar?");
-        //     if (confirmar) {
-        //         const resultado = await eliminarUsuarioService(id, token);
-        //         dispatch(eliminarUsuario(id));
-        //         setAlert('Usuario eliminado');
-        //     }
-        // } catch (error) {
-        //     setAlert(error.message);
-        // }
+        navigate(`/usuarios/editar/${id}`)
     }
 
     return (

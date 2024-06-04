@@ -1,14 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit"
 
-const initialState = [];
+const initialState = []
 const usuariosSlice = createSlice({
     name: "Usuarios Slice",
     initialState,
     reducers: {
 
         cargaInicialUsuarios: (state, action) => {
-            const listaUsuarios = action.payload;
-            return listaUsuarios;
+            const listaUsuarios = action.payload
+            return listaUsuarios
         },
 
         agregarUsuario: (state, action) => {
@@ -17,12 +17,22 @@ const usuariosSlice = createSlice({
         },
 
         eliminarUsuario: (state, action) => {
-            const id = action.payload;
-            const listaFiltrada = state.filter(p => p.id != id);
-            return listaFiltrada;
+            const id = action.payload
+            const listaFiltrada = state.filter(p => p.id != id)
+            return listaFiltrada
+        },
+
+        actualizarUsuario: (state, action) => {
+            const usuarioActualizado = action.payload
+            return state.map(usuario => {
+                if (usuario.id === usuarioActualizado.id) {
+                    return { ...usuario, ...usuarioActualizado }
+                }
+                return usuario
+            })
         }
 
-    },
-});
-export const { cargaInicialUsuarios, agregarUsuario, eliminarUsuario } = usuariosSlice.actions;
-export default usuariosSlice.reducer;
+    }
+})
+export const { cargaInicialUsuarios, agregarUsuario, eliminarUsuario, actualizarUsuario } = usuariosSlice.actions
+export default usuariosSlice.reducer

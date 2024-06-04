@@ -111,6 +111,46 @@ export const eliminarUsuarioService = (id, token) => {
 
     return fetch(`${urlBase}/usuarios/${id}`, requestOptions)
         .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
+                })
+            }
+            return response
+        })
+        .then(result => result)
+        .catch((error) => {
+            throw new Error(error ? error : "Hubo un error")
+        }
+        )
+
+}
+
+export const actualizarUsuarioService = (id, usuario, token) => {
+
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json")
+    myHeaders.append("Authorization", `Bearer ${token}`)
+
+    let raw = JSON.stringify({
+        "id": usuario.id,
+        "email": usuario.email,
+        "password": usuario.password,
+        "nombre": usuario.nombre,
+        "apellido": usuario.apellido,
+        "telefono": usuario.telefono,
+        "direccion": usuario.direccion,
+        "tipoUsuario": usuario.tipoUsuario
+    })
+
+    let requestOptions = {
+        method: 'PUT',
+        headers: myHeaders,
+        body: raw
+    }
+
+    return fetch(`${urlBase}/usuarios/${id}`, requestOptions)
+        .then(response => {
             console.log(response)
             if (!response.ok) {
                 return response.json().then(error => {
