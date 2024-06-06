@@ -4,18 +4,24 @@ import { useNavigate } from 'react-router-dom'
 
 export const Header = () => {
 
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
     const cerrarSesion = () => {
-        sessionStorage.clear();
-        navigate('/login');
+        sessionStorage.clear()
+        navigate('/login')
     }
+
+    const editarUsuario = () => {
+        const id = sessionStorage.getItem('id')
+        navigate(`/usuarios/settings/${id}`)
+    }
+
+
 
     return (
         <>
             <Navbar className="bg-violeta">
-                <Container>
-
+                <Container className='justify-content-between'>
                     <Navbar.Brand >
                         <img
                             src="/src/assets/logo-h.png"
@@ -23,7 +29,10 @@ export const Header = () => {
                             className="d-inline-block align-top"
                         />
                     </Navbar.Brand>
-                    <a href="" onClick={cerrarSesion} className='blanco' style={{ textDecoration: "none" }}><img src="/src/assets/logout.svg" height="25" /> Cerrar sesión</a>
+                    <div>
+                        <a href="" onClick={editarUsuario} className='blanco p-2' style={{ textDecoration: "none" }}><img src="/src/assets/settings.svg" height="25" /></a>
+                        <a href="" onClick={cerrarSesion} className='blanco p-2' style={{ textDecoration: "none" }}><img src="/src/assets/logout.svg" height="25" /> Cerrar sesión</a>
+                    </div>
 
                 </Container>
             </Navbar>

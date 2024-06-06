@@ -37,8 +37,11 @@ export const Login = () => {
             sessionStorage.setItem("token", resultado.token)
             sessionStorage.setItem("id", resultado.usuario.id)
             sessionStorage.setItem("email", resultado.usuario.email)
+            sessionStorage.setItem("password", resultado.usuario.password)
             sessionStorage.setItem("nombre", resultado.usuario.nombre)
             sessionStorage.setItem("apellido", resultado.usuario.apellido)
+            sessionStorage.setItem("telefono", resultado.usuario.telefono)
+            sessionStorage.setItem("direccion", resultado.usuario.direccion)
             sessionStorage.setItem("tipoUsuario", resultado.usuario.tipoUsuario)
 
             setAlerta(`Bienvenido ${resultado.usuario.nombre}!`)

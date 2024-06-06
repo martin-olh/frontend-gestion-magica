@@ -29,7 +29,7 @@ export const ListadoUsuarios = () => {
         }
     }
 
-    const handleEditar = async (id) => {
+    const handleEditar = (id) => {
         navigate(`/usuarios/editar/${id}`)
     }
 

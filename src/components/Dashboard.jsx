@@ -29,8 +29,10 @@ export const Dashboard = () => {
             navigate("/login")
         }
         else {
-            obtenerUsuariosCall(loggedAux)
-
+            if (sessionStorage.getItem('tipoUsuario') === 'Administrador') {
+                obtenerUsuariosCall(loggedAux)
+            }
+            // Llamadas a obtener cursos, alumnos, etc.
         }
     }, [])
 

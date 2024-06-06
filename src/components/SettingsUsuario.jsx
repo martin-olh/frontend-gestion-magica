@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { actualizarUsuario } from '../redux/features/usuariosSlice'
+import { actualizarUsuario, agregarUsuario } from '../redux/features/usuariosSlice'
 import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router-dom'
 import { actualizarUsuarioService } from '../services/services'
 
-export const EditarUsuario = () => {
+export const SettingsUsuario = () => {
 
     const { id } = useParams()
     const tipoUsuarioLogged = sessionStorage.getItem('tipoUsuario')
@@ -13,37 +13,33 @@ export const EditarUsuario = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    if (id !== idUsuarioLogged && tipoUsuarioLogged !== 'Administrador') {
+    if (id !== idUsuarioLogged) {
         navigate('/')
     }
 
     const [usuario, setUsuario] = useState({
-        id: "",
-        email: "",
-        password: "",
-        nombre: "",
-        apellido: "",
-        telefono: "",
-        direccion: "",
-        tipoUsuario: ""
+        id: sessionStorage.getItem('id'),
+        email: sessionStorage.getItem('email'),
+        password: sessionStorage.getItem('password'),
+        nombre: sessionStorage.getItem('nombre'),
+        apellido: sessionStorage.getItem('apellido'),
+        telefono: sessionStorage.getItem('telefono'),
+        direccion: sessionStorage.getItem('direccion'),
+        tipoUsuario: sessionStorage.getItem('tipoUsuario')
     })
 
-
-    const listaUsuarios = useSelector(store => store.listaUsuarios)
-
-
-    useEffect(() => {
-        const usuarioAEditar = listaUsuarios.find(u => u.id == id)
-        if (usuarioAEditar) {
-            setUsuario(usuarioAEditar)
-        }
-    }, [listaUsuarios]);
+    const [password2, setPassword2] = useState(usuario.password)
 
     const [alerta, setAlerta] = useState('')
     const [exito, setExito] = useState('')
 
     const handleChange = (e) => {
-        setUsuario({ ...usuario, [e.target.name]: e.target.value })
+        if (e.target.name === "password2") {
+            setPassword2(e.target.value)
+        }
+        else {
+            setUsuario({ ...usuario, [e.target.name]: e.target.value })
+        }
         setAlerta('')
         setExito('')
     }
@@ -53,6 +49,15 @@ export const EditarUsuario = () => {
         try {
             if (usuario.email == "") {
                 throw new Error("El email no puede estar vacío")
+            }
+            if (usuario.password == "") {
+                throw new Error("La contraseña no puede estar vacía")
+            }
+            if (usuario.password.length < 8) {
+                throw new Error("La contraseña debe tener al menos 8 caracteres")
+            }
+            if (usuario.password !== password2) {
+                throw new Error("Las contraseñas no coinciden")
             }
             if (usuario.nombre == "") {
                 throw new Error("El nombre no puede estar vacío")
@@ -104,6 +109,14 @@ export const EditarUsuario = () => {
                             <Form.Label>Email</Form.Label>
                             <Form.Control onChange={handleChange} type="email" placeholder="Ingrese email" value={usuario.email} name="email" />
                         </Form.Group >
+                        <Form.Group className="mb-3" controlId="formPassword">
+                            <Form.Label>Contraseña</Form.Label>
+                            <Form.Control onChange={handleChange} type="password" placeholder="Ingrese contraseña" value={usuario.password} name="password" />
+                        </Form.Group >
+                        <Form.Group className="mb-3" controlId="formPassword2">
+                            <Form.Label>Confirmar contraseña</Form.Label>
+                            <Form.Control onChange={handleChange} type="password" placeholder="Confrmar contraseña" value={password2} name="password2" />
+                        </Form.Group >
                         <Form.Group className="mb-3" controlId="formNombre">
                             <Form.Label>Nombre(s)</Form.Label>
                             <Form.Control onChange={handleChange} type="text" placeholder="Ingrese nombre" value={usuario.nombre} name="nombre" />
@@ -120,19 +133,6 @@ export const EditarUsuario = () => {
                             <Form.Label>Dirección</Form.Label>
                             <Form.Control onChange={handleChange} type="text" placeholder="Ingrese dirección" value={usuario.direccion} name="direccion" />
                         </Form.Group >
-
-                        {tipoUsuarioLogged === "Administrador" &&
-                            <Form.Group className="mb-3" controlId="formTipoUsuario">
-                                <Form.Label>Tipo de usuario</Form.Label>
-                                <Form.Select onChange={handleChange} value={usuario.tipoUsuario} name="tipoUsuario">
-                                    <option>Seleccione tipo de usuario</option>
-                                    <option key={'Administrador'} value={'Administrador'}>Administrador</option>
-                                    <option key={'Coordinador'} value={'Coordinador'}>Coordinador</option>
-                                    <option key={'Maestro'} value={'Maestro'}>Maestro</option>
-                                </Form.Select>
-                            </Form.Group >
-                        }
-
                         <Button variant="primary" type="submit">
                             Confirmar
                         </Button>
