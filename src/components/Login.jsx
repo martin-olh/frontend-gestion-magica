@@ -91,7 +91,7 @@ export const Login = () => {
             </Row>
             <Row className='justify-content-center'>
                 <Col className='text-center' xs={10} sm={10} md={8} lg={6}>
-                    <img src="src/assets/logo.jpg" align='center' width="180px" />
+                    <img src="https://datacicrulo.file.core.windows.net/assetsfront/logo.jpg" align='center' width="180px" />
                 </Col>
             </Row>
         </Container>

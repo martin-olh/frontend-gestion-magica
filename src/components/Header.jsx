@@ -30,8 +30,8 @@ export const Header = () => {
                         />
                     </Navbar.Brand>
                     <div>
-                        <a href="" onClick={editarUsuario} className='blanco p-2' style={{ textDecoration: "none" }}><img src="/src/assets/settings.svg" height="25" /></a>
-                        <a href="" onClick={cerrarSesion} className='blanco p-2' style={{ textDecoration: "none" }}><img src="/src/assets/logout.svg" height="25" /> Cerrar sesión</a>
+                        <a href="" onClick={editarUsuario} className='blanco p-2' style={{ textDecoration: "none" }}><img src="https://datacicrulo.file.core.windows.net/assetsfront/settings.svg" height="25" /></a>
+                        <a href="" onClick={cerrarSesion} className='blanco p-2' style={{ textDecoration: "none" }}><img src="https://datacicrulo.file.core.windows.net/assetsfront/logout.svg" height="25" /> Cerrar sesión</a>
                     </div>
 
                 </Container>
