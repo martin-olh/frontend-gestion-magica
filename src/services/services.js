@@ -1,4 +1,8 @@
-const urlBase = 'https://localhost:7250/api'
+const urlBase = 'https://colegiocirculomagicoapi.azurewebsites.net/api'
+
+// https://localhost:7250/api
+
+
 
 export const loginService = (email, password) => {
 
