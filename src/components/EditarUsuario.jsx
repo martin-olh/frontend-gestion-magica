@@ -125,7 +125,6 @@ export const EditarUsuario = () => {
                             <Form.Group className="mb-3" controlId="formTipoUsuario">
                                 <Form.Label>Tipo de usuario</Form.Label>
                                 <Form.Select onChange={handleChange} value={usuario.tipoUsuario} name="tipoUsuario">
-                                    <option>Seleccione tipo de usuario</option>
                                     <option key={'Administrador'} value={'Administrador'}>Administrador</option>
                                     <option key={'Coordinador'} value={'Coordinador'}>Coordinador</option>
                                     <option key={'Maestro'} value={'Maestro'}>Maestro</option>
