@@ -4,6 +4,7 @@ import { actualizarUsuario } from '../redux/features/usuariosSlice'
 import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router-dom'
 import { actualizarUsuarioService } from '../services/services'
+import { actualizarSession } from '../helpers/actualizarSession'
 
 export const EditarUsuario = () => {
 
@@ -66,6 +67,7 @@ export const EditarUsuario = () => {
 
             const resultado = await actualizarUsuarioService(id, usuario, sessionStorage.getItem('token'))
             dispatch(actualizarUsuario(usuario))
+            actualizarSession(usuario)
             setExito("Usuario actualizado con éxito")
             setAlerta('')
 

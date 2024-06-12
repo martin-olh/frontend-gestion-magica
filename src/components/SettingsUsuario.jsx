@@ -4,11 +4,11 @@ import { actualizarUsuario, agregarUsuario } from '../redux/features/usuariosSli
 import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router-dom'
 import { actualizarUsuarioService } from '../services/services'
+import { actualizarSession } from '../helpers/actualizarSession'
 
 export const SettingsUsuario = () => {
 
     const { id } = useParams()
-    const tipoUsuarioLogged = sessionStorage.getItem('tipoUsuario')
     const idUsuarioLogged = sessionStorage.getItem('id')
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -71,6 +71,7 @@ export const SettingsUsuario = () => {
 
             const resultado = await actualizarUsuarioService(id, usuario, sessionStorage.getItem('token'))
             dispatch(actualizarUsuario(usuario))
+            actualizarSession(usuario)
             setExito("Usuario actualizado con éxito")
             setAlerta('')
 
