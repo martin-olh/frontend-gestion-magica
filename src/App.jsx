@@ -13,13 +13,6 @@ import { SettingsUsuario } from './components/SettingsUsuario'
 
 export const App = () => {
 
-  const [tipoUsuario, setTipoUsuario] = useState(undefined)
-
-  useEffect(() => {
-    const tipoUsuarioAux = sessionStorage.getItem('tipoUsuario')
-    setTipoUsuario(tipoUsuarioAux)
-  }, [])
-
   return (
     <BrowserRouter>
       <Routes>

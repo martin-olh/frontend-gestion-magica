@@ -6,7 +6,7 @@ export const ProtectedRoute = ({ component: Component, allowedRoles }) => {
     const tipoUsuario = sessionStorage.getItem('tipoUsuario');
 
     return (
-        allowedRoles.includes(tipoUsuario) ? <Component /> : <Navigate to="/dashboard" />
+        allowedRoles.includes(tipoUsuario) ? <Component /> : <Navigate to={"/dashboard"} />
     );
 }
 
