@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import { Routes, Route, Navigate } from "react-router-dom"
 import { Login } from './components/Login'
 import { Dashboard } from './components/Dashboard'
 import { AgregarAlumno } from './components/AgregarAlumno'
@@ -14,22 +13,22 @@ import { SettingsUsuario } from './components/SettingsUsuario'
 export const App = () => {
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/" element={<Dashboard />}>
-          <Route index element={<Home />}></Route>
-          <Route path="/home" element={<Home />}></Route>
-          <Route path="/usuarios/agregar" element={<ProtectedRoute component={AgregarUsuario} allowedRoles={['Administrador']} />}></Route>
-          <Route path="/usuarios/listado" element={<ProtectedRoute component={ListadoUsuarios} allowedRoles={['Administrador']} />}></Route>
-          <Route path="/usuarios/editar/:id" element={<ProtectedRoute component={EditarUsuario} allowedRoles={['Administrador']} />}></Route>
-          <Route path="/usuarios/settings/:id" element={<ProtectedRoute component={SettingsUsuario} allowedRoles={['Administrador', 'Maestro', 'Coordinador']} />}></Route>
-          <Route path="/alumnos/agregar" element={<ProtectedRoute component={AgregarAlumno} allowedRoles={['Administrador', 'Maestro', 'Coordinador']} />}></Route>
-          <Route path="/cursos/agregar" element={<ProtectedRoute component={AgregarCurso} allowedRoles={['Administrador']} />}></Route>
-        </Route>
-        <Route path="*" element={<Navigate replace to={"/"}></Navigate>} />
 
-      </Routes>
-    </BrowserRouter >
+    <Routes>
+      <Route path="/login" element={<Login />}></Route>
+      <Route path="/" element={<Dashboard />}>
+        <Route index element={<Home />}></Route>
+        <Route path="/home" element={<Home />}></Route>
+        <Route path="/usuarios/agregar" element={<ProtectedRoute component={AgregarUsuario} allowedRoles={['Administrador']} />}></Route>
+        <Route path="/usuarios/listado" element={<ProtectedRoute component={ListadoUsuarios} allowedRoles={['Administrador']} />}></Route>
+        <Route path="/usuarios/editar/:id" element={<ProtectedRoute component={EditarUsuario} allowedRoles={['Administrador']} />}></Route>
+        <Route path="/usuarios/settings/:id" element={<ProtectedRoute component={SettingsUsuario} allowedRoles={['Administrador', 'Maestro', 'Coordinador']} />}></Route>
+        <Route path="/alumnos/agregar" element={<ProtectedRoute component={AgregarAlumno} allowedRoles={['Administrador', 'Maestro', 'Coordinador']} />}></Route>
+        <Route path="/cursos/agregar" element={<ProtectedRoute component={AgregarCurso} allowedRoles={['Administrador']} />}></Route>
+      </Route>
+      <Route path="*" element={<Navigate replace to={"/"}></Navigate>} />
+
+    </Routes>
+
   )
 }
