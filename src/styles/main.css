@@ -1,6 +1,6 @@
 /*PALETA DE COLORES*/
 :root {
-    --violeta: #a51e6b;
+    --violeta: rgb(165, 30, 107);
     --naranja: #ef7c16;
     --naranja-dark: #c65c00;
     --naranja-disabled: #ef7b1658;
@@ -9,7 +9,6 @@
     --blanco-highlight: hwb(216 73% 10%);
     --primary: #ef7c16
 }
-
 
 /*Clases colores*/
 .violeta {
@@ -47,6 +46,9 @@
 /*BODY*/
 body {
     color: var(--negro);
+    width: 100%;
+    height: 100%;
+    position: static;
 }
 
 /*Botones*/
@@ -64,13 +66,23 @@ body {
     background-color: var(--naranja-dark);
 }
 
+.btn-secondary {
+    background-color: var(--violeta);
+    border: 0;
+}
+
+.btn-secondary:hover {
+    background-color: var(--negro);
+    border: 0;
+}
+
 .btn-edit {
     background-color: var(--blanco);
     margin: 0 4px;
 }
 
 .btn-edit:hover {
-    background-color: var(--blanco);
+    background-color: var(--naranja);
 }
 
 .btn-delete {
@@ -82,24 +94,38 @@ body {
     background-color: rgb(241, 108, 121);
 }
 
+.btn-detalles {
+    background-color: var(--blanco);
+    margin: 0 4px;
+}
+
+.btn-detalles:hover {
+    background-color: var(--naranja);
+}
+
 /*Links*/
 a {
     color: var(--naranja);
 }
 
-/*Inputs*/
-.custom-input:focus {
-    border-color: var(--naranja);
-    box-shadow: 0 0 0 0.1rem var(--naranja);
+/*Header*/
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.contenido {
+    padding-top: 76px;
 }
 
 /*Menu*/
 
 .menu {
-    height: 100vh;
+    height: 115vh;
     background-color: var(--negro);
     color: var(--blanco);
-
 }
 
 .accordion {
@@ -168,4 +194,33 @@ a {
 
 .accordion-body {
     padding: 5px 15px;
+}
+
+/*Inputs*/
+.form-control {
+    border-color: var(--naranja);
+    box-shadow: 0 0 0 0.025rem var(--naranja);
+}
+
+
+
+.form-control:focus {
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+    border-color: var(--violeta);
+    outline: 0;
+    box-shadow: 0 0 0 .25rem rgba(165, 30, 107, .25)
+}
+
+.form-select {
+    border-color: var(--naranja);
+    box-shadow: 0 0 0 0.025rem var(--naranja);
+}
+
+.form-select:focus {
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+    border-color: var(--violeta);
+    outline: 0;
+    box-shadow: 0 0 0 .25rem rgba(165, 30, 107, .25)
 }

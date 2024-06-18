@@ -18,7 +18,7 @@ const usuariosSlice = createSlice({
 
         eliminarUsuario: (state, action) => {
             const id = action.payload
-            const listaFiltrada = state.filter(p => p.id != id)
+            const listaFiltrada = state.filter(u => u.id != id)
             return listaFiltrada
         },
 

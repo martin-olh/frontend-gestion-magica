@@ -5,8 +5,10 @@ import Row from 'react-bootstrap/Row'
 import Alert from 'react-bootstrap/Alert'
 import { Col } from 'react-bootstrap'
 import { Header } from './Header'
-import { obtenerUsuariosService } from '../services/services'
+import { obtenerUsuariosService, obtenerAlumnosService } from '../services/services'
 import { cargaInicialUsuarios } from '../redux/features/usuariosSlice'
+import { cargaInicialAlumnos } from '../redux/features/alumnosSlice'
+
 import { Menu } from './Menu'
 
 
@@ -32,19 +34,28 @@ export const Dashboard = () => {
             if (sessionStorage.getItem('tipoUsuario') === 'Administrador') {
                 obtenerUsuariosCall(loggedAux)
             }
+            obtenerAlumnosCall(loggedAux)
             // Llamadas a obtener cursos, alumnos, etc.
         }
     }, [])
 
     const obtenerUsuariosCall = async (token) => {
-
         try {
-            const usuarios = await obtenerUsuariosService(token);
-            dispatch(cargaInicialUsuarios(usuarios));
+            const usuarios = await obtenerUsuariosService(token)
+            dispatch(cargaInicialUsuarios(usuarios))
 
         } catch (error) {
-            setAlerta(error.mensaje);
-            //alert(error.message);
+            setAlerta(error.mensaje)
+        }
+    }
+
+    const obtenerAlumnosCall = async (token) => {
+        try {
+            const alumnos = await obtenerAlumnosService(token)
+            dispatch(cargaInicialAlumnos(alumnos))
+
+        } catch (error) {
+            setAlerta(error.mensaje)
         }
     }
 
@@ -56,11 +67,11 @@ export const Dashboard = () => {
                     (
                         <>
                             <Header></Header>
-                            <Row className='justify-content-center'>
+                            <Row className='justify-content-center contenido'>
                                 <Col xs={2}>
                                     <Menu></Menu>
                                 </Col>
-                                <Col>
+                                <Col className='mt-2'>
                                     {
                                         alerta && <Alert variant='danger'>{alerta}</Alert>
                                     }

@@ -3,7 +3,7 @@ import { Alert, Button, Container, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { eliminarUsuarioService } from '../services/services'
 import { eliminarUsuario } from '../redux/features/usuariosSlice'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export const ListadoUsuarios = () => {
 
@@ -20,7 +20,7 @@ export const ListadoUsuarios = () => {
         try {
             const confirmar = window.confirm("Esta seguro de eliminar?");
             if (confirmar) {
-                const resultado = await eliminarUsuarioService(id, token);
+                await eliminarUsuarioService(id, token);
                 dispatch(eliminarUsuario(id));
                 setAlert('Usuario eliminado');
             }
@@ -34,46 +34,40 @@ export const ListadoUsuarios = () => {
     }
 
     return (
-        <><Container>
-            {alert && <Alert variant='warning'>{alert}</Alert>}
-            <h2>Lista de usuarios</h2>
-            <Table >
-                <thead>
-                    <tr>
-                        <th>Nombre completo</th>
-                        <th>Email</th>
-                        <th>Dirección</th>
-                        <th>Teléfono</th>
-                        <th>Tipo de usuario</th>
-                        <th></th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {listaUsuarios.map(u =>
-                        <tr key={u.id}>
-                            <td>{`${u.nombre} ${u.apellido}`}</td>
-                            <td>{u.email}</td>
-                            <td>{u.direccion}</td>
-                            <td>{u.telefono}</td>
-                            <td>{u.tipoUsuario}</td>
-                            <td>
-                                <Button className='btn-edit' onClick={() => handleEditar(u.id)}> <img src="../src/assets/edit.svg" alt="Editar" /> </Button>
-                                <Button className='btn-delete' onClick={() => handleEliminar(u.id)}><img src="../src/assets/delete.svg" alt="Eliminar" /></Button>
-                            </td>
+        <>
+            <Container>
+                {alert && <Alert variant='warning'>{alert}</Alert>}
+                <h2>Lista de usuarios</h2>
+                <Table >
+                    <thead>
+                        <tr>
+                            <th>Nombre completo</th>
+                            <th>Email</th>
+                            <th>Dirección</th>
+                            <th>Teléfono</th>
+                            <th>Tipo de usuario</th>
+                            <th></th>
                         </tr>
-                    )}
-                </tbody>
+                    </thead>
 
-            </Table>
-        </Container>
+                    <tbody>
+                        {listaUsuarios.slice().sort((a, b) => a.apellido.localeCompare(b.apellido)).map(u =>
+                            <tr key={u.id}>
+                                <td>{`${u.apellido}, ${u.nombre}`}</td>
+                                <td>{u.email}</td>
+                                <td>{u.direccion}</td>
+                                <td>{u.telefono}</td>
+                                <td>{u.tipoUsuario}</td>
+                                <td>
+                                    <Button className='btn-edit' onClick={() => handleEditar(u.id)}> <img src="../src/assets/edit.svg" alt="Editar" /> </Button>
+                                    <Button className='btn-delete' onClick={() => handleEliminar(u.id)}><img src="../src/assets/delete.svg" alt="Eliminar" /></Button>
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
 
-
+                </Table>
+            </Container>
         </>
-
     )
 }
-
-
-// <Button variant="light" onClick={() => handleEliminar(u.id)}> <img src="../src/assets/edit.svg" alt="" /> </Button>
-//                                 <Button variant="danger" onClick={() => handleEliminar(u.id)}><img src="../src/assets/delete.svg" alt="" /></Button>

@@ -74,11 +74,11 @@ export const Login = () => {
                             <Form onSubmit={onSubmit}>
                                 <Form.Group className="mb-3" controlId="formBasicUser">
                                     <Form.Label>Email</Form.Label>
-                                    <Form.Control className='custom-input' onChange={handleUserChange} type="email" placeholder="Ingrese email" />
+                                    <Form.Control onChange={handleUserChange} type="email" placeholder="Ingrese email" />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="formBasicPassword">
                                     <Form.Label>Contraseña</Form.Label>
-                                    <Form.Control className='custom-input' onChange={handlePassChange} type="password" placeholder="Ingrese contraseña" />
+                                    <Form.Control onChange={handlePassChange} type="password" placeholder="Ingrese contraseña" />
                                 </Form.Group>
                                 <Button className='bg-naranja' variant="primary" type="submit" disabled={loginDisabled}>
                                     Ingresar

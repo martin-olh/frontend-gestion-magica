@@ -7,7 +7,6 @@ import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap'
 
 export const AgregarUsuario = () => {
 
-
     const dispatch = useDispatch()
 
     const [alerta, setAlerta] = useState('')
@@ -35,26 +34,7 @@ export const AgregarUsuario = () => {
     const onSubmit = async (event) => {
         event.preventDefault()
         try {
-
-            if (usuario.email == "") {
-                throw new Error("El email no puede estar vacío")
-            }
-            if (usuario.password == "") {
-                throw new Error("La contraseña no puede estar vacía")
-            }
-            if (usuario.password.length < 8) {
-                throw new Error("La contraseña debe tener al menos 8 caracteres")
-            }
-            if (usuario.nombre == "") {
-                throw new Error("El nombre no puede estar vacío")
-            }
-            if (usuario.apellido == "") {
-                throw new Error("El apellido no puede estar vacío")
-            }
-            if (usuario.tipoUsuario == "") {
-                throw new Error("El tipo de usuario no puede estar vacío")
-            }
-
+            validarDatosUsuario()
 
             const resultado = await agregarUsuarioService(sessionStorage.getItem('token'), usuario)
             usuario.id = resultado.id //guardo id del usuario creado, devuelto por la API
@@ -71,6 +51,26 @@ export const AgregarUsuario = () => {
         }
     }
 
+    const validarDatosUsuario = () => {
+        if (usuario.email == "") {
+            throw new Error("El email no puede estar vacío")
+        }
+        if (usuario.password == "") {
+            throw new Error("La contraseña no puede estar vacía")
+        }
+        if (usuario.password.length < 8) {
+            throw new Error("La contraseña debe tener al menos 8 caracteres")
+        }
+        if (usuario.nombre == "") {
+            throw new Error("El nombre no puede estar vacío")
+        }
+        if (usuario.apellido == "") {
+            throw new Error("El apellido no puede estar vacío")
+        }
+        if (usuario.tipoUsuario == "") {
+            throw new Error("El tipo de usuario no puede estar vacío")
+        }
+    }
 
     return (
         <Container className='container-fluid'>
@@ -93,44 +93,43 @@ export const AgregarUsuario = () => {
                     }
                 </Col>
             </Row>
+
+
             <Row>
                 <Col xs={12} md={10} lg={10}>
                     <Form onSubmit={onSubmit}>
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label>Email</Form.Label>
+                        <Form.Group className="mb-3" controlId="email">
+                            <Form.Label>* Email</Form.Label>
                             <Form.Control onChange={handleChange} type="email" placeholder="Ingrese email" value={usuario.email} name="email" />
                         </Form.Group >
-                        <Form.Group className="mb-3" controlId="formPassword">
-                            <Form.Label>Contraseña</Form.Label>
+                        <Form.Group className="mb-3" controlId="password">
+                            <Form.Label>* Contraseña</Form.Label>
                             <Form.Control onChange={handleChange} type="text" placeholder="Ingrese password" value={usuario.password} name="password" />
                         </Form.Group >
-                        <Form.Group className="mb-3" controlId="formNombre">
-                            <Form.Label>Nombre(s)</Form.Label>
+                        <Form.Group className="mb-3" controlId="nombre">
+                            <Form.Label>* Nombre(s)</Form.Label>
                             <Form.Control onChange={handleChange} type="text" placeholder="Ingrese nombre" value={usuario.nombre} name="nombre" />
                         </Form.Group >
-                        <Form.Group className="mb-3" controlId="formApellido">
-                            <Form.Label>Apellido(s)</Form.Label>
+                        <Form.Group className="mb-3" controlId="apellido">
+                            <Form.Label>* Apellido(s)</Form.Label>
                             <Form.Control onChange={handleChange} type="text" placeholder="Ingrese apellido" value={usuario.apellido} name="apellido" />
                         </Form.Group >
-                        <Form.Group className="mb-3" controlId="formTelefono">
+                        <Form.Group className="mb-3" controlId="telefono">
                             <Form.Label>Télefono</Form.Label>
                             <Form.Control onChange={handleChange} type="text" placeholder="Ingrese télefono" value={usuario.telefono} name="telefono" />
                         </Form.Group >
-                        <Form.Group className="mb-3" controlId="formDireccion">
+                        <Form.Group className="mb-3" controlId="direccion">
                             <Form.Label>Dirección</Form.Label>
                             <Form.Control onChange={handleChange} type="text" placeholder="Ingrese dirección" value={usuario.direccion} name="direccion" />
                         </Form.Group >
-                        <Form.Group className="mb-3" controlId="formTipoUsuario">
-                            <Form.Label>Tipo de usuario</Form.Label>
+                        <Form.Group className="mb-3" controlId="tipoUsuario">
+                            <Form.Label>* Tipo de usuario</Form.Label>
                             <Form.Select onChange={handleChange} value={usuario.tipoUsuario} name="tipoUsuario">
                                 <option>Seleccione tipo de usuario</option>
                                 <option key={'Administrador'} value={'Administrador'}>Administrador</option>
                                 <option key={'Coordinador'} value={'Coordinador'}>Coordinador</option>
                                 <option key={'Maestro'} value={'Maestro'}>Maestro</option>
-
-
                             </Form.Select>
-
                         </Form.Group >
 
                         <Button variant="primary" type="submit">
@@ -141,6 +140,10 @@ export const AgregarUsuario = () => {
 
                 </Col>
             </Row>
+            <Row>
+                <p className='mt-3'><small>• Los campos con * son obligatorios</small></p>
+            </Row>
+
 
 
         </Container>

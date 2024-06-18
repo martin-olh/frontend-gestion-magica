@@ -69,7 +69,7 @@ export const SettingsUsuario = () => {
                 throw new Error("El tipo de usuario no puede estar vacío")
             }
 
-            const resultado = await actualizarUsuarioService(id, usuario, sessionStorage.getItem('token'))
+            await actualizarUsuarioService(id, usuario, sessionStorage.getItem('token'))
             dispatch(actualizarUsuario(usuario))
             actualizarSession(usuario)
             setExito("Usuario actualizado con éxito")
