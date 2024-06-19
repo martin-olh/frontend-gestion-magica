@@ -9,14 +9,17 @@ import { actualizarSession } from '../helpers/actualizarSession'
 export const EditarUsuario = () => {
 
     const { id } = useParams()
-    const tipoUsuarioLogged = sessionStorage.getItem('tipoUsuario')
-    const idUsuarioLogged = sessionStorage.getItem('id')
+    // const tipoUsuarioLogged = sessionStorage.getItem('tipoUsuario')
+    // const idUsuarioLogged = sessionStorage.getItem('id')
     const dispatch = useDispatch()
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
-    if (id !== idUsuarioLogged && tipoUsuarioLogged !== 'Administrador') {
-        navigate('/')
-    }
+    // if (id !== idUsuarioLogged && tipoUsuarioLogged !== 'Administrador') {
+    //     navigate('/')
+    // }
+
+    const [alerta, setAlerta] = useState('')
+    const [exito, setExito] = useState('')
 
     const [usuario, setUsuario] = useState({
         id: "",
@@ -40,13 +43,11 @@ export const EditarUsuario = () => {
         }
     }, [listaUsuarios]);
 
-    const [alerta, setAlerta] = useState('')
-    const [exito, setExito] = useState('')
-
     const handleChange = (e) => {
         setUsuario({ ...usuario, [e.target.name]: e.target.value })
         setAlerta('')
         setExito('')
+        console.log(usuario)
     }
 
     const onSubmit = async (event) => {
@@ -65,7 +66,7 @@ export const EditarUsuario = () => {
                 throw new Error("El tipo de usuario no puede estar vacío")
             }
 
-            const resultado = await actualizarUsuarioService(id, usuario, sessionStorage.getItem('token'))
+            await actualizarUsuarioService(id, usuario, sessionStorage.getItem('token'))
             dispatch(actualizarUsuario(usuario))
             actualizarSession(usuario)
             setExito("Usuario actualizado con éxito")
@@ -122,18 +123,14 @@ export const EditarUsuario = () => {
                             <Form.Label>Dirección</Form.Label>
                             <Form.Control onChange={handleChange} type="text" placeholder="Ingrese dirección" value={usuario.direccion} name="direccion" />
                         </Form.Group >
-
-                        {tipoUsuarioLogged === "Administrador" &&
-                            <Form.Group className="mb-3" controlId="formTipoUsuario">
-                                <Form.Label>Tipo de usuario</Form.Label>
-                                <Form.Select onChange={handleChange} value={usuario.tipoUsuario} name="tipoUsuario">
-                                    <option key={'Administrador'} value={'Administrador'}>Administrador</option>
-                                    <option key={'Coordinador'} value={'Coordinador'}>Coordinador</option>
-                                    <option key={'Maestro'} value={'Maestro'}>Maestro</option>
-                                </Form.Select>
-                            </Form.Group >
-                        }
-
+                        <Form.Group className="mb-3" controlId="formTipoUsuario">
+                            <Form.Label>Tipo de usuario</Form.Label>
+                            <Form.Select onChange={handleChange} value={usuario.tipoUsuario} name="tipoUsuario">
+                                <option key={'Administrador'} value={'Administrador'}>Administrador</option>
+                                <option key={'Coordinador'} value={'Coordinador'}>Coordinador</option>
+                                <option key={'Maestro'} value={'Maestro'}>Maestro</option>
+                            </Form.Select>
+                        </Form.Group >
                         <Button variant="primary" type="submit">
                             Confirmar
                         </Button>

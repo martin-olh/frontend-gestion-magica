@@ -1,19 +1,22 @@
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { agregarAlumno } from '../redux/features/alumnosSlice'
-import { agregarAlumnoService } from '../services/services'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { actualizarAlumnoService, agregarAlumnoService } from '../services/services'
 import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap'
+import { useParams } from 'react-router-dom'
+import { actualizarAlumno } from '../redux/features/alumnosSlice'
 
-
-export const AgregarAlumno = () => {
+export const EditarAlumno = () => {
 
     const dispatch = useDispatch()
+
+    const { id } = useParams()
+    const listaAlumnos = useSelector(store => store.listaAlumnos)
 
     const [alerta, setAlerta] = useState('')
     const [exito, setExito] = useState('')
     const [seleccion, setSeleccion] = useState('basica')
 
-    const alumnoVacio = {
+    const [alumno, setAlumno] = useState({
         id: 0,
         cedula: "",
         nombre: "",
@@ -66,22 +69,59 @@ export const AgregarAlumno = () => {
                 horarioTrabajo: "",
                 horarioNino: ""
             }]
+    })
+
+    const responsableVacio = {
+        id: 0,
+        nombre: "",
+        apellido: "",
+        telefono: "",
+        email: "",
+        ocupacion: "",
+        horarioTrabajo: "",
+        horarioNino: ""
     }
 
-    const [alumno, setAlumno] = useState(alumnoVacio)
-    const [infoDetalleAux, setInfoDetalleAux] = useState(alumnoVacio.infoDetalle)
-    const [responsable0Aux, setResponsable0Aux] = useState(alumnoVacio.responsables[0])
-    const [responsable1Aux, setResponsable1Aux] = useState(alumnoVacio.responsables[1])
+    const [infoDetalleAux, setInfoDetalleAux] = useState()
+    const [responsable0Aux, setResponsable0Aux] = useState()
+    const [responsable1Aux, setResponsable1Aux] = useState()
+
+    useEffect(() => {
+        const alumnoAEditar = listaAlumnos.find(a => a.id == id)
+        if (alumnoAEditar) {
+            const updatedAlumno = {
+                ...alumnoAEditar,
+                fechaNac: alumnoAEditar.fechaNac.split('T')[0] // Format the date
+            };
+            setAlumno(updatedAlumno);
+            setInfoDetalleAux({ ...updatedAlumno.infoDetalle })
+            setResponsable0Aux({ ...updatedAlumno.responsables[0] })
+            if (updatedAlumno.responsables[1] == null) {
+                setResponsable1Aux(responsableVacio)
+            } else {
+                setResponsable1Aux({ ...updatedAlumno.responsables[1] })
+            }
+        }
+    }, [listaAlumnos]);
 
     const handleChange = (e) => {
         setAlumno({ ...alumno, [e.target.name]: e.target.value })
         setAlerta('')
         setExito('')
+        console.log(alumno)
     }
 
     const handleChangeInfoDet = (e) => {
-        setInfoDetalleAux({ ...infoDetalleAux, [e.target.name]: e.target.value })
-        setAlumno({ ...alumno, infoDetalle: infoDetalleAux })
+
+        const { name, type, value, checked } = e.target
+
+        console.log(e)
+
+        const updatedInfoDet = { ...infoDetalleAux, [name]: type === 'checkbox' ? checked : value }
+        setInfoDetalleAux(updatedInfoDet)
+
+        setAlumno({ ...alumno, infoDetalle: updatedInfoDet })
+        console.log(alumno)
     }
 
     const handleChangeResp0 = (e) => {
@@ -100,6 +140,7 @@ export const AgregarAlumno = () => {
         setAlumno({ ...alumno, responsables: updatedResponsables });
         setAlerta('')
         setExito('')
+        console.log(alumno)
     }
 
     const handleChangeResp1 = (e) => {
@@ -124,17 +165,12 @@ export const AgregarAlumno = () => {
         event.preventDefault()
         try {
             validarDatosAlumno()
-            if (validarSegundoResponsableVacio()) {
+            if (validarSegundoResponsableVacio() && alumno.responsables.length == 2) {
                 alumno.responsables.pop()
             }
-            const resultado = await agregarAlumnoService(sessionStorage.getItem('token'), alumno)
-            alumno.id = resultado.id //guardo id del alumno creado, devuelto por la API            
-            dispatch(agregarAlumno(alumno))
-            setAlumno(alumnoVacio)
-            setInfoDetalleAux(alumnoVacio.infoDetalle)
-            setResponsable0Aux(alumnoVacio.responsables[0])
-            setResponsable1Aux(alumnoVacio.responsables[1])
-            setExito("Alumno registrado exitosamente")
+            await actualizarAlumnoService(id, alumno, sessionStorage.getItem('token'))// Solucionar tema de segundo responsable id nulo en el service
+            dispatch(actualizarAlumno(alumno))
+            setExito("Alumno modificado exitosamente")
             setAlerta('')
         } catch (error) {
             setAlerta(error.message)
@@ -174,16 +210,16 @@ export const AgregarAlumno = () => {
     }
 
     const validarSegundoResponsableVacio = () => {
-        return alumno.responsables[1].nombre == ""
-            && alumno.responsables[1].apellido == ""
-            && alumno.responsables[1].email == ""
-            && alumno.responsables[1].telefono == ""
+        return responsable1Aux.nombre == ""
+            && responsable1Aux.apellido == ""
+            && responsable1Aux.email == ""
+            && responsable1Aux.telefono == ""
     }
 
     return (
         <Container className='container-fluid'>
             <Row className='mb-3'>
-                <h2>Registrar alumno</h2>
+                <h2>Editar alumno</h2>
             </Row>
             <Row>
                 <Col xs={12} md={10} lg={10}>
@@ -430,7 +466,7 @@ export const AgregarAlumno = () => {
                         }
 
                         <Button variant="primary" type="submit">
-                            Registrar alumno
+                            Editar alumno
                         </Button>
                     </Form>
 
