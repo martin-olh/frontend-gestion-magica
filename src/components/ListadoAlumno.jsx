@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Alert, Button, Container, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-//import { eliminarAlumnoService } from '../services/services'
-//import { eliminarAlumno } from '../redux/features/alumnosSlice'
+import { eliminarAlumnoService } from '../services/services'
+import { eliminarAlumno } from '../redux/features/alumnosSlice'
 import { useNavigate } from 'react-router-dom'
 
 export const ListadoAlumno = () => {
@@ -22,8 +22,8 @@ export const ListadoAlumno = () => {
         try {
             const confirmar = window.confirm("Esta seguro de eliminar?");
             if (confirmar) {
-                await eliminarUsuarioService(id, token);
-                dispatch(eliminarUsuario(id));
+                await eliminarAlumnoService(id, token);
+                dispatch(eliminarAlumno(id));
                 setAlert('Alumno eliminado');
             }
         } catch (error) {
