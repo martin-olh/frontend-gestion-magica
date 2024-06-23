@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { eliminarAlumnoService } from '../services/services'
 import { eliminarAlumno } from '../redux/features/alumnosSlice'
 import { useNavigate } from 'react-router-dom'
+import { Alertas } from './Alertas'
 
 export const ListadoAlumno = () => {
 
@@ -11,7 +12,8 @@ export const ListadoAlumno = () => {
 
     const navigate = useNavigate()
 
-    const [alert, setAlert] = useState()
+    const [alerta, setAlerta] = useState()
+    const [warning, setWarning] = useState()
 
     const listaAlumnos = useSelector(store => store.listaAlumnos)
 
@@ -24,10 +26,10 @@ export const ListadoAlumno = () => {
             if (confirmar) {
                 await eliminarAlumnoService(id, token);
                 dispatch(eliminarAlumno(id));
-                setAlert('Alumno eliminado');
+                setWarning('Alumno eliminado');
             }
         } catch (error) {
-            setAlert(error.message);
+            setAlerta(error.message);
         }
     }
 
@@ -43,7 +45,7 @@ export const ListadoAlumno = () => {
     return (
         <>
             <Container>
-                {alert && <Alert variant='warning'>{alert}</Alert>}
+                <Alertas error={alerta} warning={warning}></Alertas>
                 <h2>Lista de alumnos</h2>
                 <Table >
                     <thead>

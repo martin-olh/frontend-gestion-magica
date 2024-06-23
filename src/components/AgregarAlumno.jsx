@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { agregarAlumno } from '../redux/features/alumnosSlice'
 import { agregarAlumnoService } from '../services/services'
 import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap'
+import { Alertas } from './Alertas'
 
 
 export const AgregarAlumno = () => {
@@ -186,20 +187,7 @@ export const AgregarAlumno = () => {
                 <h2>Registrar alumno</h2>
             </Row>
             <Row>
-                <Col xs={12} md={10} lg={10}>
-                    {
-                        alerta ? <Alert variant='danger'>{alerta}</Alert>
-                            : <></>
-                    }
-                </Col>
-            </Row>
-            <Row>
-                <Col xs={12} md={10} lg={10}>
-                    {
-                        exito ? <Alert variant='success'>{exito}</Alert>
-                            : <></>
-                    }
-                </Col>
+                <Alertas error={alerta} exito={exito}></Alertas>
             </Row>
             <Row className='mb-3'>
                 <Col>

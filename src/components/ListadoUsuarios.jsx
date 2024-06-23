@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { eliminarUsuarioService } from '../services/services'
 import { eliminarUsuario } from '../redux/features/usuariosSlice'
 import { useNavigate } from 'react-router-dom'
+import { Alertas } from './Alertas'
 
 export const ListadoUsuarios = () => {
 
@@ -11,7 +12,8 @@ export const ListadoUsuarios = () => {
 
     const navigate = useNavigate()
 
-    const [alert, setAlert] = useState()
+    const [alerta, setAlerta] = useState()
+    const [warning, setWarning] = useState()
 
     const listaUsuarios = useSelector(store => store.listaUsuarios)
 
@@ -22,10 +24,10 @@ export const ListadoUsuarios = () => {
             if (confirmar) {
                 await eliminarUsuarioService(id, token);
                 dispatch(eliminarUsuario(id));
-                setAlert('Usuario eliminado');
+                setWarning('Usuario eliminado');
             }
         } catch (error) {
-            setAlert(error.message);
+            setAlerta(error.message);
         }
     }
 
@@ -36,7 +38,7 @@ export const ListadoUsuarios = () => {
     return (
         <>
             <Container>
-                {alert && <Alert variant='warning'>{alert}</Alert>}
+                <Alertas error={alerta} warning={warning}></Alertas>
                 <h2>Lista de usuarios</h2>
                 <Table >
                     <thead>

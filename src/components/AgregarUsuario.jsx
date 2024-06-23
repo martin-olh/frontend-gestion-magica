@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { agregarUsuario } from '../redux/features/usuariosSlice'
 import { agregarUsuarioService } from '../services/services'
 import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap'
+import { Alertas } from './Alertas'
 
 export const AgregarUsuario = () => {
 
@@ -78,23 +79,8 @@ export const AgregarUsuario = () => {
                 <h2>Crear usuario</h2>
             </Row>
             <Row>
-                <Col xs={12} md={10} lg={10}>
-                    {
-                        alerta ? <Alert variant='danger'>{alerta}</Alert>
-                            : <></>
-                    }
-                </Col>
+                <Alertas error={alerta} exito={exito}></Alertas>
             </Row>
-            <Row>
-                <Col xs={12} md={10} lg={10}>
-                    {
-                        exito ? <Alert variant='success'>{exito}</Alert>
-                            : <></>
-                    }
-                </Col>
-            </Row>
-
-
             <Row>
                 <Col xs={12} md={10} lg={10}>
                     <Form onSubmit={onSubmit}>

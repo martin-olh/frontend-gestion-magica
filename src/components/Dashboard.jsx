@@ -10,6 +10,7 @@ import { cargaInicialUsuarios } from '../redux/features/usuariosSlice'
 import { cargaInicialAlumnos } from '../redux/features/alumnosSlice'
 
 import { Menu } from './Menu'
+import { Alertas } from './Alertas'
 
 
 export const Dashboard = () => {
@@ -72,9 +73,7 @@ export const Dashboard = () => {
                                     <Menu></Menu>
                                 </Col>
                                 <Col className='mt-2'>
-                                    {
-                                        alerta && <Alert variant='danger'>{alerta}</Alert>
-                                    }
+                                    <Alertas error={alerta}></Alertas>
                                     <Outlet></Outlet>
                                 </Col>
                             </Row>

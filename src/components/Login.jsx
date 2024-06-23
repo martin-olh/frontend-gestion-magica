@@ -8,6 +8,7 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Alert from 'react-bootstrap/Alert'
+import { Alertas } from './Alertas'
 
 export const Login = () => {
 
@@ -61,10 +62,7 @@ export const Login = () => {
             </Row>
             <Row className='justify-content-center'>
                 <Col xs={10} sm={10} md={8} lg={6}>
-                    {
-                        alerta ? <Alert variant='danger'>{alerta}</Alert>
-                            : <></>
-                    }
+                    <Alertas error={alerta}></Alertas>
                 </Col>
             </Row>
             <Row className='justify-content-center mb-3'>

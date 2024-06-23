@@ -4,6 +4,7 @@ import { actualizarAlumnoService, agregarAlumnoService } from '../services/servi
 import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import { actualizarAlumno } from '../redux/features/alumnosSlice'
+import { Alertas } from './Alertas'
 
 export const EditarAlumno = () => {
 
@@ -222,20 +223,7 @@ export const EditarAlumno = () => {
                 <h2>Editar alumno</h2>
             </Row>
             <Row>
-                <Col xs={12} md={10} lg={10}>
-                    {
-                        alerta ? <Alert variant='danger'>{alerta}</Alert>
-                            : <></>
-                    }
-                </Col>
-            </Row>
-            <Row>
-                <Col xs={12} md={10} lg={10}>
-                    {
-                        exito ? <Alert variant='success'>{exito}</Alert>
-                            : <></>
-                    }
-                </Col>
+                <Alertas error={alerta} exito={exito}></Alertas>
             </Row>
             <Row className='mb-3'>
                 <Col>

@@ -5,6 +5,7 @@ import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router-dom'
 import { actualizarUsuarioService } from '../services/services'
 import { actualizarSession } from '../helpers/actualizarSession'
+import { Alertas } from './Alertas'
 
 export const EditarUsuario = () => {
 
@@ -85,20 +86,7 @@ export const EditarUsuario = () => {
                 <h2>Editar usuario</h2>
             </Row>
             <Row>
-                <Col xs={12} md={10} lg={10}>
-                    {
-                        alerta ? <Alert variant='danger'>{alerta}</Alert>
-                            : <></>
-                    }
-                </Col>
-            </Row>
-            <Row>
-                <Col xs={12} md={10} lg={10}>
-                    {
-                        exito ? <Alert variant='success'>{exito}</Alert>
-                            : <></>
-                    }
-                </Col>
+                <Alertas error={alerta} exito={exito}></Alertas>
             </Row>
             <Row>
                 <Col xs={12} md={10} lg={10}>
