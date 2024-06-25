@@ -195,6 +195,9 @@ export const EditarAlumno = () => {
         if (alumno.fechaNac == "") {
             throw new Error("La fecha de nacimiento no puede estar vacía")
         }
+        if (alumno.direccion == "") {
+            throw new Error("La dirección no puede estar vacía")
+        }
         //Solo valido campos obligatorios del primer responsable, el segundo puede ser vacio
         if (alumno.responsables[0].nombre == "") {
             throw new Error("El nombre del responsable no puede estar vacío")
