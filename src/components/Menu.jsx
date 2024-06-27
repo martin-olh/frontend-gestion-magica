@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
 import { MenuAdmin } from './MenuAdmin'
 import { MenuMaestro } from './MenuMaestro'
 import { MenuCoordinador } from './MenuCoordinador'

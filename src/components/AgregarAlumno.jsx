@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { agregarAlumno } from '../redux/features/alumnosSlice'
 import { agregarAlumnoService } from '../services/services'
-import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap'
+import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { Alertas } from './Alertas'
 
 

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { actualizarUsuario } from '../redux/features/usuariosSlice'
-import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Button, Col, Container, Form, Row } from 'react-bootstrap'
+import { useParams } from 'react-router-dom'
 import { actualizarUsuarioService } from '../services/services'
 import { actualizarSession } from '../helpers/actualizarSession'
 import { Alertas } from './Alertas'
@@ -10,14 +10,8 @@ import { Alertas } from './Alertas'
 export const EditarUsuario = () => {
 
     const { id } = useParams()
-    // const tipoUsuarioLogged = sessionStorage.getItem('tipoUsuario')
-    // const idUsuarioLogged = sessionStorage.getItem('id')
-    const dispatch = useDispatch()
-    // const navigate = useNavigate()
 
-    // if (id !== idUsuarioLogged && tipoUsuarioLogged !== 'Administrador') {
-    //     navigate('/')
-    // }
+    const dispatch = useDispatch()
 
     const [alerta, setAlerta] = useState('')
     const [exito, setExito] = useState('')

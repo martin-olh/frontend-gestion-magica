@@ -7,8 +7,8 @@ import Card from 'react-bootstrap/Card'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Alert from 'react-bootstrap/Alert'
 import { Alertas } from './Alertas'
+import logo from '/src/assets/logo.jpg'
 
 export const Login = () => {
 
@@ -89,7 +89,7 @@ export const Login = () => {
             </Row>
             <Row className='justify-content-center'>
                 <Col className='text-center' xs={10} sm={10} md={8} lg={6}>
-                    <img src="src/assets/logo.jpg" align='center' width="180px" />
+                    <img src={logo} align='center' width="180px" />
                 </Col>
             </Row>
         </Container>

@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
-import { Alert, Button, Container, Table } from 'react-bootstrap'
+import { Button, Container, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { eliminarAlumnoService } from '../services/services'
 import { eliminarAlumno } from '../redux/features/alumnosSlice'
 import { useNavigate } from 'react-router-dom'
 import { Alertas } from './Alertas'
+import imgEdit from '/src/assets/edit.svg'
+import imgDelete from '/src/assets/delete.svg'
+import imgInfo from '/src/assets/info.svg'
 
 export const ListadoAlumno = () => {
 
@@ -68,11 +71,11 @@ export const ListadoAlumno = () => {
                                 <td>{`${a.responsables[0].nombre} ${a.responsables[0].apellido}`}</td>
                                 <td>{a.responsables[0].telefono}</td>
                                 <td>
-                                    <Button className='btn-detalles' onClick={() => handleDetalles(a.id)}> <img src="../src/assets/info.svg" alt="Detalles" /> </Button>
+                                    <Button className='btn-detalles' onClick={() => handleDetalles(a.id)}> <img src={imgInfo} alt="Detalles" /> </Button>
                                     {tipoUsuario === 'Administrador' &&
                                         <>
-                                            <Button className='btn-edit' onClick={() => handleEditar(a.id)}> <img src="../src/assets/edit.svg" alt="Editar" /> </Button>
-                                            <Button className='btn-delete' onClick={() => handleEliminar(a.id)}><img src="../src/assets/delete.svg" alt="Eliminar" /></Button>
+                                            <Button className='btn-edit' onClick={() => handleEditar(a.id)}> <img src={imgEdit} alt="Editar" /> </Button>
+                                            <Button className='btn-delete' onClick={() => handleEliminar(a.id)}><img src={imgDelete} alt="Eliminar" /></Button>
                                         </>
                                     }
                                 </td>

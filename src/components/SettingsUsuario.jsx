@@ -5,6 +5,7 @@ import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router-dom'
 import { actualizarUsuarioService } from '../services/services'
 import { actualizarSession } from '../helpers/actualizarSession'
+import { Alertas } from './Alertas'
 
 export const SettingsUsuario = () => {
 
@@ -84,25 +85,11 @@ export const SettingsUsuario = () => {
     return (
 
         <Container className='container-fluid'>
+            <Alertas error={alerta} exito={exito}></Alertas>
             <Row>
                 <h2>Editar usuario</h2>
             </Row>
-            <Row>
-                <Col xs={12} md={10} lg={10}>
-                    {
-                        alerta ? <Alert variant='danger'>{alerta}</Alert>
-                            : <></>
-                    }
-                </Col>
-            </Row>
-            <Row>
-                <Col xs={12} md={10} lg={10}>
-                    {
-                        exito ? <Alert variant='success'>{exito}</Alert>
-                            : <></>
-                    }
-                </Col>
-            </Row>
+
             <Row>
                 <Col xs={12} md={10} lg={10}>
                     <Form onSubmit={onSubmit}>
