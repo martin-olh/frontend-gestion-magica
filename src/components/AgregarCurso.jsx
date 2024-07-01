@@ -26,23 +26,28 @@ export const AgregarCurso = () => {
     }
 
     const [curso, setCurso] = useState(cursoVacio)
-    const [maestroId, setMaestroId] = useState(0)
+    const [maestro1Id, setMaestro1Id] = useState(0)
+    const [maestro2Id, setMaestro2Id] = useState(0)
+    const [maestro3Id, setMaestro3Id] = useState(0)
 
     const handleChange = (e) => {
         setCurso({ ...curso, [e.target.name]: e.target.value })
         setAlerta('')
         setExito('')
-        //console.log(curso)
-        //console.log(maestroId)
     }
 
-    const handleChangeMaestro = (e) => {
-        setMaestroId(e.target.value)
-        curso.maestrosId = []
-        curso.maestrosId.push(e.target.value)
-        //setCurso({ ...curso, maestrosId: maestroId }) // Se agrega el id del maestro al curso        
-        setAlerta('')
-        setExito('')
+    const handleChangeMaestro = (index) => (e) => {
+        const value = e.target.value;
+        if (index === 1) {
+            setMaestro1Id(value);
+        } else if (index === 2) {
+            setMaestro2Id(value);
+        } else if (index === 3) {
+            setMaestro3Id(value);
+        }
+        curso.maestrosId[index - 1] = value;
+        setAlerta('');
+        setExito('');
     }
 
     const onSubmit = async (event) => {
@@ -97,19 +102,43 @@ export const AgregarCurso = () => {
                             <Form.Label>* Grado</Form.Label>
                             <Form.Control onChange={handleChange} type="text" placeholder="Ingrese grado" value={curso.grado} name="grado" />
                         </Form.Group >
-                        <Form.Group className="mb-3" controlId="anio">
+                        <Form.Group className="mb-4" controlId="anio">
                             <Form.Label>* Año</Form.Label>
                             <Form.Control onChange={handleChange} type="text" placeholder="Ingrese año" value={curso.anio} name="anio" />
                         </Form.Group >
-                        <Form.Group className="mb-3" controlId="maestroId">
-                            <Form.Label>* Maestro</Form.Label>
-                            <Form.Select required onChange={handleChangeMaestro} value={maestroId} name="maestroId">
-                                <option>Seleccione un maestro</option>
+
+                        <hr />
+
+                        <h5 className="mb-3">Maestros</h5>
+
+                        <Form.Group className="mb-3" controlId="maestro1Id">
+                            <Form.Label>Maestro principal</Form.Label>
+                            <Form.Select required onChange={handleChangeMaestro(1)} value={maestro1Id} name="maestro1Id">
+                                <option>Seleccione maestro principal</option>
                                 {
                                     listaMaestros.map(m => <option key={m.id} value={m.id}>{`${m.nombre} ${m.apellido}`}</option>)
                                 }
                             </Form.Select>
                         </Form.Group >
+                        <Form.Group className="mb-3" controlId="maestro2Id">
+                            <Form.Label>Maestro secundario</Form.Label>
+                            <Form.Select required onChange={handleChangeMaestro(2)} value={maestro2Id} name="maestro2Id">
+                                <option>Seleccione maestro secundario</option>
+                                {
+                                    listaMaestros.map(m => <option key={m.id} value={m.id}>{`${m.nombre} ${m.apellido}`}</option>)
+                                }
+                            </Form.Select>
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="maestro3Id">
+                            <Form.Label>Teacher</Form.Label>
+                            <Form.Select required onChange={handleChangeMaestro(3)} value={maestro3Id} name="maestro3Id">
+                                <option>Seleccione teacher</option>
+                                {
+                                    listaMaestros.map(m => <option key={m.id} value={m.id}>{`${m.nombre} ${m.apellido}`}</option>)
+                                }
+                            </Form.Select>
+                        </Form.Group>
+
                         <Button variant="primary" type="submit">
                             Crear curso
                         </Button>
