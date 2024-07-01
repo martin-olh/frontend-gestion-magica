@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Alert, Button, Container, Table } from 'react-bootstrap'
+import { Button, Container, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { eliminarUsuarioService } from '../services/services'
 import { eliminarUsuario } from '../redux/features/usuariosSlice'

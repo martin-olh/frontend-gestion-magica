@@ -5,13 +5,16 @@ import { AgregarAlumno } from './components/AgregarAlumno'
 import { AgregarUsuario } from './components/AgregarUsuario'
 import { Home } from './components/Home'
 import { ProtectedRoute } from './components/ProtectedRoute'
-import { AgregarCurso } from './components/AgregarCurso'
 import { ListadoUsuarios } from './components/ListadoUsuarios'
 import { EditarUsuario } from './components/EditarUsuario'
 import { SettingsUsuario } from './components/SettingsUsuario'
 import { ListadoAlumno } from "./components/ListadoAlumno"
 import { DetallesAlumno } from "./components/DetallesAlumno"
 import { EditarAlumno } from "./components/EditarAlumno"
+import { AgregarCurso } from './components/AgregarCurso'
+import { ListadoCursos } from "./components/ListadoCursos"
+import { InscripcionesCurso } from "./components/InscripcionesCurso"
+import { EditarCurso } from "./components/EditarCurso"
 
 export const App = () => {
 
@@ -31,6 +34,9 @@ export const App = () => {
         <Route path="/alumnos/detalles/:id" element={<ProtectedRoute component={DetallesAlumno} allowedRoles={['Administrador', 'Maestro', 'Coordinador']} />}></Route>
         <Route path="/alumnos/editar/:id" element={<ProtectedRoute component={EditarAlumno} allowedRoles={['Administrador']} />}></Route>
         <Route path="/cursos/agregar" element={<ProtectedRoute component={AgregarCurso} allowedRoles={['Administrador']} />}></Route>
+        <Route path="/cursos/listado" element={<ProtectedRoute component={ListadoCursos} allowedRoles={['Administrador', 'Coordinador']} />}></Route>
+        <Route path="/cursos/editar/:id" element={<ProtectedRoute component={EditarCurso} allowedRoles={['Administrador']} />}></Route>
+        <Route path="/cursos/inscripciones/:id" element={<ProtectedRoute component={InscripcionesCurso} allowedRoles={['Administrador', 'Coordinador']} />}></Route>
       </Route>
       <Route path="*" element={<Navigate replace to={"/"}></Navigate>} />
 

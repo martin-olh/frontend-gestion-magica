@@ -16,6 +16,10 @@ export const MenuAdmin = () => {
             case '/alumnos/listado':
                 setActiveKey("1"); // índice del Accordion para Alumnos
                 break;
+            case '/cursos/agregar':
+            case '/cursos/listado':
+                setActiveKey("2"); // índice del Accordion para Cursos
+                break;
             default:
                 setActiveKey(null);
         }
@@ -37,6 +41,13 @@ export const MenuAdmin = () => {
                         <Accordion.Body className='bg-negro'>
                             <Nav.Link href="/alumnos/registrar" eventKey="link-1" className='nav-link-custom'>Registrar alumno</Nav.Link>
                             <Nav.Link href="/alumnos/listado" eventKey="link-2" className='nav-link-custom'>Listado alumnos</Nav.Link>
+                        </Accordion.Body>
+                    </Accordion.Item>
+                    <Accordion.Item eventKey="2" >
+                        <Accordion.Header className='accHeader'>Cursos</Accordion.Header>
+                        <Accordion.Body className='bg-negro'>
+                            <Nav.Link href="/cursos/agregar" eventKey="link-1" className='nav-link-custom'>Crear curso</Nav.Link>
+                            <Nav.Link href="/cursos/listado" eventKey="link-2" className='nav-link-custom'>Listado cursos</Nav.Link>
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>

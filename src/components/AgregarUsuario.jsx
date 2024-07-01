@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { agregarUsuario } from '../redux/features/usuariosSlice'
 import { agregarUsuarioService } from '../services/services'
-import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap'
+import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { Alertas } from './Alertas'
 
 export const AgregarUsuario = () => {

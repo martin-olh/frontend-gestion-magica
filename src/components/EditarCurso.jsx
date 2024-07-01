@@ -1,46 +1,55 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Button, Col, Container, Row, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { agregarCursoService } from '../services/services'
-import { Button, Col, Container, Form, Row } from 'react-bootstrap'
+import { useParams } from 'react-router-dom'
 import { Alertas } from './Alertas'
-import { agregarCurso } from '../redux/features/cursosSlice'
+import { actualizarCursoService } from '../services/services'
+import { actualizarCurso } from '../redux/features/cursosSlice'
+
+export const EditarCurso = () => {
 
 
-export const AgregarCurso = () => {
-
+    const { id } = useParams()
     const dispatch = useDispatch()
-    const listaUsuarios = useSelector(store => store.listaUsuarios)
-    const listaMaestros = listaUsuarios.filter(u => u.tipoUsuario === 'Maestro')
 
     const [alerta, setAlerta] = useState('')
     const [exito, setExito] = useState('')
 
-    const cursoVacio = {
-        id: 0,
+    const [curso, setCurso] = useState({
+        id: "",
         grado: "",
         anio: "",
         tipoCurso: "",
-        maestrosId: [],
-        inscripcionesId: []
-    }
+        maestrosId: "",
+        inscripciones: ""
+    })
 
-    const [curso, setCurso] = useState(cursoVacio)
     const [maestroId, setMaestroId] = useState(0)
+
+    const listaCursos = useSelector(store => store.listaCursos)
+
+    const listaUsuarios = useSelector(store => store.listaUsuarios)
+    const listaMaestros = listaUsuarios.filter(u => u.tipoUsuario === 'Maestro')
+
+    useEffect(() => {
+        const cursoAEditar = listaCursos.find(c => c.id == id)
+        if (cursoAEditar) {
+            setCurso(cursoAEditar)
+            setMaestroId(cursoAEditar.maestrosId[0])
+        }
+    }, [listaCursos]);
 
     const handleChange = (e) => {
         setCurso({ ...curso, [e.target.name]: e.target.value })
         setAlerta('')
         setExito('')
-        //console.log(curso)
-        //console.log(maestroId)
     }
 
     const handleChangeMaestro = (e) => {
         setMaestroId(e.target.value)
-        curso.maestrosId = []
-        curso.maestrosId.push(e.target.value)
-        //setCurso({ ...curso, maestrosId: maestroId }) // Se agrega el id del maestro al curso        
+        let maestrosIdAActualizar = [...curso.maestrosId]
+        maestrosIdAActualizar[0] = e.target.value
+        setCurso({ ...curso, maestrosId: maestrosIdAActualizar })
         setAlerta('')
         setExito('')
     }
@@ -49,12 +58,9 @@ export const AgregarCurso = () => {
         event.preventDefault()
         try {
             validarDatosCurso()
-            console.log("ASI QUEDO EL CURSO:", curso)
-            const resultado = await agregarCursoService(sessionStorage.getItem('token'), curso)
-            curso.id = resultado.id //guardo id del curso creado, devuelto por la API   
-            dispatch(agregarCurso(curso))
-            setCurso(cursoVacio)
-            setExito("Curso registrado exitosamente")
+            await actualizarCursoService(id, curso, sessionStorage.getItem('token'))
+            dispatch(actualizarCurso(curso))
+            setExito("Curso actualizado exitosamente")
             setAlerta('')
         } catch (error) {
             setAlerta(error.message)
@@ -77,7 +83,7 @@ export const AgregarCurso = () => {
     return (
         <Container className='container-fluid'>
             <Row>
-                <h2>Crear curso</h2>
+                <h2>Editar curso</h2>
             </Row>
             <Row>
                 <Alertas error={alerta} exito={exito}></Alertas>
@@ -85,14 +91,7 @@ export const AgregarCurso = () => {
             <Row>
                 <Col xs={12} md={10} lg={10}>
                     <Form onSubmit={onSubmit}>
-                        <Form.Group className="mb-3" controlId="tipoCurso">
-                            <Form.Label>* Tipo</Form.Label>
-                            <Form.Select onChange={handleChange} value={curso.tipoCurso} name="tipoCurso">
-                                <option>Seleccione el tipo de curso</option>
-                                <option key={'Inicial'} value={'Inicial'}>Inicial</option>
-                                <option key={'Primaria'} value={'Primaria'}>Primaria</option>
-                            </Form.Select>
-                        </Form.Group >
+                        <p>Tipo: {curso.tipoCurso}</p>
                         <Form.Group className="mb-3" controlId="grado">
                             <Form.Label>* Grado</Form.Label>
                             <Form.Control onChange={handleChange} type="text" placeholder="Ingrese grado" value={curso.grado} name="grado" />
@@ -111,7 +110,7 @@ export const AgregarCurso = () => {
                             </Form.Select>
                         </Form.Group >
                         <Button variant="primary" type="submit">
-                            Crear curso
+                            Editar curso
                         </Button>
                     </Form>
 
