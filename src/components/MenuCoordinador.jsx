@@ -4,48 +4,41 @@ import { useLocation } from 'react-router-dom'
 
 
 export const MenuCoordinador = () => {
-    const location = useLocation()
-    const [activeKey, setActiveKey] = useState("0")
+
+    const location = useLocation();
+
+    const getInitialActiveKey = (pathname) => {
+        switch (pathname) {
+            case '/alumnos/listado':
+                return "0";
+            case '/cursos/listado':
+                return "1";
+            default:
+                return null;
+        }
+    };
+
+    const [activeKey, setActiveKey] = useState(getInitialActiveKey(location.pathname));
 
     useEffect(() => {
-        switch (location.pathname) {
-            case '/usuarios/agregar':
-            case '/usuarios/listado':
-                setActiveKey("0"); // índice del Accordion para Usuarios
-                break;
-            case '/alumnos/agregar':
-            case '/alumnos/listado':
-                setActiveKey("1"); // índice del Accordion para Alumnos
-                break;
-            case '/cursos/listado':
-                setActiveKey("2"); // índice del Accordion para Cursos
-                break;
-            default:
-                setActiveKey(null);
-        }
+        setActiveKey(getInitialActiveKey(location.pathname));
     }, [location]);
 
+    const handleSelect = (eventKey) => {
+        setActiveKey(activeKey === eventKey ? null : eventKey);
+    };
 
-    //REVISAR ITEMS MENU
     return (
         <div className='menu'>
             <Nav defaultActiveKey="/home" className="flex-column">
-                <Accordion className="mt-2" alwaysOpen activeKey={activeKey} onSelect={(eventKey) => setActiveKey(eventKey)}>
+                <Accordion className="mt-2" activeKey={activeKey} onSelect={handleSelect}>
                     <Accordion.Item eventKey="0" >
-                        <Accordion.Header className='accHeader'>Usuarios</Accordion.Header>
+                        <Accordion.Header className='accHeader'>Alumnos</Accordion.Header>
                         <Accordion.Body className='bg-negro'>
-                            <Nav.Link href="/usuarios/agregar" eventKey="link-1" className='nav-link-custom'>Agregar usuario</Nav.Link>
-                            <Nav.Link href="/usuarios/listado" eventKey="link-2" className='nav-link-custom'>Listado usuarios</Nav.Link>
+                            <Nav.Link href="/alumnos/listado" eventKey="link-1" className='nav-link-custom'>Listado alumnos</Nav.Link>
                         </Accordion.Body>
                     </Accordion.Item>
                     <Accordion.Item eventKey="1" >
-                        <Accordion.Header className='accHeader'>Alumnos</Accordion.Header>
-                        <Accordion.Body className='bg-negro'>
-                            <Nav.Link href="/alumnos/registrar" eventKey="link-1" className='nav-link-custom'>Registrar alumno</Nav.Link>
-                            <Nav.Link href="/alumnos/listado" eventKey="link-2" className='nav-link-custom'>Listado alumnos</Nav.Link>
-                        </Accordion.Body>
-                    </Accordion.Item>
-                    <Accordion.Item eventKey="2" >
                         <Accordion.Header className='accHeader'>Cursos</Accordion.Header>
                         <Accordion.Body className='bg-negro'>
                             <Nav.Link href="/cursos/listado" eventKey="link-1" className='nav-link-custom'>Listado cursos</Nav.Link>
