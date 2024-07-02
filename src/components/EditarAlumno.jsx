@@ -54,6 +54,7 @@ export const EditarAlumno = () => {
                 id: 0,
                 nombre: "",
                 apellido: "",
+                cedula: "",
                 telefono: "",
                 email: "",
                 ocupacion: "",
@@ -64,6 +65,7 @@ export const EditarAlumno = () => {
                 id: 0,
                 nombre: "",
                 apellido: "",
+                cedula: "",
                 telefono: "",
                 email: "",
                 ocupacion: "",
@@ -76,6 +78,7 @@ export const EditarAlumno = () => {
         id: 0,
         nombre: "",
         apellido: "",
+        cedula: "",
         telefono: "",
         email: "",
         ocupacion: "",
@@ -400,6 +403,10 @@ export const EditarAlumno = () => {
                                         <Form.Label>* Apellido(s)</Form.Label>
                                         <Form.Control onChange={handleChangeResp0} type="text" placeholder="Ingrese apellido(s) del reponsable" value={responsable0Aux.apellido} name="responsable0.apellido" />
                                     </Form.Group >
+                                    <Form.Group className="mb-3" controlId="responsable0.cedula">
+                                        <Form.Label>* Cedula</Form.Label>
+                                        <Form.Control onChange={handleChangeResp0} type="text" placeholder="Ingrese cedula del reponsable sin puntos ni guiones" value={responsable0Aux.cedula} name="responsable0.cedula" />
+                                    </Form.Group >
                                     <Form.Group className="mb-3" controlId="responsable0.telefono">
                                         <Form.Label>* Teléfono</Form.Label>
                                         <Form.Control onChange={handleChangeResp0} type="text" placeholder="Ingrese teléfono del reponsable" value={responsable0Aux.telefono} name="responsable0.telefono" />
@@ -431,6 +438,10 @@ export const EditarAlumno = () => {
                                     <Form.Group className="mb-3" controlId="responsable1.apellido">
                                         <Form.Label>* Apellido(s)</Form.Label>
                                         <Form.Control onChange={handleChangeResp1} type="text" placeholder="Ingrese apellido(s) del reponsable" value={responsable1Aux.apellido} name="responsable1.apellido" />
+                                    </Form.Group >
+                                    <Form.Group className="mb-3" controlId="responsable1.cedula">
+                                        <Form.Label>* Cedula</Form.Label>
+                                        <Form.Control onChange={handleChangeResp1} type="text" placeholder="Ingrese cedula del reponsable sin puntos ni guiones" value={responsable1Aux.cedula} name="responsable1.cedula" />
                                     </Form.Group >
                                     <Form.Group className="mb-3" controlId="responsable1.telefono">
                                         <Form.Label>* Teléfono</Form.Label>
