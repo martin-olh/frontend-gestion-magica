@@ -59,6 +59,9 @@ export const AgregarCurso = () => {
             curso.id = resultado.id //guardo id del curso creado, devuelto por la API   
             dispatch(agregarCurso(curso))
             setCurso(cursoVacio)
+            setMaestro1Id(0)
+            setMaestro2Id(0)
+            setMaestro3Id(0)
             setExito("Curso registrado exitosamente")
             setAlerta('')
         } catch (error) {
