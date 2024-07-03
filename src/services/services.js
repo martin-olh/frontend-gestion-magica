@@ -1,4 +1,4 @@
-const urlBase = 'https://colegiocirculomagicoapi.azurewebsites.net/api'
+const urlBase = 'https://localhost:7250/api'
 
 // https://colegiocirculomagicoapi.azurewebsites.net/api
 // https://localhost:7250/api
@@ -237,6 +237,7 @@ export const agregarAlumnoService = (token, a) => {
         "id": responsable.id,
         "nombre": responsable.nombre,
         "apellido": responsable.apellido,
+        "cedula": responsable.cedula,
         "telefono": responsable.telefono,
         "email": responsable.email,
         "ocupacion": responsable.ocupacion,
@@ -313,6 +314,7 @@ export const actualizarAlumnoService = (id, a, token) => {
         "id": responsable.id,
         "nombre": responsable.nombre,
         "apellido": responsable.apellido,
+        "cedula": responsable.cedula,
         "telefono": responsable.telefono,
         "email": responsable.email,
         "ocupacion": responsable.ocupacion,
@@ -386,4 +388,111 @@ export const eliminarAlumnoService = (id, token) => {
         }
         )
 
+
+
+}
+
+//CURSOS
+//---------------------------------------
+
+export const obtenerCursosService = (token) => {
+    let myHeaders = new Headers()
+    myHeaders.append("Content-Type", "application/json")
+    myHeaders.append("Authorization", `Bearer ${token}`)
+
+    let requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+    }
+
+    return fetch(`${urlBase}/cursos`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
+                })
+            }
+            return response.json()
+        })
+        .then(result => result)
+        .catch((error) => {
+            throw new Error(error ? error : "Hubo un error")
+        }
+        )
+
+}
+
+
+export const agregarCursoService = (token, c) => {
+
+    let myHeaders = new Headers()
+    myHeaders.append("Content-Type", "application/json")
+    myHeaders.append("Authorization", `Bearer ${token}`)
+
+    let raw = JSON.stringify({
+        "id": c.id,
+        "grado": c.grado,
+        "anio": c.anio,
+        "maestrosId": c.maestrosId,
+        "inscripcionesId": [],
+        "tipoCurso": c.tipoCurso
+    })
+
+    let requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw
+    }
+
+    return fetch(`${urlBase}/cursos`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
+                })
+            }
+            return response.json()
+        })
+        .then(result => result)
+        .catch((error) => {
+            throw new Error(error ? error : "Hubo un error")
+        }
+        )
+}
+
+export const actualizarCursoService = (id, c, token) => {
+
+    let myHeaders = new Headers()
+    myHeaders.append("Content-Type", "application/json")
+    myHeaders.append("Authorization", `Bearer ${token}`)
+
+    let raw = JSON.stringify({
+        "id": c.id,
+        "grado": c.grado,
+        "anio": c.anio,
+        "maestrosId": c.maestrosId,
+        "inscripcionesId": c.inscripcionesId,
+        "tipoCurso": c.tipoCurso
+    })
+
+    let requestOptions = {
+        method: 'PUT',
+        headers: myHeaders,
+        body: raw
+    }
+
+    return fetch(`${urlBase}/cursos/${id}`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
+                })
+            }
+            return response.json()
+        })
+        .then(result => result)
+        .catch((error) => {
+            throw new Error(error ? error : "Hubo un error")
+        }
+        )
 }

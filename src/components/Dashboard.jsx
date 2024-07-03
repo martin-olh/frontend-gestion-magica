@@ -4,12 +4,12 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import Row from 'react-bootstrap/Row'
 import { Col } from 'react-bootstrap'
 import { Header } from './Header'
-import { obtenerUsuariosService, obtenerAlumnosService } from '../services/services'
+import { obtenerUsuariosService, obtenerAlumnosService, obtenerCursosService } from '../services/services'
 import { cargaInicialUsuarios } from '../redux/features/usuariosSlice'
 import { cargaInicialAlumnos } from '../redux/features/alumnosSlice'
-
 import { Menu } from './Menu'
 import { Alertas } from './Alertas'
+import { cargaInicialCursos } from '../redux/features/cursosSlice'
 
 
 export const Dashboard = () => {
@@ -31,10 +31,9 @@ export const Dashboard = () => {
             navigate("/login")
         }
         else {
-            if (sessionStorage.getItem('tipoUsuario') === 'Administrador') {
-                obtenerUsuariosCall(loggedAux)
-            }
+            obtenerUsuariosCall(loggedAux)
             obtenerAlumnosCall(loggedAux)
+            obtenerCursosCall(loggedAux)
             // Llamadas a obtener cursos, alumnos, etc.
         }
     }, [])
@@ -54,6 +53,15 @@ export const Dashboard = () => {
             const alumnos = await obtenerAlumnosService(token)
             dispatch(cargaInicialAlumnos(alumnos))
 
+        } catch (error) {
+            setAlerta(error.mensaje)
+        }
+    }
+
+    const obtenerCursosCall = async (token) => {
+        try {
+            const cursos = await obtenerCursosService(token)
+            dispatch(cargaInicialCursos(cursos))
         } catch (error) {
             setAlerta(error.mensaje)
         }
