@@ -235,3 +235,15 @@ a {
     outline: 0;
     box-shadow: 0 0 0 .25rem rgba(165, 30, 107, .25)
 }
+
+.inline-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* Ajusta el espacio entre el select y el botón según tus necesidades */
+}
+
+.inline-group select {
+    flex-grow: 1;
+    /* Esto asegura que el select tome el espacio restante disponible */
+}

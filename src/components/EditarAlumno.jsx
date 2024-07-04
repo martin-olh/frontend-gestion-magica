@@ -117,15 +117,23 @@ export const EditarAlumno = () => {
 
     const handleChangeInfoDet = (e) => {
 
-        const { name, type, value, checked } = e.target
+        // const { name, type, value, checked } = e.target
 
-        console.log(e)
+        // console.log(e)
 
-        const updatedInfoDet = { ...infoDetalleAux, [name]: type === 'checkbox' ? checked : value }
-        setInfoDetalleAux(updatedInfoDet)
+        // const updatedInfoDet = { ...infoDetalleAux, [name]: type === 'checkbox' ? checked : value }
+        // setInfoDetalleAux(updatedInfoDet)
 
-        setAlumno({ ...alumno, infoDetalle: updatedInfoDet })
-        console.log(alumno)
+        // setAlumno({ ...alumno, infoDetalle: updatedInfoDet })
+        // console.log(alumno)
+        const { name, type, checked, value } = e.target;
+        const inputValue = type === 'checkbox' ? checked : value;
+
+        setInfoDetalleAux({ ...infoDetalleAux, [name]: inputValue });
+        setAlumno({ ...alumno, infoDetalle: infoDetalleAux });
+
+        setAlerta('');
+        setExito('');
     }
 
     const handleChangeResp0 = (e) => {

@@ -5,6 +5,8 @@ import { eliminarUsuarioService } from '../services/services'
 import { eliminarUsuario } from '../redux/features/usuariosSlice'
 import { useNavigate } from 'react-router-dom'
 import { Alertas } from './Alertas'
+import imgEdit from '/src/assets/edit.svg'
+import imgDelete from '/src/assets/delete.svg'
 
 export const ListadoUsuarios = () => {
 
@@ -61,8 +63,8 @@ export const ListadoUsuarios = () => {
                                 <td>{u.telefono}</td>
                                 <td>{u.tipoUsuario}</td>
                                 <td>
-                                    <Button className='btn-edit' onClick={() => handleEditar(u.id)}> <img src="../src/assets/edit.svg" alt="Editar" /> </Button>
-                                    <Button className='btn-delete' onClick={() => handleEliminar(u.id)}><img src="../src/assets/delete.svg" alt="Eliminar" /></Button>
+                                    <Button className='btn-edit' onClick={() => handleEditar(u.id)}> <img src={imgEdit} alt="Editar" /> </Button>
+                                    <Button className='btn-delete' onClick={() => handleEliminar(u.id)}><img src={imgDelete} alt="Eliminar" /></Button>
                                 </td>
                             </tr>
                         )}

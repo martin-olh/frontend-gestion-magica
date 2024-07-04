@@ -5,53 +5,66 @@ import { useParams } from 'react-router-dom'
 import { Alertas } from './Alertas'
 import { actualizarCursoService } from '../services/services'
 import { actualizarCurso } from '../redux/features/cursosSlice'
+import imgDelete from '/src/assets/delete.svg'
 
 export const EditarCurso = () => {
 
-
     const { id } = useParams()
+    const listaCursos = useSelector(store => store.listaCursos)
+    const listaUsuarios = useSelector(store => store.listaUsuarios)
+    const listaMaestros = listaUsuarios.filter(u => u.tipoUsuario === 'Maestro')
     const dispatch = useDispatch()
 
     const [alerta, setAlerta] = useState('')
     const [exito, setExito] = useState('')
 
-    const [curso, setCurso] = useState({
-        id: "",
+    const cursoVacio = {
+        id: 0,
         grado: "",
         anio: "",
         tipoCurso: "",
-        maestrosId: "",
-        inscripciones: ""
-    })
-
-    const [maestroId, setMaestroId] = useState(0)
-
-    const listaCursos = useSelector(store => store.listaCursos)
-
-    const listaUsuarios = useSelector(store => store.listaUsuarios)
-    const listaMaestros = listaUsuarios.filter(u => u.tipoUsuario === 'Maestro')
+        maestroPrincipalId: "0",
+        maestroSecundarioId: "0",
+        maestroInglesId: "0",
+        maestroEdFisicaId: "0",
+        inscripcionesId: []
+    }
+    const [curso, setCurso] = useState(cursoVacio)
 
     useEffect(() => {
         const cursoAEditar = listaCursos.find(c => c.id == id)
         if (cursoAEditar) {
-            setCurso(cursoAEditar)
-            setMaestroId(cursoAEditar.maestrosId[0])
+            setCurso({ ...cursoAEditar })
         }
     }, [listaCursos]);
 
+
+
     const handleChange = (e) => {
         setCurso({ ...curso, [e.target.name]: e.target.value })
+        console.log('Curso', curso)
         setAlerta('')
         setExito('')
     }
 
-    const handleChangeMaestro = (e) => {
-        setMaestroId(e.target.value)
-        let maestrosIdAActualizar = [...curso.maestrosId]
-        maestrosIdAActualizar[0] = e.target.value
-        setCurso({ ...curso, maestrosId: maestrosIdAActualizar })
-        setAlerta('')
-        setExito('')
+    const handleEliminar = (nombre) => {
+        console.log('nombre', nombre)
+        switch (nombre) {
+            case 'maestroPrincipalId':
+                setCurso({ ...curso, maestroPrincipalId: "0" })
+                break;
+            case 'maestroSecundarioId':
+                setCurso({ ...curso, maestroSecundarioId: "0" })
+                break;
+            case 'maestroInglesId':
+                setCurso({ ...curso, maestroInglesId: "0" })
+                break;
+            case 'maestroEdFisicaId':
+                setCurso({ ...curso, maestroEdFisicaId: "0" })
+                break;
+            default:
+                break;
+        }
     }
 
     const onSubmit = async (event) => {
@@ -75,7 +88,7 @@ export const EditarCurso = () => {
         if (curso.grado == "") {
             throw new Error("El grado no puede estar vacío")
         }
-        if (curso.anio < 2013) {
+        if (curso.anio < 2013) { //2013 fecha de fundacion del colegio
             throw new Error("Año inválido")
         }
     }
@@ -96,19 +109,54 @@ export const EditarCurso = () => {
                             <Form.Label>* Grado</Form.Label>
                             <Form.Control onChange={handleChange} type="text" placeholder="Ingrese grado" value={curso.grado} name="grado" />
                         </Form.Group >
-                        <Form.Group className="mb-3" controlId="anio">
+                        <Form.Group className="mb-4" controlId="anio">
                             <Form.Label>* Año</Form.Label>
                             <Form.Control onChange={handleChange} type="text" placeholder="Ingrese año" value={curso.anio} name="anio" />
                         </Form.Group >
-                        <Form.Group className="mb-3" controlId="maestroId">
-                            <Form.Label>* Maestro</Form.Label>
-                            <Form.Select required onChange={handleChangeMaestro} value={maestroId} name="maestroId">
-                                <option>Seleccione un maestro</option>
+                        <hr />
+
+                        <h5 className="mb-3">Maestros</h5>
+
+                        <Form.Group className="mb-3 inline-group" controlId="maestroPrincipalId">
+                            {/* <Form.Label>Maestro principal</Form.Label> */}
+                            <Form.Select required onChange={handleChange} value={curso.maestroPrincipalId} name="maestroPrincipalId">
+                                <option>Seleccionar maestro principal</option>
                                 {
                                     listaMaestros.map(m => <option key={m.id} value={m.id}>{`${m.nombre} ${m.apellido}`}</option>)
                                 }
                             </Form.Select>
+                            <Button className='btn-delete' onClick={() => handleEliminar('maestroPrincipalId')}><img src={imgDelete} alt="Eliminar" /></Button>
                         </Form.Group >
+                        <Form.Group className="mb-3 inline-group" controlId="maestroSecundarioId">
+                            {/* <Form.Label>Maestro secundario</Form.Label> */}
+                            <Form.Select required onChange={handleChange} value={curso.maestroSecundarioId} name="maestroSecundarioId">
+                                <option>Seleccionar maestro secundario</option>
+                                {
+                                    listaMaestros.map(m => <option key={m.id} value={m.id}>{`${m.nombre} ${m.apellido}`}</option>)
+                                }
+                            </Form.Select>
+                            <Button className='btn-delete' onClick={() => handleEliminar('maestroSecundarioId')}><img src={imgDelete} alt="Eliminar" /></Button>
+                        </Form.Group>
+                        <Form.Group className="mb-3 inline-group" controlId="maestroInglesId">
+                            {/* <Form.Label>Teacher</Form.Label> */}
+                            <Form.Select required onChange={handleChange} value={curso.maestroInglesId} name="maestroInglesId">
+                                <option>Seleccionar teacher</option>
+                                {
+                                    listaMaestros.map(m => <option key={m.id} value={m.id}>{`${m.nombre} ${m.apellido}`}</option>)
+                                }
+                            </Form.Select>
+                            <Button className='btn-delete' onClick={() => handleEliminar('maestroInglesId')}><img src={imgDelete} alt="Eliminar" /></Button>
+                        </Form.Group>
+                        <Form.Group className="mb-3 inline-group" controlId="maestroEdFisicaId">
+                            {/* <Form.Label>Educación física</Form.Label> */}
+                            <Form.Select required onChange={handleChange} value={curso.maestroEdFisicaId} name="maestroEdFisicaId">
+                                <option>Seleccionar maestro Educación Física</option>
+                                {
+                                    listaMaestros.map(m => <option key={m.id} value={m.id}>{`${m.nombre} ${m.apellido}`}</option>)
+                                }
+                            </Form.Select>
+                            <Button className='btn-delete' onClick={() => handleEliminar('maestroEdFisicaId')}><img src={imgDelete} alt="Eliminar" /></Button>
+                        </Form.Group>
                         <Button variant="primary" type="submit">
                             Editar curso
                         </Button>
