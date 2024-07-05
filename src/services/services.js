@@ -1,4 +1,4 @@
-const urlBase = 'https://colegiocirculomagicoapi.azurewebsites.net/api'
+const urlBase = 'https://localhost:7250/api'
 
 // https://colegiocirculomagicoapi.azurewebsites.net/api
 // https://localhost:7250/api
@@ -433,8 +433,11 @@ export const agregarCursoService = (token, c) => {
         "id": c.id,
         "grado": c.grado,
         "anio": c.anio,
-        "maestrosId": c.maestrosId,
-        "inscripcionesId": [],
+        "maestroPrincipalId": c.maestroPrincipalId,
+        "maestroSecundarioId": c.maestroSecundarioId,
+        "maestroInglesId": c.maestroInglesId,
+        "maestroEdFisicaId": c.maestroEdFisicaId,
+        "inscripcionesId": c.inscripcionesId,
         "tipoCurso": c.tipoCurso
     })
 
@@ -470,10 +473,15 @@ export const actualizarCursoService = (id, c, token) => {
         "id": c.id,
         "grado": c.grado,
         "anio": c.anio,
-        "maestrosId": c.maestrosId,
+        "maestroPrincipalId": c.maestroPrincipalId,
+        "maestroSecundarioId": c.maestroSecundarioId,
+        "maestroInglesId": c.maestroInglesId,
+        "maestroEdFisicaId": c.maestroEdFisicaId,
         "inscripcionesId": c.inscripcionesId,
         "tipoCurso": c.tipoCurso
     })
+
+    console.log(raw)
 
     let requestOptions = {
         method: 'PUT',

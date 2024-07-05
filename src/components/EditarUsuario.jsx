@@ -4,13 +4,11 @@ import { actualizarUsuario } from '../redux/features/usuariosSlice'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import { actualizarUsuarioService } from '../services/services'
-import { actualizarSession } from '../helpers/actualizarSession'
 import { Alertas } from './Alertas'
 
 export const EditarUsuario = () => {
 
     const { id } = useParams()
-
     const dispatch = useDispatch()
 
     const [alerta, setAlerta] = useState('')
@@ -63,7 +61,6 @@ export const EditarUsuario = () => {
 
             await actualizarUsuarioService(id, usuario, sessionStorage.getItem('token'))
             dispatch(actualizarUsuario(usuario))
-            actualizarSession(usuario)
             setExito("Usuario actualizado con éxito")
             setAlerta('')
 

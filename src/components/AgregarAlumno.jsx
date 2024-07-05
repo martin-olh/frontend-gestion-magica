@@ -43,7 +43,7 @@ export const AgregarAlumno = () => {
             horarioConcurre: "",
             personaQueRetira: "",
             telPersonaQueRetira: "",
-            habilitadoPublicidad: false
+            habilitadoPublicidad: true
         },
         infoDetalleId: 0,
         responsables: [
@@ -74,7 +74,7 @@ export const AgregarAlumno = () => {
     const [alumno, setAlumno] = useState(alumnoVacio)
     const [infoDetalleAux, setInfoDetalleAux] = useState(alumnoVacio.infoDetalle)
     const [responsable0Aux, setResponsable0Aux] = useState(alumnoVacio.responsables[0])
-    const [responsable1Aux, setResponsable1Aux] = useState(alumnoVacio.responsables[1])
+    const [responsable1Aux, setResponsable1Aux] = useState(alumnoVacio.responsables[0])
 
     const handleChange = (e) => {
         setAlumno({ ...alumno, [e.target.name]: e.target.value })
@@ -83,8 +83,14 @@ export const AgregarAlumno = () => {
     }
 
     const handleChangeInfoDet = (e) => {
-        setInfoDetalleAux({ ...infoDetalleAux, [e.target.name]: e.target.value })
-        setAlumno({ ...alumno, infoDetalle: infoDetalleAux })
+        const { name, type, checked, value } = e.target;
+        const inputValue = type === 'checkbox' ? checked : value;
+
+        setInfoDetalleAux({ ...infoDetalleAux, [name]: inputValue });
+        setAlumno({ ...alumno, infoDetalle: infoDetalleAux });
+
+        setAlerta('');
+        setExito('');
     }
 
     const handleChangeResp0 = (e) => {
@@ -127,9 +133,12 @@ export const AgregarAlumno = () => {
         event.preventDefault()
         try {
             validarDatosAlumno()
-            if (validarSegundoResponsableVacio()) {
-                alumno.responsables.pop()
+            if (alumno.responsables.length > 1) {
+                if (validarSegundoResponsableVacio()) { //Si no se cargan datos del 2º responsable, se elimina del array
+                    alumno.responsables.pop()
+                }
             }
+            console.log("Alumno", alumno)
             const resultado = await agregarAlumnoService(sessionStorage.getItem('token'), alumno)
             alumno.id = resultado.id //guardo id del alumno creado, devuelto por la API            
             dispatch(agregarAlumno(alumno))
@@ -140,6 +149,8 @@ export const AgregarAlumno = () => {
             setExito("Alumno registrado exitosamente")
             setAlerta('')
         } catch (error) {
+            console.log("Alumno despues de error", alumno)
+            console.log(error)
             setAlerta(error.message)
             setExito('')
         }
@@ -267,6 +278,7 @@ export const AgregarAlumno = () => {
                                         <Form.Group className="mb-3" controlId="embarazo">
                                             <Form.Label>Embarazo</Form.Label>
                                             <Form.Select onChange={handleChangeInfoDet} value={infoDetalleAux.embarazo} name="embarazo">
+                                                <option>Seleccionar opción</option>
                                                 <option key={'Normal'} value={'Normal'}>Normal</option>
                                                 <option key={'A término'} value={'A término'}>A término</option>
                                                 <option key={'Cesárea'} value={'Cesárea'}>Cesárea</option>
@@ -295,6 +307,7 @@ export const AgregarAlumno = () => {
                                         <Form.Group className="mb-3" controlId="crecimiento">
                                             <Form.Label>Crecimiento y desarrollo: curva de peso y talla</Form.Label>
                                             <Form.Select onChange={handleChangeInfoDet} value={infoDetalleAux.crecimiento} name="crecimiento">
+                                                <option>Seleccionar opción</option>
                                                 <option key={'Baja'} value={'Baja'}>Baja</option>
                                                 <option key={'Media'} value={'Media'}>Media</option>
                                                 <option key={'Alta'} value={'Alta'}>Alta</option>

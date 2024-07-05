@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Alertas } from './Alertas'
 import { Button, Container, Table } from 'react-bootstrap'
+import imgEdit from '/src/assets/edit.svg'
+import imgDelete from '/src/assets/delete.svg'
 
 export const ListadoCursos = () => {
 
@@ -35,6 +37,11 @@ export const ListadoCursos = () => {
         navigate(`/cursos/editar/${id}`)
     }
 
+    const obtenerNombreMaestro = (id) => {
+        const maestro = listaMaestros.find(m => m.id === id);
+        return maestro ? `${maestro.apellido}, ${maestro.nombre}` : 'No asignado';
+    }
+
     return (
         <>
             <Container>
@@ -46,7 +53,10 @@ export const ListadoCursos = () => {
                             <th>Nivel</th>
                             <th>Grado</th>
                             <th>Año</th>
-                            <th>Maestros</th>
+                            <th>Maestro Princ.</th>
+                            <th>Maestro Sec.</th>
+                            <th>Teacher</th>
+                            <th>Maestro Ed. Fis.</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -58,14 +68,14 @@ export const ListadoCursos = () => {
                                 <td>{c.tipoCurso}</td>
                                 <td>{c.grado}</td>
                                 <td>{c.anio}</td>
-                                <td>{c.maestrosId.map(maestroId => {
-                                    const maestro = listaMaestros.find(m => m.id === maestroId);
-                                    return maestro ? `${maestro.nombre} ${maestro.apellido}` : 'N/A';
-                                }).join(', ')}</td>
+                                <td>{obtenerNombreMaestro(c.maestroPrincipalId)}</td>
+                                <td>{obtenerNombreMaestro(c.maestroSecundarioId)}</td>
+                                <td>{obtenerNombreMaestro(c.maestroInglesId)}</td>
+                                <td>{obtenerNombreMaestro(c.maestroEdFisicaId)}</td>
                                 <td><a href={`/cursos/inscripciones/${c.id}`}>Ver inscripciones</a></td>
                                 <td>
-                                    <Button className='btn-edit' onClick={() => handleEditar(c.id)}> <img src="../src/assets/edit.svg" alt="Editar" /> </Button>
-                                    <Button className='btn-delete' onClick={() => handleEliminar(c.id)}><img src="../src/assets/delete.svg" alt="Eliminar" /></Button>
+                                    <Button className='btn-edit' onClick={() => handleEditar(c.id)}> <img src={imgEdit} alt="Editar" /> </Button>
+                                    <Button className='btn-delete' onClick={() => handleEliminar(c.id)}><img src={imgDelete} alt="Eliminar" /></Button>
                                 </td>
                             </tr>
                         )}

@@ -8,7 +8,6 @@ import { Alertas } from './Alertas'
 import imgEdit from '/src/assets/edit.svg'
 import imgDelete from '/src/assets/delete.svg'
 
-
 export const ListadoUsuarios = () => {
 
     const dispatch = useDispatch()
