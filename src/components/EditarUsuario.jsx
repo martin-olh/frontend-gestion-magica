@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { actualizarUsuario } from '../redux/features/usuariosSlice'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { actualizarUsuarioService } from '../services/services'
-import { actualizarSession } from '../helpers/actualizarSession'
 import { Alertas } from './Alertas'
 
 export const EditarUsuario = () => {

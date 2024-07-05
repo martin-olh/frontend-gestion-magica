@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { actualizarAlumnoService, agregarAlumnoService } from '../services/services'
-import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap'
+import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import { actualizarAlumno } from '../redux/features/alumnosSlice'
 import { Alertas } from './Alertas'
