@@ -504,3 +504,33 @@ export const actualizarCursoService = (id, c, token) => {
         }
         )
 }
+
+export const eliminarCursoService = (id, token) => {
+
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json")
+    myHeaders.append("Authorization", `Bearer ${token}`)
+
+    let requestOptions = {
+        method: 'DELETE',
+        headers: myHeaders
+    }
+
+    return fetch(`${urlBase}/cursos/${id}`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
+                })
+            }
+            return response
+        })
+        .then(result => result)
+        .catch((error) => {
+            throw new Error(error ? error : "Hubo un error")
+        }
+        )
+
+
+
+}

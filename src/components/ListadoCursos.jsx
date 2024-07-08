@@ -5,6 +5,8 @@ import { Alertas } from './Alertas'
 import { Button, Container, Table } from 'react-bootstrap'
 import imgEdit from '/src/assets/edit.svg'
 import imgDelete from '/src/assets/delete.svg'
+import { eliminarCursoService } from '../services/services'
+import { eliminarCurso } from '../redux/features/cursosSlice'
 
 export const ListadoCursos = () => {
 
