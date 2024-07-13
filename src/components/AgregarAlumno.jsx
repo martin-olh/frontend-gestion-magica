@@ -4,11 +4,13 @@ import { agregarAlumno } from '../redux/features/alumnosSlice'
 import { agregarAlumnoService } from '../services/services'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { Alertas } from './Alertas'
+import { useNavigate } from 'react-router-dom'
 
 
 export const AgregarAlumno = () => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const [alerta, setAlerta] = useState('')
     const [exito, setExito] = useState('')
@@ -138,7 +140,6 @@ export const AgregarAlumno = () => {
                     alumno.responsables.pop()
                 }
             }
-            console.log("Alumno", alumno)
             const resultado = await agregarAlumnoService(sessionStorage.getItem('token'), alumno)
             alumno.id = resultado.id //guardo id del alumno creado, devuelto por la API            
             dispatch(agregarAlumno(alumno))
@@ -148,9 +149,10 @@ export const AgregarAlumno = () => {
             setResponsable1Aux(alumnoVacio.responsables[1])
             setExito("Alumno registrado exitosamente")
             setAlerta('')
+            setTimeout(() => {
+                navigate(`/inscripciones/agregar/${alumno.id}`)
+            }, 2000)
         } catch (error) {
-            console.log("Alumno despues de error", alumno)
-            console.log(error)
             setAlerta(error.message)
             setExito('')
         }

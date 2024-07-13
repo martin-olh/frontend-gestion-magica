@@ -40,7 +40,6 @@ export const AgregarCurso = () => {
         event.preventDefault()
         try {
             validarDatosCurso()
-            console.log("ASI QUEDO EL CURSO:", curso)
             const resultado = await agregarCursoService(sessionStorage.getItem('token'), curso)
             curso.id = resultado.id //guardo id del curso creado, devuelto por la API   
             dispatch(agregarCurso(curso))

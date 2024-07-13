@@ -31,7 +31,6 @@ const alumnosSlice = createSlice({
                 return alumno
             })
         }
-
     },
 });
 export const { cargaInicialAlumnos, agregarAlumno, eliminarAlumno, actualizarAlumno } = alumnosSlice.actions;

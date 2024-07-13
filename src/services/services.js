@@ -530,7 +530,71 @@ export const eliminarCursoService = (id, token) => {
             throw new Error(error ? error : "Hubo un error")
         }
         )
+}
 
+//INSCRIPCIONES
 
+export const obtenerInscripcionesService = (token) => {
+    let myHeaders = new Headers()
+    myHeaders.append("Content-Type", "application/json")
+    myHeaders.append("Authorization", `Bearer ${token}`)
 
+    let requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+    }
+
+    return fetch(`${urlBase}/inscripciones`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
+                })
+            }
+            return response.json()
+        })
+        .then(result => result)
+        .catch((error) => {
+            throw new Error(error ? error : "Hubo un error")
+        }
+        )
+}
+
+export const agregarInscripcionService = (token, i) => {
+
+    let myHeaders = new Headers()
+    myHeaders.append("Content-Type", "application/json")
+    myHeaders.append("Authorization", `Bearer ${token}`)
+
+    let raw = JSON.stringify({
+        "id": i.id,
+        "fecha": new Date().toISOString(),
+        "cursoId": i.cursoId,
+        "dobleHorario": i.dobleHorario,
+        "piscina": i.piscina,
+        "montoTotal": i.montoTotal,
+        "alumnoId": i.alumnoId,
+        "activa": i.activa
+    })
+
+    let requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw
+    }
+
+    return fetch(`${urlBase}/inscripciones`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
+                })
+            }
+            return response.json()
+        })
+        .then(result => result)
+        .catch((error) => {
+            throw new Error(error ? error : "Hubo un error")
+        }
+        )
 }
