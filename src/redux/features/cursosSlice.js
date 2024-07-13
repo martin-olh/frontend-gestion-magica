@@ -18,7 +18,7 @@ const cursosSlice = createSlice({
 
         eliminarCurso: (state, action) => {
             const id = action.payload
-            const listaFiltrada = state.filter(a => a.id != id)
+            const listaFiltrada = state.filter(c => c.id != id)
             return listaFiltrada
         },
 
