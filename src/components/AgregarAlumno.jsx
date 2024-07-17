@@ -220,11 +220,11 @@ export const AgregarAlumno = () => {
                     <Button className='m-1' variant="secondary" type="button" onClick={() => setSeleccion('basica')}>
                         Información básica
                     </Button>
-                    <Button className='m-1' variant="secondary" type="button" onClick={() => setSeleccion('detalles')}>
-                        Detalles
-                    </Button>
                     <Button className='m-1' variant="secondary" type="button" onClick={() => setSeleccion('responsables')}>
                         Responsables
+                    </Button>
+                    <Button className='m-1' variant="secondary" type="button" onClick={() => setSeleccion('detalles')}>
+                        Detalles
                     </Button>
                     <div className='d-inline-block m-1'>
                         <em ><small>• Seleccionar sección a completar</small></em>
@@ -238,7 +238,7 @@ export const AgregarAlumno = () => {
                             <Row>
                                 <h5>Información básica:</h5>
                                 <Form.Group className="mb-3" controlId="cedula">
-                                    <Form.Label>* Cedula</Form.Label>
+                                    <Form.Label>* Cédula</Form.Label>
                                     <Form.Control onChange={handleChange} type="text" placeholder="Ingrese cédula" value={alumno.cedula} name="cedula" />
                                 </Form.Group >
                                 <Form.Group className="mb-3" controlId="nombre">
