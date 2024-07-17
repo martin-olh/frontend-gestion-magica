@@ -231,7 +231,7 @@ export const agregarAlumnoService = (token, a) => {
         "personaQueRetira": a.infoDetalle.personaQueRetira,
         "telPersonaQueRetira": a.infoDetalle.telPersonaQueRetira,
         "habilitadoPublicidad": a.infoDetalle.habilitadoPublicidad
-    };
+    }
 
     let responsables = a.responsables.map(responsable => ({
         "id": responsable.id,
@@ -243,7 +243,7 @@ export const agregarAlumnoService = (token, a) => {
         "ocupacion": responsable.ocupacion,
         "horarioTrabajo": responsable.horarioTrabajo,
         "horarioNino": responsable.horarioNino
-    }));
+    }))
 
     let raw = JSON.stringify({
         "id": a.id,
@@ -255,7 +255,7 @@ export const agregarAlumnoService = (token, a) => {
         "infoDetalle": infoDetalle,
         "infoDetalleId": a.infoDetalle.id,
         "responsables": responsables
-    });
+    })
 
     let requestOptions = {
         method: 'POST',
@@ -320,9 +320,7 @@ export const actualizarAlumnoService = (id, a, token) => {
         "ocupacion": responsable.ocupacion,
         "horarioTrabajo": responsable.horarioTrabajo,
         "horarioNino": responsable.horarioNino
-    }));
-
-    console.log(responsables)
+    }))
 
     let raw = JSON.stringify({
         "id": a.id,
@@ -334,8 +332,7 @@ export const actualizarAlumnoService = (id, a, token) => {
         "infoDetalle": infoDetalle,
         "infoDetalleId": a.infoDetalle.id,
         "responsables": responsables
-    });
-
+    })
 
     let requestOptions = {
         method: 'PUT',
@@ -343,11 +340,8 @@ export const actualizarAlumnoService = (id, a, token) => {
         body: raw
     }
 
-    console.log(requestOptions.body)
-
     return fetch(`${urlBase}/alumnos/${id}`, requestOptions)
         .then(response => {
-            console.log(response)
             if (!response.ok) {
                 return response.json().then(error => {
                     throw new Error(error.mensaje ? error.mensaje : "Hubo un error")

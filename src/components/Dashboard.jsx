@@ -9,8 +9,8 @@ import { cargaInicialUsuarios } from '../redux/features/usuariosSlice'
 import { cargaInicialAlumnos } from '../redux/features/alumnosSlice'
 import { Menu } from './Menu'
 import { Alertas } from './Alertas'
-import { cargaInicialCursos } from '../redux/features/cursosSlice'
 import { cargaInicialInscripciones } from '../redux/features/inscripcionesSlice'
+import { cargaInicialCursos } from '../redux/features/cursosSlice'
 
 
 export const Dashboard = () => {
@@ -71,8 +71,8 @@ export const Dashboard = () => {
 
     const obtenerInscripcionesCall = async (token) => {
         try {
-            const cursos = await obtenerInscripcionesService(token)
-            dispatch(cargaInicialInscripciones(cursos))
+            const inscripciones = await obtenerInscripcionesService(token)
+            dispatch(cargaInicialInscripciones(inscripciones))
         } catch (error) {
             setAlerta(error.mensaje)
         }

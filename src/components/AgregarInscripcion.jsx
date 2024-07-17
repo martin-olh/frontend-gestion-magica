@@ -3,7 +3,7 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { agregarInscripcionService } from "../services/services"
 import { Alertas } from "./Alertas"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { agregarInscripcion } from "../redux/features/inscripcionesSlice"
 
 
@@ -15,15 +15,15 @@ export const AgregarInscripcion = () => {
     const [exito, setExito] = useState('')
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const anioActual = new Date().getFullYear()
     const listaCursos = useSelector(store => store.listaCursos)
     const listaCursosAnioActual = listaCursos.filter(c => c.anio == anioActual)
+    const listaInscripciones = useSelector(store => store.listaInscripciones)
     const listaAlumnos = useSelector(store => store.listaAlumnos)
 
-
     const [alumno, setAlumno] = useState({ nombre: '', apellido: '' })
-
 
     const inscVacia = {
         id: 0,
@@ -37,16 +37,27 @@ export const AgregarInscripcion = () => {
     }
 
     const [inscripcion, setInscripcion] = useState(inscVacia)
+    const [cursoActivo, setCursoActivo] = useState()
 
     useEffect(() => {
         const alumnoFind = listaAlumnos.find(a => a.id == idAlumno)
+        console.log('alumnoFind', alumnoFind)
         if (alumnoFind) {
             setAlumno(alumnoFind)
+            const inscFind = listaInscripciones.find(i => i.alumnoId == alumnoFind.id && i.activa)
+            console.log('insc Find', inscFind)
+            if (inscFind) {
+                const cursoFind = listaCursos.find(c => c.id == inscFind.cursoId)
+                if (cursoFind) {
+                    console.log('cursoFind', cursoFind)
+
+                    setCursoActivo(cursoFind)
+                }
+            }
+
         }
 
-    }, [listaAlumnos, listaCursos])
-
-
+    }, [listaAlumnos, listaCursos, listaInscripciones, idAlumno])
 
     const handleChange = (e) => {
         const { name, type, checked, value } = e.target;
@@ -67,6 +78,9 @@ export const AgregarInscripcion = () => {
             setInscripcion(inscVacia)
             setExito("Alumno inscripto correctamente")
             setAlerta('')
+            setTimeout(() => {
+                navigate(`/alumnos/listado/`)
+            }, 2000)
         } catch (error) {
             setAlerta(error.message)
             setExito('')
@@ -95,6 +109,14 @@ export const AgregarInscripcion = () => {
                 <p>Nombre del alumno:<strong> {`${alumno.nombre} ${alumno.apellido}`}</strong></p>
             </Row>
 
+            {cursoActivo ?
+                <Row>
+                    <p>Curso inscripto actual:<strong> {`${cursoActivo.anio} - ${cursoActivo.grado} - ${cursoActivo.tipoCurso}`}</strong></p>
+                </Row>
+                :
+                <p>Curso inscripto actual: N/A</p>
+            }
+
             <Row>
                 <Col xs={12} md={10} lg={10}>
                     <Form onSubmit={onSubmit}>
@@ -103,7 +125,7 @@ export const AgregarInscripcion = () => {
                             <Form.Select onChange={handleChange} value={inscripcion.cursoId} name="cursoId">
                                 <option>Seleccionar</option>
                                 {
-                                    listaCursosAnioActual.slice().sort((a, b) => b.anio - a.anio).map(c => <option key={c.id} value={c.id}>{`${c.anio} - ${c.grado}`}</option>)
+                                    listaCursosAnioActual.slice().sort((a, b) => b.anio - a.anio).map(c => <option key={c.id} value={c.id}>{`${c.anio} - ${c.grado} - ${c.tipoCurso}`}</option>)
                                 }
                             </Form.Select>
                         </Form.Group >

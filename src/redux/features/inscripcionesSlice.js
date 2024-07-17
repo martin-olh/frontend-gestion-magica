@@ -31,7 +31,6 @@ const inscripcionesSlice = createSlice({
                 return inscripcion
             })
         }
-
     },
 });
 export const { cargaInicialInscripciones, agregarInscripcion, eliminarInscripcion, actualizarInscripcion } = inscripcionesSlice.actions;
