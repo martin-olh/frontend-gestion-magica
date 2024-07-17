@@ -41,7 +41,7 @@ export const ListadoCursos = () => {
 
     const obtenerNombreMaestro = (id) => {
         const maestro = listaMaestros.find(m => m.id === id);
-        return maestro ? `${maestro.apellido}, ${maestro.nombre}` : 'No asignado';
+        return maestro ? `${maestro.apellido}, ${maestro.nombre}` : 'N/A';
     }
 
     return (
@@ -76,8 +76,8 @@ export const ListadoCursos = () => {
                                 <td>{obtenerNombreMaestro(c.maestroEdFisicaId)}</td>
                                 <td><a href={`/cursos/inscripciones/${c.id}`}>Ver inscripciones</a></td>
                                 <td>
-                                    <Button className='btn-edit' onClick={() => handleEditar(c.id)}> <img src={imgEdit} alt="Editar" /> </Button>
-                                    <Button className='btn-delete' onClick={() => handleEliminar(c.id)}><img src={imgDelete} alt="Eliminar" /></Button>
+                                    <Button className='btn-edit' title="Editar" onClick={() => handleEditar(c.id)}> <img src={imgEdit} alt="Editar" /> </Button>
+                                    <Button className='btn-delete' title="Eliminar" onClick={() => handleEliminar(c.id)}><img src={imgDelete} alt="Eliminar" /></Button>
                                 </td>
                             </tr>
                         )}

@@ -8,6 +8,7 @@ import { Alertas } from './Alertas'
 import imgEdit from '/src/assets/edit.svg'
 import imgDelete from '/src/assets/delete.svg'
 import imgInfo from '/src/assets/info.svg'
+import imgInscribir from '/src/assets/inscribir.svg'
 
 export const ListadoAlumno = () => {
 
@@ -44,6 +45,10 @@ export const ListadoAlumno = () => {
         navigate(`/alumnos/detalles/${id}`)
     }
 
+    const handleInscribir = (id) => {
+        navigate(`/inscripciones/agregar/${id}`)
+    }
+
 
     return (
         <>
@@ -71,11 +76,12 @@ export const ListadoAlumno = () => {
                                 <td>{`${a.responsables[0].nombre} ${a.responsables[0].apellido}`}</td>
                                 <td>{a.responsables[0].telefono}</td>
                                 <td>
-                                    <Button className='btn-detalles' onClick={() => handleDetalles(a.id)}> <img src={imgInfo} alt="Detalles" /> </Button>
+                                    <Button className='btn-detalles' title="Detalles" onClick={() => handleDetalles(a.id)}> <img src={imgInfo} alt="Detalles" /> </Button>
                                     {tipoUsuario === 'Administrador' &&
                                         <>
-                                            <Button className='btn-edit' onClick={() => handleEditar(a.id)}> <img src={imgEdit} alt="Editar" /> </Button>
-                                            <Button className='btn-delete' onClick={() => handleEliminar(a.id)}><img src={imgDelete} alt="Eliminar" /></Button>
+                                            <Button className='btn-edit' title="Editar" onClick={() => handleEditar(a.id)}> <img src={imgEdit} alt="Editar" /> </Button>
+                                            <Button className='btn-edit' title="Inscribir a curso" onClick={() => handleInscribir(a.id)}><img src={imgInscribir} alt="Inscribir" /></Button>
+                                            <Button className='btn-delete' title="Eliminar" onClick={() => handleEliminar(a.id)}><img src={imgDelete} alt="Eliminar" /></Button>
                                         </>
                                     }
                                 </td>

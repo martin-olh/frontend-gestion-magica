@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Accordion, Nav } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
+import imgUsuarios from '/src/assets/usuarios.svg'
+import imgAlumnos from '/src/assets/alumnos.svg'
+import imgCursos from '/src/assets/cursos.svg'
 
 
 export const MenuCoordinador = () => {
@@ -33,13 +36,19 @@ export const MenuCoordinador = () => {
             <Nav defaultActiveKey="/home" className="flex-column">
                 <Accordion className="mt-2" activeKey={activeKey} onSelect={handleSelect}>
                     <Accordion.Item eventKey="0" >
-                        <Accordion.Header className='accHeader'>Alumnos</Accordion.Header>
+                        <Accordion.Header className='accHeader'>
+                            <img className='m-1' src={imgAlumnos} alt="Alumnos" />
+                            Alumnos
+                        </Accordion.Header>
                         <Accordion.Body className='bg-negro'>
                             <Nav.Link href="/alumnos/listado" eventKey="link-1" className='nav-link-custom'>Listado alumnos</Nav.Link>
                         </Accordion.Body>
                     </Accordion.Item>
                     <Accordion.Item eventKey="1" >
-                        <Accordion.Header className='accHeader'>Cursos</Accordion.Header>
+                        <Accordion.Header className='accHeader'>
+                            <img className='m-1' src={imgCursos} alt="Cursos" />
+                            Cursos
+                        </Accordion.Header>
                         <Accordion.Body className='bg-negro'>
                             <Nav.Link href="/cursos/listado" eventKey="link-1" className='nav-link-custom'>Listado cursos</Nav.Link>
                         </Accordion.Body>

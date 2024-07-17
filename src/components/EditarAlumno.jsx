@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { actualizarAlumnoService, agregarAlumnoService } from '../services/services'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { actualizarAlumno } from '../redux/features/alumnosSlice'
 import { Alertas } from './Alertas'
 
 export const EditarAlumno = () => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const { id } = useParams()
     const listaAlumnos = useSelector(store => store.listaAlumnos)
@@ -96,8 +97,8 @@ export const EditarAlumno = () => {
             const updatedAlumno = {
                 ...alumnoAEditar,
                 fechaNac: alumnoAEditar.fechaNac.split('T')[0] // Format the date
-            };
-            setAlumno(updatedAlumno);
+            }
+            setAlumno(updatedAlumno)
             setInfoDetalleAux({ ...updatedAlumno.infoDetalle })
             setResponsable0Aux({ ...updatedAlumno.responsables[0] })
             if (updatedAlumno.responsables[1] == null) {
@@ -106,69 +107,83 @@ export const EditarAlumno = () => {
                 setResponsable1Aux({ ...updatedAlumno.responsables[1] })
             }
         }
-    }, [listaAlumnos]);
+    }, [listaAlumnos, id]);
 
     const handleChange = (e) => {
-        setAlumno({ ...alumno, [e.target.name]: e.target.value })
+        const { name, value } = e.target
+        setAlumno(prevState => ({
+            ...prevState,
+            [name]: value
+        }))
         setAlerta('')
         setExito('')
-        console.log(alumno)
     }
 
     const handleChangeInfoDet = (e) => {
-
-        // const { name, type, value, checked } = e.target
-
-        // console.log(e)
-
-        // const updatedInfoDet = { ...infoDetalleAux, [name]: type === 'checkbox' ? checked : value }
-        // setInfoDetalleAux(updatedInfoDet)
-
-        // setAlumno({ ...alumno, infoDetalle: updatedInfoDet })
-        // console.log(alumno)
         const { name, type, checked, value } = e.target;
         const inputValue = type === 'checkbox' ? checked : value;
 
-        setInfoDetalleAux({ ...infoDetalleAux, [name]: inputValue });
-        setAlumno({ ...alumno, infoDetalle: infoDetalleAux });
+        setInfoDetalleAux(prevState => ({
+            ...prevState,
+            [name]: inputValue
+        }))
+        setAlumno(prevState => ({
+            ...prevState,
+            infoDetalle: {
+                ...prevState.infoDetalle,
+                [name]: inputValue
+            }
+        }))
 
-        setAlerta('');
-        setExito('');
+        setAlerta('')
+        setExito('')
     }
 
     const handleChangeResp0 = (e) => {
         const { name, value } = e.target
         const nameBase = name.split('.')[1]
 
-        // Actualiza el objeto auxiliar del responsable 0
-        const updatedResponsable0 = { ...responsable0Aux, [nameBase]: value };
-        setResponsable0Aux(updatedResponsable0);
+        setResponsable0Aux(prevState => ({
+            ...prevState,
+            [nameBase]: value
+        }))
 
-        // Crea una nueva copia del array responsables, actualiza el índice 0 con los nuevos datos
-        const updatedResponsables = [...alumno.responsables];
-        updatedResponsables[0] = updatedResponsable0;
-
-        // Actualiza el estado de alumno con los nuevos responsables
-        setAlumno({ ...alumno, responsables: updatedResponsables });
+        setAlumno(prevState => {
+            const updatedResponsables = [...prevState.responsables];
+            updatedResponsables[0] = {
+                ...updatedResponsables[0],
+                [nameBase]: value
+            };
+            return {
+                ...prevState,
+                responsables: updatedResponsables
+            }
+        })
         setAlerta('')
         setExito('')
-        console.log(alumno)
     }
 
     const handleChangeResp1 = (e) => {
         const { name, value } = e.target
         const nameBase = name.split('.')[1]
 
-        // Actualiza el objeto auxiliar del responsable 0
-        const updatedResponsable1 = { ...responsable1Aux, [nameBase]: value };
-        setResponsable1Aux(updatedResponsable1);
+        setResponsable1Aux(prevState => ({
+            ...prevState,
+            [nameBase]: value
+        }))
 
-        // Crea una nueva copia del array responsables, actualiza el índice 0 con los nuevos datos
-        const updatedResponsables = [...alumno.responsables];
-        updatedResponsables[1] = updatedResponsable1;
+        setAlumno(prevState => {
+            const updatedResponsables = [...prevState.responsables];
+            updatedResponsables[1] = {
+                ...updatedResponsables[1],
+                [nameBase]: value
+            };
+            return {
+                ...prevState,
+                responsables: updatedResponsables
+            }
+        })
 
-        // Actualiza el estado de alumno con los nuevos responsables
-        setAlumno({ ...alumno, responsables: updatedResponsables });
         setAlerta('')
         setExito('')
     }
@@ -180,10 +195,13 @@ export const EditarAlumno = () => {
             if (validarSegundoResponsableVacio() && alumno.responsables.length == 2) {
                 alumno.responsables.pop()
             }
-            await actualizarAlumnoService(id, alumno, sessionStorage.getItem('token'))// Solucionar tema de segundo responsable id nulo en el service
+            await actualizarAlumnoService(id, alumno, sessionStorage.getItem('token'))
             dispatch(actualizarAlumno(alumno))
             setExito("Alumno modificado exitosamente")
             setAlerta('')
+            setTimeout(() => {
+                navigate(`/alumnos/detalles/${id}`)
+            }, 1000)
         } catch (error) {
             setAlerta(error.message)
             setExito('')
@@ -244,11 +262,11 @@ export const EditarAlumno = () => {
                     <Button className='m-1' variant="secondary" type="button" onClick={() => setSeleccion('basica')}>
                         Información básica
                     </Button>
-                    <Button className='m-1' variant="secondary" type="button" onClick={() => setSeleccion('detalles')}>
-                        Detalles
-                    </Button>
                     <Button className='m-1' variant="secondary" type="button" onClick={() => setSeleccion('responsables')}>
                         Responsables
+                    </Button>
+                    <Button className='m-1' variant="secondary" type="button" onClick={() => setSeleccion('detalles')}>
+                        Detalles
                     </Button>
                     <div className='d-inline-block m-1'>
                         <em ><small>• Seleccionar sección a completar</small></em>
@@ -262,7 +280,7 @@ export const EditarAlumno = () => {
                             <Row>
                                 <h5>Información básica:</h5>
                                 <Form.Group className="mb-3" controlId="cedula">
-                                    <Form.Label>* Cedula</Form.Label>
+                                    <Form.Label>* Cédula</Form.Label>
                                     <Form.Control onChange={handleChange} type="text" placeholder="Ingrese cédula" value={alumno.cedula} name="cedula" />
                                 </Form.Group >
                                 <Form.Group className="mb-3" controlId="nombre">
