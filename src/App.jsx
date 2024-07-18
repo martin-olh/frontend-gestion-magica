@@ -16,6 +16,8 @@ import { ListadoCursos } from "./components/ListadoCursos"
 import { InscripcionesCurso } from "./components/InscripcionesCurso"
 import { EditarCurso } from "./components/EditarCurso"
 import { AgregarInscripcion } from "./components/AgregarInscripcion"
+import { AgregarPago } from "./components/AgregarPago"
+import { ListadoPagos } from "./components/ListadoPagos"
 
 export const App = () => {
 
@@ -43,6 +45,9 @@ export const App = () => {
         <Route path="/cursos/inscripciones/:id" element={<ProtectedRoute component={InscripcionesCurso} allowedRoles={['Administrador', 'Coordinador']} />}></Route>
 
         <Route path="/inscripciones/agregar/:idAlumno" element={<ProtectedRoute component={AgregarInscripcion} allowedRoles={['Administrador']} />}></Route>
+
+        <Route path="/pagos/agregar/:idAlumno" element={<ProtectedRoute component={AgregarPago} allowedRoles={['Administrador']} />}></Route>
+        <Route path="/pagos/listado/:idAlumno" element={<ProtectedRoute component={ListadoPagos} allowedRoles={['Administrador']} />}></Route>
       </Route>
       <Route path="*" element={<Navigate replace to={"/"}></Navigate>} />
 

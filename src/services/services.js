@@ -1,4 +1,4 @@
-const urlBase = 'https://colegiocirculomagicoapi.azurewebsites.net/api'
+const urlBase = 'https://localhost:7250/api'
 
 // https://colegiocirculomagicoapi.azurewebsites.net/api
 // https://localhost:7250/api
@@ -578,6 +578,72 @@ export const agregarInscripcionService = (token, i) => {
     }
 
     return fetch(`${urlBase}/inscripciones`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
+                })
+            }
+            return response.json()
+        })
+        .then(result => result)
+        .catch((error) => {
+            throw new Error(error ? error : "Hubo un error")
+        }
+        )
+}
+
+//PAGOS
+//---------------------------------------
+
+export const obtenerPagosService = (token) => {
+    let myHeaders = new Headers()
+    myHeaders.append("Content-Type", "application/json")
+    myHeaders.append("Authorization", `Bearer ${token}`)
+
+    let requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+    }
+
+    return fetch(`${urlBase}/pagos`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
+                })
+            }
+            return response.json()
+        })
+        .then(result => result)
+        .catch((error) => {
+            throw new Error(error ? error : "Hubo un error")
+        }
+        )
+
+}
+
+export const agregarPagoService = (token, p) => {
+
+    let myHeaders = new Headers()
+    myHeaders.append("Content-Type", "application/json")
+    myHeaders.append("Authorization", `Bearer ${token}`)
+
+    let raw = JSON.stringify({
+        "id": p.id,
+        "monto": p.monto,
+        "fecha": p.fecha,
+        "inscripcionId": p.inscripcionId,
+        "concepto": p.concepto
+    })
+
+    let requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw
+    }
+
+    return fetch(`${urlBase}/pagos`, requestOptions)
         .then(response => {
             if (!response.ok) {
                 return response.json().then(error => {

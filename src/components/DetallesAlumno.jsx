@@ -43,7 +43,7 @@ export const DetallesAlumno = () => {
                                 <Col><span>|</span></Col>
 
                                 <Col>
-                                    <Card.Link href='#'>Link</Card.Link>
+                                    <Card.Link href={`/pagos/agregar/${id}`}>Registrar Pago</Card.Link>
                                 </Col>
 
                                 <Col><span>|</span></Col>
