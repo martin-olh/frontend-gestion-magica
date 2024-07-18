@@ -3,12 +3,14 @@ import usuariosSlice from './features/usuariosSlice'
 import alumnosSlice from './features/alumnosSlice'
 import cursosSlice from './features/cursosSlice'
 import inscripcionesSlice from './features/inscripcionesSlice'
+import pagosSlice from './features/pagosSlice'
 
 export const store = configureStore({
     reducer: {
         listaUsuarios: usuariosSlice,
         listaAlumnos: alumnosSlice,
         listaCursos: cursosSlice,
-        listaInscripciones: inscripcionesSlice
+        listaInscripciones: inscripcionesSlice,
+        listaPagos: pagosSlice
     }
 })

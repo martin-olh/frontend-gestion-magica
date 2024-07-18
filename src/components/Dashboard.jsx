@@ -11,6 +11,7 @@ import { Menu } from './Menu'
 import { Alertas } from './Alertas'
 import { cargaInicialInscripciones } from '../redux/features/inscripcionesSlice'
 import { cargaInicialCursos } from '../redux/features/cursosSlice'
+import { cargaInicialPagos } from '../redux/features/pagosSlice'
 
 
 export const Dashboard = () => {
@@ -36,6 +37,7 @@ export const Dashboard = () => {
             obtenerAlumnosCall(loggedAux)
             obtenerCursosCall(loggedAux)
             obtenerInscripcionesCall(loggedAux)
+            obtenerPagosCall(loggedAux)
             // Llamadas a obtener cursos, alumnos, etc.
         }
     }, [])
@@ -73,6 +75,15 @@ export const Dashboard = () => {
         try {
             const inscripciones = await obtenerInscripcionesService(token)
             dispatch(cargaInicialInscripciones(inscripciones))
+        } catch (error) {
+            setAlerta(error.mensaje)
+        }
+    }
+
+    const obtenerPagosCall = async (token) => {
+        try {
+            const pagos = await obtenerPagosService(token)
+            dispatch(cargaInicialPagos(pagos))
         } catch (error) {
             setAlerta(error.mensaje)
         }
