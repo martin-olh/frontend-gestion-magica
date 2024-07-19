@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { agregarInscripcionService } from "../services/services"
 import { Alertas } from "./Alertas"
 import { useNavigate, useParams } from "react-router-dom"
-import { agregarInscripcion } from "../redux/features/inscripcionesSlice"
+import { actualizarInscripcion, agregarInscripcion } from "../redux/features/inscripcionesSlice"
 
 
 export const AgregarInscripcion = () => {
@@ -24,6 +24,7 @@ export const AgregarInscripcion = () => {
     const listaAlumnos = useSelector(store => store.listaAlumnos)
 
     const [alumno, setAlumno] = useState({ nombre: '', apellido: '' })
+    const [ultimaInsc, setUltimaInsc] = useState(null)
 
     const inscVacia = {
         id: 0,
@@ -47,6 +48,7 @@ export const AgregarInscripcion = () => {
             const inscFind = listaInscripciones.find(i => i.alumnoId == alumnoFind.id && i.activa)
             console.log('insc Find', inscFind)
             if (inscFind) {
+                setUltimaInsc(inscFind)
                 const cursoFind = listaCursos.find(c => c.id == inscFind.cursoId)
                 if (cursoFind) {
                     console.log('cursoFind', cursoFind)
@@ -73,9 +75,11 @@ export const AgregarInscripcion = () => {
         try {
             validarDatosAlumno()
             const resultado = await agregarInscripcionService(sessionStorage.getItem('token'), inscripcion)
-            inscripcion.id = resultado.id //guardo id de la inscripcion creada, devuelta por la API   
+            inscripcion.id = resultado.id //guardo id de la inscripcion creada, devuelta por la API
+            const nuevaUltimaInsc = { ...ultimaInsc, activa: false }
+            setUltimaInsc(nuevaUltimaInsc)
+            dispatch(actualizarInscripcion(nuevaUltimaInsc))
             dispatch(agregarInscripcion(inscripcion))
-            setInscripcion(inscVacia)
             setExito("Alumno inscripto correctamente")
             setAlerta('')
             setTimeout(() => {
@@ -130,11 +134,11 @@ export const AgregarInscripcion = () => {
                             </Form.Select>
                         </Form.Group >
                         <Form.Group className="mb-3" controlId="dobleHorario">
-                            <Form.Check onChange={handleChange} type="switch" value={inscripcion.dobleHorario} name="dobleHorario" label="¿Doble horario?" />
+                            <Form.Check onChange={handleChange} type="switch" checked={inscripcion.dobleHorario} name="dobleHorario" label="¿Doble horario?" />
                         </Form.Group >
 
                         <Form.Group className="mb-3" controlId="piscina">
-                            <Form.Check onChange={handleChange} type="switch" value={inscripcion.piscina} name="piscina" label="¿Asiste a piscina?" />
+                            <Form.Check onChange={handleChange} type="switch" checked={inscripcion.piscina} name="piscina" label="¿Asiste a piscina?" />
                         </Form.Group >
                         <Form.Group className="mb-3" controlId="montoTotal">
                             <Form.Label>* Costo del curso</Form.Label>
