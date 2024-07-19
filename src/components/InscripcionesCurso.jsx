@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Container, Table } from 'react-bootstrap'
+import { Container, Table } from 'react-bootstrap'
 import { Alertas } from './Alertas'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'

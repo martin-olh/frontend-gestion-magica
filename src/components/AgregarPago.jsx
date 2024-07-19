@@ -61,17 +61,15 @@ export const AgregarPago = () => {
     event.preventDefault()
     try {
       validarDatosPago()
-      console.log(pago)
       const resultado = await agregarPagoService(sessionStorage.getItem('token'), pago)
       pago.id = resultado.id //guardo id del pago creado, devuelto por la API   
       dispatch(agregarPago(pago))
       setExito("Pago registrado correctamente")
       setAlerta('')
       setTimeout(() => {
-        navigate(`/pagos/listado/${idAlumno}`)
+        navigate(`/alumnos/estado-cuenta/${idAlumno}`)
       }, 2000)
     } catch (error) {
-      console.log(error)
       setAlerta(error.message)
       setExito('')
     }
