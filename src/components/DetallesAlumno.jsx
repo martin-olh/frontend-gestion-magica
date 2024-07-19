@@ -49,7 +49,7 @@ export const DetallesAlumno = () => {
                                 <Col><span>|</span></Col>
 
                                 <Col>
-                                    <Card.Link href='#'>Link</Card.Link>
+                                    <Card.Link href={`/alumnos/estado-cuenta/${id}`}>Estado de cuenta</Card.Link>
                                 </Col>
                             </Row>
                         </Card.Header>
