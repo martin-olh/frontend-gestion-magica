@@ -19,7 +19,6 @@ export const EstadoDeCuentaAlumno = () => {
     const [alumno, setAlumno] = useState({ nombre: '', apellido: '' })
     const [inscAlumno, setInscAlumno] = useState([])
 
-
     useEffect(() => {
         const alumnoFind = listaAlumnos.find(a => a.id == id)
         if (alumnoFind) {
@@ -50,6 +49,10 @@ export const EstadoDeCuentaAlumno = () => {
         return new Date(dateString).toLocaleDateString(undefined, options)
     }
 
+    const formatMonto = (monto) => {
+        return new Intl.NumberFormat('es-UY', { style: 'currency', currency: 'UYU' }).format(monto);
+    }
+
 
     return (
         <>
@@ -63,44 +66,72 @@ export const EstadoDeCuentaAlumno = () => {
                 <Row>
                     <Alertas error={alerta} exito={exito}></Alertas>
                 </Row>
-                <Accordion defaultActiveKey="0">
-                    {inscAlumno.map(i =>
-                    (
-                        <Accordion.Item key={i.id} eventKey={i.id}>
-                            <Accordion.Header>{nombreCurso(i.cursoId)} {i.activa ? `(Activa)` : ``}</Accordion.Header>
-                            <Accordion.Body>
-                                <Table>
-                                    <thead>
-                                        <tr>
-                                            <th>Concepto</th>
-                                            <th>Monto</th>
-                                            <th>Fecha</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {pagosDeInscripcion(i.id).map
-                                            (p => (
-                                                <tr key={p.id}>
-                                                    <td>{p.concepto}</td>
-                                                    <td>{p.monto}</td>
-                                                    <td>{formatDate(p.fecha)}</td>
-                                                </tr>
-                                            ))
-                                        }
-                                    </tbody>
-                                </Table>
+                {inscAlumno.length > 0 ?
+                    <Accordion className='estado-cuenta-body' defaultActiveKey={inscAlumno.length > 0 ? inscAlumno[0].id.toString() : "0"}>
+                        {inscAlumno.map(i =>
+                        (
+                            <Accordion.Item key={i.id} eventKey={i.id.toString()}>
+                                <Accordion.Header className='estado-cuenta-body mb-1'>{nombreCurso(i.cursoId)} {i.activa ? `(Activa)` : ``}</Accordion.Header>
+                                <Accordion.Body>
+                                    <h5 className='negro'>Cuotas</h5>
+                                    <Table>
+                                        <thead>
+                                            <tr>
+                                                <th>Concepto</th>
+                                                <th>Monto</th>
+                                                <th>Fecha</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {pagosDeInscripcion(i.id)
+                                                .filter(p => p.esCuota === true)
+                                                .map(p => (
+                                                    <tr key={p.id}>
+                                                        <td>{p.concepto}</td>
+                                                        <td>{formatMonto(p.monto)}</td>
+                                                        <td>{formatDate(p.fecha)}</td>
+                                                    </tr>
+                                                ))
+                                            }
+                                        </tbody>
+                                    </Table>
 
-                            </Accordion.Body>
-                        </Accordion.Item>
-                    ))
-                    }
-                </Accordion>
+                                    <p className='negro'>Saldo a pagar: {formatMonto(i.montoTotal - i.montoPagado)}</p>
+                                    <hr className='negro' />
+
+                                    <h5 className='negro'>Otros pagos</h5>
+
+                                    <Table>
+                                        <thead>
+                                            <tr>
+                                                <th>Concepto</th>
+                                                <th>Monto</th>
+                                                <th>Fecha</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {pagosDeInscripcion(i.id)
+                                                .filter(p => p.esCuota === false)
+                                                .map(p => (
+                                                    <tr key={p.id}>
+                                                        <td>{p.concepto}</td>
+                                                        <td>{formatMonto(p.monto)}</td>
+                                                        <td>{formatDate(p.fecha)}</td>
+                                                    </tr>
+                                                ))
+                                            }
+                                        </tbody>
+                                    </Table>
+
+                                </Accordion.Body>
+                            </Accordion.Item>
+                        ))
+                        }
+                    </Accordion>
+                    :
+                    <></>}
+
             </Container>
         </>
     )
 }
-
-
-{/* <Table >
-                    <thead>
-                        <tr></tr> */}

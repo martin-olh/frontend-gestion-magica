@@ -35,7 +35,7 @@ export const DetallesAlumno = () => {
 
                     <Card>
                         <Card.Header>
-                            <Row className="d-flex justify-content-evenly">
+                            <Row className="d-flex justify-content-between text-center">
                                 <Col>
                                     <Card.Link href={`/alumnos/editar/${id}`}>Editar información</Card.Link>
                                 </Col>

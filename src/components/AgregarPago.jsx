@@ -22,13 +22,15 @@ export const AgregarPago = () => {
 
   const [alumno, setAlumno] = useState({ nombre: '', apellido: '' })
   const [curso, setCurso] = useState({})
+  const [insc, setInsc] = useState({})
 
   const pagoVacio = {
     id: 0,
     monto: 0,
     fecha: "",
     inscripcionId: 0,
-    concepto: ""
+    concepto: "",
+    esCuota: true
   }
 
   const [pago, setPago] = useState(pagoVacio)
@@ -39,12 +41,15 @@ export const AgregarPago = () => {
       setAlumno(alumnoFind)
       const inscFind = listaInscripciones.find(i => i.alumnoId == alumnoFind.id && i.activa)
       if (inscFind) {
-        setPago({ ...pago, inscripcionId: inscFind.id })
+        setInsc(inscFind)
+        setPago({ ...pago, inscripcionId: inscFind.id }) //Asigno ID de la inscripcion activa actual al cargar el componente
         const cursoFind = listaCursos.find(c => c.id == inscFind.cursoId)
         if (cursoFind) {
           setCurso(cursoFind)
         }
       }
+
+      console.log(pago)
     }
 
   }, [listaAlumnos, listaCursos, listaInscripciones, idAlumno])
@@ -52,7 +57,7 @@ export const AgregarPago = () => {
   const handleChange = (e) => {
     const { name, type, checked, value } = e.target;
     const inputValue = type === 'checkbox' ? checked : value;
-    setPago({ ...pago, [name]: inputValue })
+    setPago(prevPago => ({ ...prevPago, [name]: inputValue }))
     setAlerta('')
     setExito('')
   }
@@ -62,7 +67,9 @@ export const AgregarPago = () => {
     try {
       validarDatosPago()
       const resultado = await agregarPagoService(sessionStorage.getItem('token'), pago)
-      pago.id = resultado.id //guardo id del pago creado, devuelto por la API   
+
+      setPago({ ...pago, id: resultado.id }) //guardo id del pago creado, devuelto por la API 
+
       dispatch(agregarPago(pago))
       setExito("Pago registrado correctamente")
       setAlerta('')
@@ -87,6 +94,10 @@ export const AgregarPago = () => {
     }
   }
 
+  const formatMonto = (monto) => {
+    return new Intl.NumberFormat('es-UY', { style: 'currency', currency: 'UYU' }).format(monto);
+  }
+
   return (
     <Container className='container-fluid'>
       <Row>
@@ -101,9 +112,14 @@ export const AgregarPago = () => {
       </Row>
 
       {curso ?
-        <Row>
-          <p>Curso inscripto actual:<strong> {`${curso.anio} - ${curso.grado} - ${curso.tipoCurso}`}</strong></p>
-        </Row>
+        <>
+          <Row>
+            <p>Curso inscripto actual:<strong> {`${curso.anio} - ${curso.grado} - ${curso.tipoCurso}`}</strong></p>
+          </Row>
+          <Row>
+            <p>Saldo a pagar: <strong>{formatMonto(insc.montoTotal - insc.montoPagado)}</strong></p>
+          </Row>
+        </>
         :
         <p>Curso inscripto actual: N/A</p>
       }
@@ -114,6 +130,9 @@ export const AgregarPago = () => {
             <Form.Group className="mb-3" controlId="concepto">
               <Form.Label>* Concepto</Form.Label>
               <Form.Control onChange={handleChange} type="text" placeholder="Ingrese el concepto" value={pago.concepto} name="concepto" />
+            </Form.Group >
+            <Form.Group className="mb-3" controlId="esCuota">
+              <Form.Check onChange={handleChange} type="switch" checked={pago.esCuota} name="esCuota" label="¿Pago de cuota?" />
             </Form.Group >
             <Form.Group className="mb-3" controlId="monto">
               <Form.Label>* Monto</Form.Label>

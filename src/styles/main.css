@@ -247,3 +247,9 @@ a {
     flex-grow: 1;
     /* Esto asegura que el select tome el espacio restante disponible */
 }
+
+.estado-cuenta-body {
+    --bs-accordion-color: var(--negro);
+    --bs-accordion-bg: var(--blanco);
+
+}

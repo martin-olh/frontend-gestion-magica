@@ -634,7 +634,8 @@ export const agregarPagoService = (token, p) => {
         "monto": p.monto,
         "fecha": p.fecha,
         "inscripcionId": p.inscripcionId,
-        "concepto": p.concepto
+        "concepto": p.concepto,
+        "esCuota": p.esCuota
     })
 
     let requestOptions = {
