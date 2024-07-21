@@ -409,7 +409,7 @@ export const EditarAlumno = () => {
                                             <Form.Control onChange={handleChangeInfoDet} type="text" value={infoDetalleAux.horarioConcurre} name="horarioConcurre" />
                                         </Form.Group >
                                         <Form.Group className="mb-3" controlId="habilitadoPublicidad">
-                                            <Form.Check onChange={handleChangeInfoDet} type="switch" value={infoDetalleAux.habilitadoPublicidad} name="habilitadoPublicidad" label="¿Autoriza imagen para publicidad del colegio?" />
+                                            <Form.Check onChange={handleChangeInfoDet} type="switch" checked={infoDetalleAux.habilitadoPublicidad} name="habilitadoPublicidad" label="¿Autoriza imagen para publicidad del colegio?" />
                                         </Form.Group >
                                     </Col>
                                 </Row>
