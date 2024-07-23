@@ -5,6 +5,7 @@ import { Alertas } from "./Alertas"
 import { useNavigate, useParams } from 'react-router-dom'
 import { agregarPago } from '../redux/features/pagosSlice'
 import { agregarPagoService } from '../services/services'
+import { actualizarInscripcion } from '../redux/features/inscripcionesSlice'
 
 export const AgregarPago = () => {
 
@@ -48,8 +49,6 @@ export const AgregarPago = () => {
           setCurso(cursoFind)
         }
       }
-
-      console.log(pago)
     }
 
   }, [listaAlumnos, listaCursos, listaInscripciones, idAlumno])
@@ -68,8 +67,13 @@ export const AgregarPago = () => {
       validarDatosPago()
       const resultado = await agregarPagoService(sessionStorage.getItem('token'), pago)
 
-      setPago({ ...pago, id: resultado.id }) //guardo id del pago creado, devuelto por la API 
+      setPago({ ...pago, id: resultado.id }) //guardo id del pago creado, devuelto por la API    
 
+      const subtotal = insc.montoPagado + (+pago.monto)
+      const updatedInsc = { ...insc, montoPagado: subtotal }
+      setInsc(updatedInsc)
+
+      dispatch(actualizarInscripcion(updatedInsc))
       dispatch(agregarPago(pago))
       setExito("Pago registrado correctamente")
       setAlerta('')
