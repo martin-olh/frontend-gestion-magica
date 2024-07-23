@@ -567,6 +567,7 @@ export const agregarInscripcionService = (token, i) => {
         "dobleHorario": i.dobleHorario,
         "piscina": i.piscina,
         "montoTotal": i.montoTotal,
+        "montoPagado": i.montoPagado,
         "alumnoId": i.alumnoId,
         "activa": i.activa
     })
