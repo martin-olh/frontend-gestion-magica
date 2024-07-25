@@ -5,11 +5,13 @@ import { agregarCursoService } from '../services/services'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { Alertas } from './Alertas'
 import { agregarCurso } from '../redux/features/cursosSlice'
+import { useNavigate } from 'react-router-dom'
 
 
 export const AgregarCurso = () => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const listaUsuarios = useSelector(store => store.listaUsuarios)
     const listaMaestros = listaUsuarios.filter(u => u.tipoUsuario === 'Maestro')
 
@@ -46,6 +48,9 @@ export const AgregarCurso = () => {
             setCurso(cursoVacio)
             setExito("Curso registrado exitosamente")
             setAlerta('')
+            setTimeout(() => {
+                navigate(`/cursos/listado/`)
+            }, 2000)
         } catch (error) {
             setAlerta(error.message)
             setExito('')
@@ -91,7 +96,6 @@ export const AgregarCurso = () => {
                             <Form.Label>* Año</Form.Label>
                             <Form.Control onChange={handleChange} type="text" placeholder="Ingrese año" value={curso.anio} name="anio" />
                         </Form.Group >
-
                         <hr />
 
                         <h5 className="mb-3">Maestros</h5>

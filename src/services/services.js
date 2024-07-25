@@ -1,4 +1,4 @@
-const urlBase = 'https://colegiocirculomagicoapi.azurewebsites.net/api'
+const urlBase = 'https://localhost:7250/api'
 
 // https://colegiocirculomagicoapi.azurewebsites.net/api
 // https://localhost:7250/api
@@ -427,6 +427,7 @@ export const agregarCursoService = (token, c) => {
         "id": c.id,
         "grado": c.grado,
         "anio": c.anio,
+        "montoCuota": c.montoCuota,
         "maestroPrincipalId": c.maestroPrincipalId,
         "maestroSecundarioId": c.maestroSecundarioId,
         "maestroInglesId": c.maestroInglesId,
@@ -467,6 +468,7 @@ export const actualizarCursoService = (id, c, token) => {
         "id": c.id,
         "grado": c.grado,
         "anio": c.anio,
+        "montoCuota": c.montoCuota,
         "maestroPrincipalId": c.maestroPrincipalId,
         "maestroSecundarioId": c.maestroSecundarioId,
         "maestroInglesId": c.maestroInglesId,
@@ -564,10 +566,10 @@ export const agregarInscripcionService = (token, i) => {
         "id": i.id,
         "fecha": new Date().toISOString(),
         "cursoId": i.cursoId,
+        "montoCuota": i.montoCuota,
         "dobleHorario": i.dobleHorario,
+        "observaciones": i.observaciones,
         "piscina": i.piscina,
-        "montoTotal": i.montoTotal,
-        "montoPagado": i.montoPagado,
         "alumnoId": i.alumnoId,
         "activa": i.activa
     })

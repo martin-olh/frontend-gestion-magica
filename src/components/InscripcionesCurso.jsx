@@ -36,6 +36,10 @@ export const InscripcionesCurso = () => {
         return alumno ? `${alumno.apellido}, ${alumno.nombre}` : ''
     }
 
+    const formatMonto = (monto) => {
+        return new Intl.NumberFormat('es-UY', { style: 'currency', currency: 'UYU' }).format(monto);
+    }
+
 
     return (
         <>
@@ -59,7 +63,7 @@ export const InscripcionesCurso = () => {
                                     <th>Nombre</th>
                                     <th>Doble Horario</th>
                                     <th>Piscina</th>
-                                    <th>Monto total</th>
+                                    <th>Monto cuota</th>
                                 </tr>
                             </thead>
 
@@ -71,7 +75,7 @@ export const InscripcionesCurso = () => {
                                         </td>
                                         <td>{i.dobleHorario ? '✅' : '❌'}</td>
                                         <td>{i.piscina ? '✅' : '❌'}</td>
-                                        <td>{i.montoTotal}</td>
+                                        <td>{formatMonto(i.montoCuota)}</td>
                                     </tr>
                                 )}
                             </tbody>

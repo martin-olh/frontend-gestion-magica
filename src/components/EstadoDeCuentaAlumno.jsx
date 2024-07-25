@@ -96,7 +96,7 @@ export const EstadoDeCuentaAlumno = () => {
                                         </tbody>
                                     </Table>
 
-                                    <p className='negro'>Saldo a pagar: {formatMonto(i.montoTotal - i.montoPagado)}</p>
+                                    <p className='negro'>Monto pagado: {formatMonto(i.montoPagado)}</p>
                                     <hr className='negro' />
 
                                     <h5 className='negro'>Otros pagos</h5>

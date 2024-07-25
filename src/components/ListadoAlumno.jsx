@@ -68,7 +68,7 @@ export const ListadoAlumno = () => {
         if (inscActiva) {
             cursoActivo = listaCursos.find(c => c.id == inscActiva.cursoId)
         }
-        return cursoActivo ? `${cursoActivo.anio} - ${cursoActivo.grado} - ${cursoActivo.tipoCurso}` : 'Sin inscripción'
+        return cursoActivo ? `${cursoActivo.anio} - ${cursoActivo.grado} - ${cursoActivo.tipoCurso}` : <span className="text-danger fw-bold">Sin inscripción</span>
     }
 
     const handleEditar = (id) => {
