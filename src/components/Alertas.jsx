@@ -33,15 +33,15 @@ export const Alertas = ({ error = '', exito = '', warning = '' }) => {
     return (
         <>
             <div style={{
-                position: 'fixed', // o 'absolute' si prefieres
-                top: 50, // Cambia según necesites (e.g., `top: 50%`)
+                position: 'fixed',
+                top: 50,
                 left: 0,
                 width: '100%',
-                zIndex: 1050, // Asegúrate de que sea más alto que el resto de tu contenido
+                zIndex: 1050,
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'center', // Centra las alertas horizontalmente
-                pointerEvents: 'none', // Permite clics a través del contenedor cuando no hay alertas
+                alignItems: 'center',
+                pointerEvents: 'none',
             }}>
                 <Fade in={showError}>
                     <div>

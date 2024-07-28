@@ -50,7 +50,7 @@ export const MenuMaestro = () => {
                             Cursos
                         </Accordion.Header>
                         <Accordion.Body className='bg-negro'>
-                            <Nav.Link href="/cursos/listado" eventKey="link-1" className='nav-link-custom'>Listado cursos</Nav.Link>
+                            <Nav.Link href="/cursos/listado" eventKey="link-1" className='nav-link-custom'>Mis cursos</Nav.Link>
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>

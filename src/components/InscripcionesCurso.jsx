@@ -17,6 +17,9 @@ export const InscripcionesCurso = () => {
     const listaCursos = useSelector(store => store.listaCursos)
     const listaAlumnos = useSelector(store => store.listaAlumnos)
     const listaInscripciones = useSelector(store => store.listaInscripciones)
+    // const listaBoletines = useSelector(store => store.listaBoletines)
+
+    const tipoUsuario = sessionStorage.getItem("tipoUsuario")
 
     const navigate = useNavigate()
 
@@ -54,38 +57,65 @@ export const InscripcionesCurso = () => {
                     :
                     <></>
                 }
-
                 {listaInscCurso ?
-                    <>
-                        <Table >
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Doble Horario</th>
-                                    <th>Piscina</th>
-                                    <th>Monto cuota</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {listaInscCurso.slice().sort((a, b) => obtenerNombreAlumno(a.alumnoId).localeCompare(obtenerNombreAlumno(b.alumnoId))).map(i =>
-                                    <tr key={i.id}>
-                                        <td>
-                                            <a href={`/alumnos/detalles/${i.alumnoId}`}>{obtenerNombreAlumno(i.alumnoId)}</a>
-                                        </td>
-                                        <td>{i.dobleHorario ? '✅' : '❌'}</td>
-                                        <td>{i.piscina ? '✅' : '❌'}</td>
-                                        <td>{formatMonto(i.montoCuota)}</td>
+                    tipoUsuario === "Administrador" || tipoUsuario === "Coordinador" ?
+                        <>
+                            <Table >
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Doble Horario</th>
+                                        <th>Piscina</th>
+                                        <th>Monto cuota</th>
                                     </tr>
-                                )}
-                            </tbody>
+                                </thead>
 
-                        </Table>
-                    </>
+                                <tbody>
+                                    {listaInscCurso.slice().sort((a, b) => obtenerNombreAlumno(a.alumnoId).localeCompare(obtenerNombreAlumno(b.alumnoId))).map(i =>
+                                        <tr key={i.id}>
+                                            <td>
+                                                <a href={`/alumnos/detalles/${i.alumnoId}`}>{obtenerNombreAlumno(i.alumnoId)}</a>
+                                            </td>
+                                            <td>{i.dobleHorario ? '✅' : '❌'}</td>
+                                            <td>{i.piscina ? '✅' : '❌'}</td>
+                                            <td>{formatMonto(i.montoCuota)}</td>
+                                        </tr>
+                                    )}
+                                </tbody>
+
+                            </Table>
+                        </>
+                        :
+                        <>
+                            <Table >
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Primer boletín</th>
+                                        <th>Segundo boletín</th>
+                                        <th>Tercer boletín</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {listaInscCurso.slice().sort((a, b) => obtenerNombreAlumno(a.alumnoId).localeCompare(obtenerNombreAlumno(b.alumnoId))).map(i =>
+                                        <tr key={i.id}>
+                                            <td>
+                                                <a href={`/alumnos/detalles/${i.alumnoId}`}>{obtenerNombreAlumno(i.alumnoId)}</a>
+                                            </td>
+                                            <td><a href={`/boletines/editar/${i.id}/${i.boletin1Id}`}>Editar boletín</a></td>
+                                            <td><a href={`/boletines/editar/${i.id}/${i.boletin2Id}`}>Editar boletín</a></td>
+                                            <td><a href={`/boletines/editar/${i.id}/${i.boletin3Id}`}>Editar boletín</a></td>
+                                        </tr>
+                                    )}
+                                </tbody>
+
+                            </Table>
+                        </>
                     :
                     <p>Curso sin inscripciones</p>
-
                 }
+
             </Container>
         </>
     )

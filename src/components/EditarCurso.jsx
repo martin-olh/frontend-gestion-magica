@@ -42,7 +42,6 @@ export const EditarCurso = () => {
 
     const handleChange = (e) => {
         setCurso({ ...curso, [e.target.name]: e.target.value })
-        console.log('Curso', curso)
         setAlerta('')
         setExito('')
     }

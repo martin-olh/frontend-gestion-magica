@@ -35,6 +35,9 @@ export const AgregarInscripcion = () => {
         observaciones: "",
         piscina: false,
         alumnoId: idAlumno,
+        boletin1Id: 0,
+        boletin2Id: 0,
+        boletin3Id: 0,
         activa: true
     }
 
