@@ -201,7 +201,7 @@ export const EditarAlumno = () => {
             setAlerta('')
             setTimeout(() => {
                 navigate(`/alumnos/detalles/${id}`)
-            }, 1000)
+            }, 2000)
         } catch (error) {
             setAlerta(error.message)
             setExito('')

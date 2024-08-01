@@ -710,8 +710,9 @@ export const actualizarBoletinService = (id, b, token) => {
         "espDesarrolloPersonal": b.espDesarrolloPersonal,
         "espIngles": b.espIngles,
         "valoracionFinal": b.valoracionFinal,
-        "ediitado": b.editado,
-        "finalizado": b.finalizado
+        "editado": b.editado,
+        "finalizado": b.finalizado,
+        "inscripcionId": b.inscripcionId
     })
 
     let requestOptions = {
@@ -734,4 +735,32 @@ export const actualizarBoletinService = (id, b, token) => {
             throw new Error(error ? error : "Hubo un error")
         }
         )
+}
+
+export const obtenerBoletinesPendientesService = (token) => {
+
+    let myHeaders = new Headers()
+    myHeaders.append("Content-Type", "application/json")
+    myHeaders.append("Authorization", `Bearer ${token}`)
+
+    let requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+    }
+
+    return fetch(`${urlBase}/boletines/pendientes/`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
+                })
+            }
+            return response.json()
+        })
+        .then(result => result)
+        .catch((error) => {
+            throw new Error(error ? error : "Hubo un error")
+        }
+        )
+
 }

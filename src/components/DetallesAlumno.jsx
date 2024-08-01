@@ -9,6 +9,8 @@ export const DetallesAlumno = () => {
 
     const { id } = useParams()
 
+    const tipoUsuario = sessionStorage.getItem('tipoUsuario')
+
     const listaAlumnos = useSelector(store => store.listaAlumnos)
     const [alumno, setAlumno] = useState(null)
 
@@ -34,25 +36,29 @@ export const DetallesAlumno = () => {
                 (<Container className="container-fluid">
 
                     <Card>
-                        <Card.Header>
-                            <Row className="d-flex justify-content-between text-center">
-                                <Col>
-                                    <Card.Link href={`/alumnos/editar/${id}`}>Editar información</Card.Link>
-                                </Col>
+                        {tipoUsuario !== 'Maestro' ?
+                            <Card.Header>
+                                <Row className="d-flex justify-content-between text-center">
+                                    <Col>
+                                        <Card.Link href={`/alumnos/editar/${id}`}>Editar información</Card.Link>
+                                    </Col>
 
-                                <Col><span>|</span></Col>
+                                    <Col><span>|</span></Col>
 
-                                <Col>
-                                    <Card.Link href={`/pagos/agregar/${id}`}>Registrar Pago</Card.Link>
-                                </Col>
+                                    <Col>
+                                        <Card.Link href={`/pagos/agregar/${id}`}>Registrar Pago</Card.Link>
+                                    </Col>
 
-                                <Col><span>|</span></Col>
+                                    <Col><span>|</span></Col>
 
-                                <Col>
-                                    <Card.Link href={`/alumnos/estado-cuenta/${id}`}>Estado de cuenta</Card.Link>
-                                </Col>
-                            </Row>
-                        </Card.Header>
+                                    <Col>
+                                        <Card.Link href={`/alumnos/estado-cuenta/${id}`}>Estado de cuenta</Card.Link>
+                                    </Col>
+                                </Row>
+                            </Card.Header>
+                            :
+                            <></>
+                        }
                         <Card.Body>
 
                             <Card.Title>Información del alumno</Card.Title>

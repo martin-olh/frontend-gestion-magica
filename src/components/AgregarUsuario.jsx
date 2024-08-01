@@ -5,10 +5,12 @@ import { agregarUsuario } from '../redux/features/usuariosSlice'
 import { agregarUsuarioService } from '../services/services'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { Alertas } from './Alertas'
+import { useNavigate } from 'react-router-dom'
 
 export const AgregarUsuario = () => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const [alerta, setAlerta] = useState('')
     const [exito, setExito] = useState('')
@@ -43,6 +45,9 @@ export const AgregarUsuario = () => {
             setUsuario(usuarioVacio)
             setExito("Usuario creado con éxito")
             setAlerta('')
+            setTimeout(() => {
+                navigate(`/usuarios/listado/`)
+            }, 2000)
 
 
         } catch (error) {

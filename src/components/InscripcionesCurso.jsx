@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Table } from 'react-bootstrap'
 import { Alertas } from './Alertas'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 export const InscripcionesCurso = () => {
@@ -20,9 +20,6 @@ export const InscripcionesCurso = () => {
     // const listaBoletines = useSelector(store => store.listaBoletines)
 
     const tipoUsuario = sessionStorage.getItem("tipoUsuario")
-
-    const navigate = useNavigate()
-
 
     useEffect(() => {
         const cursoFind = listaCursos.find(c => c.id == id)

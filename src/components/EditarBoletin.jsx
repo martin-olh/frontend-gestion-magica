@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { actualizarBoletinService, obtenerBoletinService } from '../services/services'
 import { Form, Col, Container, Row, Button } from 'react-bootstrap'
 import { Alertas } from './Alertas'
@@ -11,6 +11,8 @@ export const EditarBoletin = () => {
     const token = sessionStorage.getItem("token")
 
     const tipoUsuario = sessionStorage.getItem("tipoUsuario")
+
+    const navigate = useNavigate()
 
     const [alerta, setAlerta] = useState('')
     const [exito, setExito] = useState('')
@@ -64,6 +66,18 @@ export const EditarBoletin = () => {
             await actualizarBoletinService(idBoletin, updatedBol, token)
             setExito("Boletin actualizado exitosamente")
             setAlerta('')
+            if (tipoUsuario == 'Maestro') {
+                setTimeout(() => {
+                    const inscRedirect = listaInscripciones.find(i => i.id == idInscripcion)
+                    navigate(`/cursos/inscripciones/${inscRedirect.cursoId}`)
+                }, 2000)
+
+            } else {
+                setTimeout(() => {
+                    navigate(`/boletines/aprobar/`)
+                }, 2000)
+
+            }
         } catch (error) {
             setAlerta(error.message)
             setExito('')
@@ -75,7 +89,7 @@ export const EditarBoletin = () => {
         <>
             {boletin ?
                 <Container className='container-fluid'>
-                    <Row>
+                    <Row className='mb-3'>
                         <h2>Editar boletín</h2>
                     </Row>
                     <Row>
