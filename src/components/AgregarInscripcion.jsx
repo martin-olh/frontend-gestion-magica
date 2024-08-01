@@ -30,15 +30,20 @@ export const AgregarInscripcion = () => {
         id: 0,
         fecha: "",
         cursoId: 0,
+        montoCuota: 0,
         dobleHorario: false,
+        observaciones: "",
         piscina: false,
-        montoTotal: 0,
         alumnoId: idAlumno,
+        boletin1Id: 0,
+        boletin2Id: 0,
+        boletin3Id: 0,
         activa: true
     }
 
     const [inscripcion, setInscripcion] = useState(inscVacia)
     const [cursoActivo, setCursoActivo] = useState()
+    const [cursoSeleccionado, setCursoSeleccionado] = useState()
 
     useEffect(() => {
         const alumnoFind = listaAlumnos.find(a => a.id == idAlumno)
@@ -68,13 +73,28 @@ export const AgregarInscripcion = () => {
         setInscripcion({ ...inscripcion, [name]: inputValue })
         setAlerta('')
         setExito('')
+        if (name == "cursoId") {
+            seleccionarCurso(value)
+        }
+    }
+
+    const seleccionarCurso = (cursoId) => {
+        const cursoSelecc = listaCursos.find(c => c.id == cursoId)
+        if (cursoSelecc) {
+            setCursoSeleccionado(cursoSelecc)
+        }
     }
 
     const onSubmit = async (event) => {
         event.preventDefault()
         try {
             validarDatosAlumno()
-            const resultado = await agregarInscripcionService(sessionStorage.getItem('token'), inscripcion)
+            let updatedInsc = ({ ...inscripcion }) // Se crea para desactivar dobleHorario para inicial
+            if (cursoSeleccionado.tipoCurso == "Inicial") {
+                updatedInsc.dobleHorario = false
+                setInscripcion(updatedInsc)
+            }
+            const resultado = await agregarInscripcionService(sessionStorage.getItem('token'), updatedInsc)
             inscripcion.id = resultado.id //guardo id de la inscripcion creada, devuelta por la API
             const nuevaUltimaInsc = { ...ultimaInsc, activa: false }
             setUltimaInsc(nuevaUltimaInsc)
@@ -95,9 +115,13 @@ export const AgregarInscripcion = () => {
         if (inscripcion.cursoId == 0) {
             throw new Error("Debe seleccionar un curso")
         }
-        if (inscripcion.montoTotal <= 0) {
-            throw new Error("Ingresar el costo del curso")
+        if (inscripcion.montoCuota <= 0) {
+            throw new Error("Monto de cuota inválido")
         }
+    }
+
+    const formatMonto = (monto) => {
+        return new Intl.NumberFormat('es-UY', { style: 'currency', currency: 'UYU' }).format(monto);
     }
 
     return (
@@ -114,11 +138,12 @@ export const AgregarInscripcion = () => {
             </Row>
 
             {cursoActivo ?
+
                 <Row>
                     <p>Curso inscripto actual:<strong> {`${cursoActivo.anio} - ${cursoActivo.grado} - ${cursoActivo.tipoCurso}`}</strong></p>
                 </Row>
                 :
-                <p>Curso inscripto actual: N/A</p>
+                <p>Curso inscripto actual: <strong>No inscripto</strong></p>
             }
 
             <Row>
@@ -133,16 +158,21 @@ export const AgregarInscripcion = () => {
                                 }
                             </Form.Select>
                         </Form.Group >
-                        <Form.Group className="mb-3" controlId="dobleHorario">
-                            <Form.Check onChange={handleChange} type="switch" checked={inscripcion.dobleHorario} name="dobleHorario" label="¿Doble horario?" />
-                        </Form.Group >
-
+                        {cursoSeleccionado && cursoSeleccionado.tipoCurso == "Primaria" &&
+                            <Form.Group className="mb-3" controlId="dobleHorario">
+                                <Form.Check onChange={handleChange} type="switch" checked={inscripcion.dobleHorario} name="dobleHorario" label="¿Doble horario?" />
+                            </Form.Group >
+                        }
                         <Form.Group className="mb-3" controlId="piscina">
                             <Form.Check onChange={handleChange} type="switch" checked={inscripcion.piscina} name="piscina" label="¿Asiste a piscina?" />
                         </Form.Group >
-                        <Form.Group className="mb-3" controlId="montoTotal">
-                            <Form.Label>* Costo del curso</Form.Label>
-                            <Form.Control onChange={handleChange} type="number" placeholder="Ingresar monto" value={inscripcion.montoTotal} name="montoTotal" />
+                        <Form.Group className="mb-3" controlId="observaciones">
+                            <Form.Label>Observaciones</Form.Label>
+                            <Form.Control onChange={handleChange} type="text" placeholder="Ej.: 5 horas por día (Inscripción en curso Inicial)" value={inscripcion.observaciones} name="observaciones" />
+                        </Form.Group >
+                        <Form.Group className="mb-4" controlId="montoCuota">
+                            <Form.Label>* Monto cuota</Form.Label>
+                            <Form.Control onChange={handleChange} type="number" placeholder="Ingrese monto de la cuota" value={inscripcion.montoCuota} name="montoCuota" />
                         </Form.Group >
 
                         <Button variant="primary" type="submit">

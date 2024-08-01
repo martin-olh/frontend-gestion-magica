@@ -121,7 +121,7 @@ export const AgregarPago = () => {
             <p>Curso inscripto actual:<strong> {`${curso.anio} - ${curso.grado} - ${curso.tipoCurso}`}</strong></p>
           </Row>
           <Row>
-            <p>Saldo a pagar: <strong>{formatMonto(insc.montoTotal - insc.montoPagado)}</strong></p>
+            <p>Costo de la cuota: <strong>{formatMonto(insc.montoCuota)}</strong></p>
           </Row>
         </>
         :

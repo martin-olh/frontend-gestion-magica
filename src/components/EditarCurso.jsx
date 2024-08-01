@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Row, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Alertas } from './Alertas'
 import { actualizarCursoService } from '../services/services'
 import { actualizarCurso } from '../redux/features/cursosSlice'
@@ -14,6 +14,7 @@ export const EditarCurso = () => {
     const listaUsuarios = useSelector(store => store.listaUsuarios)
     const listaMaestros = listaUsuarios.filter(u => u.tipoUsuario === 'Maestro')
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const [alerta, setAlerta] = useState('')
     const [exito, setExito] = useState('')
@@ -42,7 +43,6 @@ export const EditarCurso = () => {
 
     const handleChange = (e) => {
         setCurso({ ...curso, [e.target.name]: e.target.value })
-        console.log('Curso', curso)
         setAlerta('')
         setExito('')
     }
@@ -75,6 +75,9 @@ export const EditarCurso = () => {
             dispatch(actualizarCurso(curso))
             setExito("Curso actualizado exitosamente")
             setAlerta('')
+            setTimeout(() => {
+                navigate(`/cursos/listado`)
+            }, 2000)
         } catch (error) {
             setAlerta(error.message)
             setExito('')

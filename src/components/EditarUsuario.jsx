@@ -46,19 +46,7 @@ export const EditarUsuario = () => {
     const onSubmit = async (event) => {
         event.preventDefault()
         try {
-            if (usuario.email == "") {
-                throw new Error("El email no puede estar vacío")
-            }
-            if (usuario.nombre == "") {
-                throw new Error("El nombre no puede estar vacío")
-            }
-            if (usuario.apellido == "") {
-                throw new Error("El apellido no puede estar vacío")
-            }
-            if (usuario.tipoUsuario == "") {
-                throw new Error("El tipo de usuario no puede estar vacío")
-            }
-
+            validarDatosUsuario()
             await actualizarUsuarioService(id, usuario, sessionStorage.getItem('token'))
             dispatch(actualizarUsuario(usuario))
             setExito("Usuario actualizado con éxito")
@@ -68,6 +56,22 @@ export const EditarUsuario = () => {
             setAlerta(error.message)
             setExito('')
         }
+    }
+
+    const validarDatosUsuario = () => {
+        if (usuario.email == "") {
+            throw new Error("El email no puede estar vacío")
+        }
+        if (usuario.nombre == "") {
+            throw new Error("El nombre no puede estar vacío")
+        }
+        if (usuario.apellido == "") {
+            throw new Error("El apellido no puede estar vacío")
+        }
+        if (usuario.tipoUsuario == "") {
+            throw new Error("El tipo de usuario no puede estar vacío")
+        }
+
     }
 
     return (

@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom'
 import imgUsuarios from '/src/assets/usuarios.svg'
 import imgAlumnos from '/src/assets/alumnos.svg'
 import imgCursos from '/src/assets/cursos.svg'
+import imgBoletines from '/src/assets/boletines.svg'
 
 export const MenuAdmin = () => {
 
@@ -67,6 +68,15 @@ export const MenuAdmin = () => {
                         <Accordion.Body className='bg-negro'>
                             <Nav.Link href="/cursos/agregar" eventKey="link-1" className='nav-link-custom'>Crear curso</Nav.Link>
                             <Nav.Link href="/cursos/listado" eventKey="link-2" className='nav-link-custom'>Listado cursos</Nav.Link>
+                        </Accordion.Body>
+                    </Accordion.Item>
+                    <Accordion.Item eventKey="3" >
+                        <Accordion.Header className='accHeader'>
+                            <img className='m-1' src={imgBoletines} alt="Boletines" />
+                            Boletines
+                        </Accordion.Header>
+                        <Accordion.Body className='bg-negro'>
+                            <Nav.Link href="/boletines/aprobar" eventKey="link-1" className='nav-link-custom'>Aprobar boletines</Nav.Link>
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>

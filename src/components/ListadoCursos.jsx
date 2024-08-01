@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Alertas } from './Alertas'
@@ -16,10 +16,46 @@ export const ListadoCursos = () => {
 
     const [alerta, setAlerta] = useState()
     const [warning, setWarning] = useState()
+    const [listaCursosMostrar, setListaCursosMostrar] = useState([])
 
     const listaCursos = useSelector(store => store.listaCursos)
     const listaUsuarios = useSelector(store => store.listaUsuarios)
     const listaMaestros = listaUsuarios.filter(u => u.tipoUsuario === 'Maestro')
+
+    const tipoUsuario = sessionStorage.getItem("tipoUsuario")
+    const idUsuario = sessionStorage.getItem("id")
+
+    useEffect(() => {
+        if (tipoUsuario == "Maestro") {
+            const cursos = cursosMaestro(idUsuario)
+            setListaCursosMostrar(cursos)
+        } else {
+            setListaCursosMostrar(listaCursos)
+        }
+    }, [listaCursos])
+
+    const cursosMaestro = (idMaestro) => {
+        const listaFiltrada = listaCursos.filter(c => esMaestroEnCurso(idMaestro, c.id))
+        return listaFiltrada
+    }
+
+    const esMaestroEnCurso = (idMaestro, idCurso) => {
+
+        const curso = listaCursos.find(c => c.id === idCurso);
+
+        const maestroPrincipal = curso.maestroPrincipalId.toString()
+        const maestroSecundario = curso.maestroSecundarioId.toString()
+        const maestroIngles = curso.maestroInglesId.toString()
+        const maestroEdFisica = curso.maestroEdFisicaId.toString()
+
+        const resultado = maestroPrincipal === idMaestro ||
+            maestroSecundario === idMaestro ||
+            maestroIngles === idMaestro ||
+            maestroEdFisica === idMaestro
+
+        return resultado;
+    }
+
 
     const handleEliminar = async (id) => {
         const token = sessionStorage.getItem('token')
@@ -65,7 +101,7 @@ export const ListadoCursos = () => {
                     </thead>
 
                     <tbody>
-                        {listaCursos.slice().sort((a, b) => b.anio - a.anio).map(c =>
+                        {listaCursosMostrar.slice().sort((a, b) => b.anio - a.anio).map(c =>
                             <tr key={c.id}>
                                 <td>{c.tipoCurso}</td>
                                 <td>{c.grado}</td>
@@ -74,7 +110,7 @@ export const ListadoCursos = () => {
                                 <td>{obtenerNombreMaestro(c.maestroSecundarioId)}</td>
                                 <td>{obtenerNombreMaestro(c.maestroInglesId)}</td>
                                 <td>{obtenerNombreMaestro(c.maestroEdFisicaId)}</td>
-                                <td><a href={`/cursos/inscripciones/${c.id}`}>Ver inscripciones</a></td>
+                                <td><a href={`/cursos/inscripciones/${c.id}`}>Ver alumnos</a></td>
                                 <td>
                                     <Button className='btn-edit' title="Editar" onClick={() => handleEditar(c.id)}> <img src={imgEdit} alt="Editar" /> </Button>
                                     <Button className='btn-delete' title="Eliminar" onClick={() => handleEliminar(c.id)}><img src={imgDelete} alt="Eliminar" /></Button>

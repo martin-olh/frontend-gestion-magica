@@ -60,8 +60,8 @@ export const EstadoDeCuentaAlumno = () => {
                 <Row>
                     <h2 className='mb-3'>Estado de cuenta</h2>
                 </Row>
-                <Row className='mb-3'>
-                    <a href={`../../alumnos/detalles/${id}`}>{`${alumno.nombre} ${alumno.apellido} `}</a>
+                <Row >
+                    <p><a href={`../../alumnos/detalles/${id}`}>{`${alumno.nombre} ${alumno.apellido} `}</a></p>
                 </Row>
                 <Row>
                     <Alertas error={alerta} exito={exito}></Alertas>
@@ -96,7 +96,7 @@ export const EstadoDeCuentaAlumno = () => {
                                         </tbody>
                                     </Table>
 
-                                    <p className='negro'>Saldo a pagar: {formatMonto(i.montoTotal - i.montoPagado)}</p>
+                                    <p className='negro'>Monto pagado: {formatMonto(i.montoPagado)}</p>
                                     <hr className='negro' />
 
                                     <h5 className='negro'>Otros pagos</h5>

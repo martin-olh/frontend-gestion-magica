@@ -1,4 +1,4 @@
-const urlBase = 'https://colegiocirculomagicoapi.azurewebsites.net/api'
+const urlBase = 'https://localhost:7250/api'
 
 // https://colegiocirculomagicoapi.azurewebsites.net/api
 // https://localhost:7250/api
@@ -158,7 +158,6 @@ export const actualizarUsuarioService = (id, usuario, token) => {
 
     return fetch(`${urlBase}/usuarios/${id}`, requestOptions)
         .then(response => {
-            console.log(response)
             if (!response.ok) {
                 return response.json().then(error => {
                     throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
@@ -427,6 +426,7 @@ export const agregarCursoService = (token, c) => {
         "id": c.id,
         "grado": c.grado,
         "anio": c.anio,
+        "montoCuota": c.montoCuota,
         "maestroPrincipalId": c.maestroPrincipalId,
         "maestroSecundarioId": c.maestroSecundarioId,
         "maestroInglesId": c.maestroInglesId,
@@ -467,6 +467,7 @@ export const actualizarCursoService = (id, c, token) => {
         "id": c.id,
         "grado": c.grado,
         "anio": c.anio,
+        "montoCuota": c.montoCuota,
         "maestroPrincipalId": c.maestroPrincipalId,
         "maestroSecundarioId": c.maestroSecundarioId,
         "maestroInglesId": c.maestroInglesId,
@@ -474,8 +475,6 @@ export const actualizarCursoService = (id, c, token) => {
         "inscripcionesId": c.inscripcionesId,
         "tipoCurso": c.tipoCurso
     })
-
-    console.log(raw)
 
     let requestOptions = {
         method: 'PUT',
@@ -564,11 +563,14 @@ export const agregarInscripcionService = (token, i) => {
         "id": i.id,
         "fecha": new Date().toISOString(),
         "cursoId": i.cursoId,
+        "montoCuota": i.montoCuota,
         "dobleHorario": i.dobleHorario,
+        "observaciones": i.observaciones,
         "piscina": i.piscina,
-        "montoTotal": i.montoTotal,
-        "montoPagado": i.montoPagado,
         "alumnoId": i.alumnoId,
+        "boletin1Id": i.boletin1Id,
+        "boletin2Id": i.boletin2Id,
+        "boletin3Id": i.boletin3Id,
         "activa": i.activa
     })
 
@@ -659,4 +661,106 @@ export const agregarPagoService = (token, p) => {
             throw new Error(error ? error : "Hubo un error")
         }
         )
+}
+
+//BOLETINES
+//--
+
+export const obtenerBoletinService = (token, id) => {
+
+    let myHeaders = new Headers()
+    myHeaders.append("Content-Type", "application/json")
+    myHeaders.append("Authorization", `Bearer ${token}`)
+
+    let requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+    }
+
+    return fetch(`${urlBase}/boletines/${id}`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
+                })
+            }
+            return response.json()
+        })
+        .then(result => result)
+        .catch((error) => {
+            throw new Error(error ? error : "Hubo un error")
+        }
+        )
+
+}
+
+export const actualizarBoletinService = (id, b, token) => {
+
+    let myHeaders = new Headers()
+    myHeaders.append("Content-Type", "application/json")
+    myHeaders.append("Authorization", `Bearer ${token}`)
+
+    let raw = JSON.stringify({
+        "id": b.id,
+        "trimestre": b.trimestre,
+        "fecha": new Date().toISOString(),
+        "espCientificoMatematico": b.espCientificoMatematico,
+        "espComunicacion": b.espComunicacion,
+        "espCienciasSociales": b.espCienciasSociales,
+        "espDesarrolloPersonal": b.espDesarrolloPersonal,
+        "espIngles": b.espIngles,
+        "valoracionFinal": b.valoracionFinal,
+        "editado": b.editado,
+        "finalizado": b.finalizado,
+        "inscripcionId": b.inscripcionId
+    })
+
+    let requestOptions = {
+        method: 'PUT',
+        headers: myHeaders,
+        body: raw
+    }
+
+    return fetch(`${urlBase}/boletines/${id}`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
+                })
+            }
+            return response.json()
+        })
+        .then(result => result)
+        .catch((error) => {
+            throw new Error(error ? error : "Hubo un error")
+        }
+        )
+}
+
+export const obtenerBoletinesPendientesService = (token) => {
+
+    let myHeaders = new Headers()
+    myHeaders.append("Content-Type", "application/json")
+    myHeaders.append("Authorization", `Bearer ${token}`)
+
+    let requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+    }
+
+    return fetch(`${urlBase}/boletines/pendientes/`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
+                })
+            }
+            return response.json()
+        })
+        .then(result => result)
+        .catch((error) => {
+            throw new Error(error ? error : "Hubo un error")
+        }
+        )
+
 }
