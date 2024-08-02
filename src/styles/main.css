@@ -5,6 +5,7 @@
     --naranja-dark: #c65c00;
     --naranja-disabled: #ef7b1658;
     --negro: #1B2432;
+    --negro-suave: #363d46;
     --blanco: #E6E8E6;
     --blanco-highlight: hwb(216 73% 10%);
     --primary: #ef7c16
@@ -37,6 +38,10 @@
 
 .bg-negro {
     background-color: var(--negro)
+}
+
+.bg-negro-suave {
+    background-color: var(--negro-suave)
 }
 
 .bg-blanco {
