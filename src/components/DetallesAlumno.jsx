@@ -37,19 +37,25 @@ export const DetallesAlumno = () => {
 
                     <Card>
                         {tipoUsuario !== 'Maestro' ?
-                            <Card.Header>
+                            <Card.Header className="bg-negro-suave">
                                 <Row className="d-flex justify-content-between text-center">
                                     <Col>
                                         <Card.Link href={`/alumnos/editar/${id}`}>Editar información</Card.Link>
                                     </Col>
 
-                                    <Col><span>|</span></Col>
+                                    <Col className="blanco"><span>|</span></Col>
+
+                                    <Col>
+                                        <Card.Link href={`/alumnos/boletines/${id}`}>Ver boletines</Card.Link>
+                                    </Col>
+
+                                    <Col className="blanco"><span>|</span></Col>
 
                                     <Col>
                                         <Card.Link href={`/pagos/agregar/${id}`}>Registrar Pago</Card.Link>
                                     </Col>
 
-                                    <Col><span>|</span></Col>
+                                    <Col className="blanco"><span>|</span></Col>
 
                                     <Col>
                                         <Card.Link href={`/alumnos/estado-cuenta/${id}`}>Estado de cuenta</Card.Link>
@@ -57,7 +63,13 @@ export const DetallesAlumno = () => {
                                 </Row>
                             </Card.Header>
                             :
-                            <></>
+                            <Card.Header>
+                                <Row className="d-flex justify-content-between text-center">
+                                    <Col>
+                                        <Card.Link href={`/alumnos/boletines/${id}`}>Ver boletines</Card.Link>
+                                    </Col>
+                                </Row>
+                            </Card.Header>
                         }
                         <Card.Body>
 

@@ -48,7 +48,7 @@ export const AprobarBoletines = () => {
             curso = cursoFind
         }
 
-        return `${curso.grado} (${curso.anio}) - ${curso.tipoCurso}`
+        return curso ? `${curso.grado} (${curso.anio}) - ${curso.tipoCurso}` : ``
     }
 
     const obtenerNombreAlumno = (idInsc) => {
