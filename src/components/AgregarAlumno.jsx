@@ -88,8 +88,17 @@ export const AgregarAlumno = () => {
         const { name, type, checked, value } = e.target;
         const inputValue = type === 'checkbox' ? checked : value;
 
-        setInfoDetalleAux({ ...infoDetalleAux, [name]: inputValue });
-        setAlumno({ ...alumno, infoDetalle: infoDetalleAux });
+        setInfoDetalleAux(prevState => ({
+            ...prevState,
+            [name]: inputValue
+        }))
+        setAlumno(prevState => ({
+            ...prevState,
+            infoDetalle: {
+                ...prevState.infoDetalle,
+                [name]: inputValue
+            }
+        }))
 
         setAlerta('');
         setExito('');
