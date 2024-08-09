@@ -4,6 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { actualizarBoletinService, obtenerBoletinService } from '../services/services'
 import { Form, Col, Container, Row, Button } from 'react-bootstrap'
 import { Alertas } from './Alertas'
+import BoletinPDF from './BoletinPDF'
+import { pdf } from '@react-pdf/renderer'
 
 export const EditarBoletin = () => {
 
@@ -58,6 +60,17 @@ export const EditarBoletin = () => {
         setExito('')
     }
 
+    const handleOpenPDF = async (boletinId) => {
+        try {
+            const boletinData = await obtenerBoletinService(token, boletinId);
+            const blob = await pdf(<BoletinPDF boletin={boletinData} />).toBlob();
+            const url = URL.createObjectURL(blob);
+            window.open(url, '_blank');
+        } catch (error) {
+            setAlerta(error.message);
+        }
+    };
+
     const onSubmit = async (event) => {
         event.preventDefault()
         try {
@@ -65,6 +78,9 @@ export const EditarBoletin = () => {
             setBoletin(updatedBol)
             await actualizarBoletinService(idBoletin, updatedBol, token)
             setExito("Boletin actualizado exitosamente")
+            if (boletin.finalizado) {
+                handleOpenPDF(idBoletin) //Exporta PDF antes de redirigir
+            }
             setAlerta('')
             if (tipoUsuario == 'Maestro') {
                 setTimeout(() => {
@@ -108,33 +124,33 @@ export const EditarBoletin = () => {
                             <Form onSubmit={onSubmit}>
                                 <Form.Group className="mb-3" controlId="espCientificoMatematico">
                                     <Form.Label>Ciencia y matemática</Form.Label>
-                                    <Form.Control onChange={handleChange} disabled={boletin.finalizado} as="textarea" placeholder="Ingresar juicio" value={boletin.espCientificoMatematico ?? ""} name="espCientificoMatematico" />
+                                    <Form.Control className='text-area-boletin' onChange={handleChange} disabled={boletin.finalizado} as="textarea" placeholder="Ingresar juicio" value={boletin.espCientificoMatematico ?? ""} name="espCientificoMatematico" />
                                 </Form.Group >
                                 <Form.Group className="mb-3" controlId="espComunicacion">
                                     <Form.Label>Comunicación</Form.Label>
-                                    <Form.Control onChange={handleChange} disabled={boletin.finalizado} as="textarea" placeholder="Ingresar juicio" value={boletin.espComunicacion ?? ""} name="espComunicacion" />
+                                    <Form.Control className='text-area-boletin' onChange={handleChange} disabled={boletin.finalizado} as="textarea" placeholder="Ingresar juicio" value={boletin.espComunicacion ?? ""} name="espComunicacion" />
                                 </Form.Group >
                                 <Form.Group className="mb-3" controlId="espCienciasSociales">
                                     <Form.Label>Ciencias sociales</Form.Label>
-                                    <Form.Control onChange={handleChange} disabled={boletin.finalizado} as="textarea" placeholder="Ingresar juicio" value={boletin.espCienciasSociales ?? ""} name="espCienciasSociales" />
+                                    <Form.Control className='text-area-boletin' onChange={handleChange} disabled={boletin.finalizado} as="textarea" placeholder="Ingresar juicio" value={boletin.espCienciasSociales ?? ""} name="espCienciasSociales" />
                                 </Form.Group >
                                 <Form.Group className="mb-3" controlId="espDesarrolloPersonal">
                                     <Form.Label>Desarrollo personal</Form.Label>
-                                    <Form.Control onChange={handleChange} disabled={boletin.finalizado} as="textarea" placeholder="Ingresar juicio" value={boletin.espDesarrolloPersonal ?? ""} name="espDesarrolloPersonal" />
+                                    <Form.Control className='text-area-boletin' onChange={handleChange} disabled={boletin.finalizado} as="textarea" placeholder="Ingresar juicio" value={boletin.espDesarrolloPersonal ?? ""} name="espDesarrolloPersonal" />
                                 </Form.Group >
                                 <Form.Group className="mb-3" controlId="espIngles">
                                     <Form.Label>Inglés</Form.Label>
-                                    <Form.Control onChange={handleChange} disabled={boletin.finalizado} as="textarea" placeholder="Ingresar juicio" value={boletin.espIngles ?? ""} name="espIngles" />
+                                    <Form.Control className='text-area-boletin' onChange={handleChange} disabled={boletin.finalizado} as="textarea" placeholder="Ingresar juicio" value={boletin.espIngles ?? ""} name="espIngles" />
                                 </Form.Group >
                                 {boletin.trimestre == 3 &&
                                     <Form.Group className="mb-3" controlId="valoracionFinal">
                                         <Form.Label>Valoración final</Form.Label>
-                                        <Form.Control onChange={handleChange} disabled={boletin.finalizado} as="textarea" placeholder="Ingresar juicio" value={boletin.valoracionFinal ?? ""} name="valoracionFinal" />
+                                        <Form.Control className='text-area-boletin' onChange={handleChange} disabled={boletin.finalizado} as="textarea" placeholder="Ingresar juicio" value={boletin.valoracionFinal ?? ""} name="valoracionFinal" />
                                     </Form.Group >
                                 }
                                 {tipoUsuario != "Maestro" &&
                                     <Form.Group className="mb-3" controlId="finalizado">
-                                        <Form.Check onChange={handleChange} type="switch" checked={boletin.finalizado} name="finalizado" label="Aprobar boletín" />
+                                        <Form.Check className='text-area-boletin' onChange={handleChange} type="switch" checked={boletin.finalizado} name="finalizado" label="Aprobar boletín" />
                                     </Form.Group >
                                 }
                                 <Button variant="primary" type="submit">

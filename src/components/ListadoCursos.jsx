@@ -32,7 +32,7 @@ export const ListadoCursos = () => {
         } else {
             setListaCursosMostrar(listaCursos)
         }
-    }, [listaCursos])
+    }, [listaCursos, listaUsuarios, listaMaestros])
 
     const cursosMaestro = (idMaestro) => {
         const listaFiltrada = listaCursos.filter(c => esMaestroEnCurso(idMaestro, c.id))
@@ -96,7 +96,11 @@ export const ListadoCursos = () => {
                             <th>Teacher</th>
                             <th>Maestro Ed. Fis.</th>
                             <th></th>
-                            <th></th>
+                            {tipoUsuario === "Administrador" ?
+                                <th></th>
+                                :
+                                <></>
+                            }
                         </tr>
                     </thead>
 
@@ -111,10 +115,14 @@ export const ListadoCursos = () => {
                                 <td>{obtenerNombreMaestro(c.maestroInglesId)}</td>
                                 <td>{obtenerNombreMaestro(c.maestroEdFisicaId)}</td>
                                 <td><a href={`/cursos/inscripciones/${c.id}`}>Ver alumnos</a></td>
-                                <td>
-                                    <Button className='btn-edit' title="Editar" onClick={() => handleEditar(c.id)}> <img src={imgEdit} alt="Editar" /> </Button>
-                                    <Button className='btn-delete' title="Eliminar" onClick={() => handleEliminar(c.id)}><img src={imgDelete} alt="Eliminar" /></Button>
-                                </td>
+                                {tipoUsuario === "Administrador" ?
+                                    <td>
+                                        <Button className='btn-edit' title="Editar" onClick={() => handleEditar(c.id)}> <img src={imgEdit} alt="Editar" /> </Button>
+                                        <Button className='btn-delete' title="Eliminar" onClick={() => handleEliminar(c.id)}><img src={imgDelete} alt="Eliminar" /></Button>
+                                    </td>
+                                    :
+                                    <></>
+                                }
                             </tr>
                         )}
                     </tbody>
