@@ -202,11 +202,6 @@ export const AgregarAlumno = () => {
         if (alumno.responsables[0].email == "") {
             throw new Error("El email del responsable no puede estar vacío")
         }
-        // if (alumno.responsable[1].cedula.length > 0) {
-        //     if (alumno.responsables[1].cedula.length != 8) {
-        //         throw new Error("La cédula debe tener 8 digitos (no incluir puntos ni guiones)")
-        //     }
-        // }
     }
 
     const validarSegundoResponsableVacio = () => {
@@ -214,6 +209,7 @@ export const AgregarAlumno = () => {
             && alumno.responsables[1].apellido == ""
             && alumno.responsables[1].email == ""
             && alumno.responsables[1].telefono == ""
+            && alumno.responsables[1].cedula == ""
     }
 
     return (
