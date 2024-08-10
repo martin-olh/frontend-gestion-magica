@@ -5,6 +5,9 @@ import { Alertas } from './Alertas'
 import { Button, Container, Table } from 'react-bootstrap'
 import imgEdit from '/src/assets/edit.svg'
 import imgDelete from '/src/assets/delete.svg'
+import imgInasistencias from '/src/assets/inasistencias.svg'
+import imgAlumnos from '/src/assets/alumnos-b.svg'
+
 import { eliminarCursoService } from '../services/services'
 import { eliminarCurso } from '../redux/features/cursosSlice'
 
@@ -75,6 +78,14 @@ export const ListadoCursos = () => {
         navigate(`/cursos/editar/${id}`)
     }
 
+    const handleInasistencias = (id) => {
+        navigate(`/cursos/inasistencias/agregar/${id}`)
+    }
+
+    const handleAlumnos = (id) => {
+        navigate(`/cursos/inscripciones/${id}`)
+    }
+
     const obtenerNombreMaestro = (id) => {
         const maestro = listaMaestros.find(m => m.id === id);
         return maestro ? `${maestro.apellido}, ${maestro.nombre}` : 'N/A';
@@ -96,11 +107,6 @@ export const ListadoCursos = () => {
                             <th>Teacher</th>
                             <th>Maestro Ed. Fis.</th>
                             <th></th>
-                            {tipoUsuario === "Administrador" ?
-                                <th></th>
-                                :
-                                <></>
-                            }
                         </tr>
                     </thead>
 
@@ -114,11 +120,20 @@ export const ListadoCursos = () => {
                                 <td>{obtenerNombreMaestro(c.maestroSecundarioId)}</td>
                                 <td>{obtenerNombreMaestro(c.maestroInglesId)}</td>
                                 <td>{obtenerNombreMaestro(c.maestroEdFisicaId)}</td>
-                                <td><a href={`/cursos/inscripciones/${c.id}`}>Ver alumnos</a></td>
                                 {tipoUsuario === "Administrador" ?
                                     <td>
+                                        <Button className='btn-edit' title="Ver alumnos" onClick={() => handleAlumnos(c.id)}> <img src={imgAlumnos} alt="Alumnos" /></Button>
+                                        <Button className='btn-edit' title="Inasistencias" onClick={() => handleInasistencias(c.id)}><img src={imgInasistencias} alt="Inasistencias" /></Button>
                                         <Button className='btn-edit' title="Editar" onClick={() => handleEditar(c.id)}> <img src={imgEdit} alt="Editar" /> </Button>
                                         <Button className='btn-delete' title="Eliminar" onClick={() => handleEliminar(c.id)}><img src={imgDelete} alt="Eliminar" /></Button>
+                                    </td>
+                                    :
+                                    <></>
+                                }
+                                {tipoUsuario === "Coordinador" ?
+                                    <td>
+                                        <Button className='btn-edit' title="Ver alumnos" onClick={() => handleAlumnos(c.id)}> <img src={imgAlumnos} alt="Alumnos" /></Button>
+                                        <Button title="Inasistencias" onClick={() => handleInasistencias(c.id)}><img src={imgInasistencias} alt="Inasistencias" /></Button>
                                     </td>
                                     :
                                     <></>

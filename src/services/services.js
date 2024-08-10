@@ -1,4 +1,4 @@
-const urlBase = 'https://colegiocirculomagicoapi.azurewebsites.net/api'
+const urlBase = 'https://localhost:7250/api'
 
 // https://colegiocirculomagicoapi.azurewebsites.net/api
 // https://localhost:7250/api
@@ -523,6 +523,41 @@ export const eliminarCursoService = (id, token) => {
             throw new Error(error ? error : "Hubo un error")
         }
         )
+}
+
+export const agregarInasistenciasDiaService = (token, i) => {
+
+    let myHeaders = new Headers()
+    myHeaders.append("Content-Type", "application/json")
+    myHeaders.append("Authorization", `Bearer ${token}`)
+
+    let raw = JSON.stringify({
+        "fecha": i.fecha,
+        "inscripcionesId": i.inscripcionesId
+    })
+
+    let requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw
+    }
+
+    return fetch(`${urlBase}/inasistencias`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
+                })
+            }
+            console.log("response", response)
+            return response
+        })
+        .then(result => result)
+        .catch((error) => {
+            throw new Error(error ? error : "Hubo un error")
+        }
+        )
+
 }
 
 //INSCRIPCIONES

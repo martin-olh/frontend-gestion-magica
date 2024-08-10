@@ -21,6 +21,7 @@ import { EstadoDeCuentaAlumno } from "./components/EstadoDeCuentaAlumno"
 import { EditarBoletin } from "./components/EditarBoletin"
 import { AprobarBoletines } from "./components/AprobarBoletines"
 import { ListadoBoletinesAlumno } from "./components/ListadoBoletinesAlumno"
+import { AgregarInasistencias } from "./components/AgregarInasistencias"
 
 export const App = () => {
 
@@ -48,6 +49,7 @@ export const App = () => {
         <Route path="/cursos/listado" element={<ProtectedRoute component={ListadoCursos} allowedRoles={['Administrador', 'Coordinador', 'Maestro']} />}></Route>
         <Route path="/cursos/editar/:id" element={<ProtectedRoute component={EditarCurso} allowedRoles={['Administrador']} />}></Route>
         <Route path="/cursos/inscripciones/:id" element={<ProtectedRoute component={InscripcionesCurso} allowedRoles={['Administrador', 'Coordinador', 'Maestro']} />}></Route>
+        <Route path="/cursos/inasistencias/agregar/:idCurso" element={<ProtectedRoute component={AgregarInasistencias} allowedRoles={['Administrador', 'Coordinador']} />}></Route>
 
         <Route path="/inscripciones/agregar/:idAlumno" element={<ProtectedRoute component={AgregarInscripcion} allowedRoles={['Administrador']} />}></Route>
 
@@ -55,6 +57,10 @@ export const App = () => {
 
         <Route path="/boletines/editar/:idInscripcion/:idBoletin" element={<ProtectedRoute component={EditarBoletin} allowedRoles={['Administrador', 'Coordinador', 'Maestro']} />}></Route>
         <Route path="/boletines/aprobar/" element={<ProtectedRoute component={AprobarBoletines} allowedRoles={['Administrador', 'Coordinador']} />}></Route>
+
+
+
+
 
       </Route>
       <Route path="*" element={<Navigate replace to={"/"}></Navigate>} />
