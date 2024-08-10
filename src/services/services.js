@@ -560,6 +560,34 @@ export const agregarInasistenciasDiaService = (token, i) => {
 
 }
 
+export const listadoInasistenciasService = (token, id) => {
+
+    let myHeaders = new Headers()
+    myHeaders.append("Content-Type", "application/json")
+    myHeaders.append("Authorization", `Bearer ${token}`)
+
+    let requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+    }
+
+    return fetch(`${urlBase}/alumnos/inasistencias/${id}`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
+                })
+            }
+            return response.json()
+        })
+        .then(result => result)
+        .catch((error) => {
+            throw new Error(error ? error : "Hubo un error")
+        }
+        )
+
+}
+
 //INSCRIPCIONES
 
 export const obtenerInscripcionesService = (token) => {

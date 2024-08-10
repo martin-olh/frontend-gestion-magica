@@ -52,6 +52,12 @@ export const DetallesAlumno = () => {
                                     <Col className="blanco"><span>|</span></Col>
 
                                     <Col>
+                                        <Card.Link href={`/alumnos/inasistencias/${id}`}>Ver inasistencias</Card.Link>
+                                    </Col>
+
+                                    <Col className="blanco"><span>|</span></Col>
+
+                                    <Col>
                                         <Card.Link href={`/pagos/agregar/${id}`}>Registrar Pago</Card.Link>
                                     </Col>
 

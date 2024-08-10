@@ -37,7 +37,7 @@ export const AprobarBoletines = () => {
             setBoletinesPend(boletines)
         }
         fetchBoletines()
-    }, [token, listaInscripciones, listaCursos])
+    }, [listaInscripciones, listaCursos])
 
 
     const getCurso = (idInsc) => {
