@@ -549,7 +549,6 @@ export const agregarInasistenciasDiaService = (token, i) => {
                     throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
                 })
             }
-            console.log("response", response)
             return response
         })
         .then(result => result)
@@ -651,6 +650,36 @@ export const agregarInscripcionService = (token, i) => {
                 })
             }
             return response.json()
+        })
+        .then(result => result)
+        .catch((error) => {
+            throw new Error(error ? error : "Hubo un error")
+        }
+        )
+}
+
+export const aumentarCuotasIPCService = (token, porcentaje) => {
+
+    let myHeaders = new Headers()
+    myHeaders.append("Content-Type", "application/json")
+    myHeaders.append("Authorization", `Bearer ${token}`)
+
+    let raw = porcentaje
+
+    let requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw
+    }
+
+    return fetch(`${urlBase}/inscripciones/incrementarCuota`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
+                })
+            }
+            return response
         })
         .then(result => result)
         .catch((error) => {

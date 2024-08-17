@@ -5,6 +5,7 @@ import imgUsuarios from '/src/assets/usuarios.svg'
 import imgAlumnos from '/src/assets/alumnos.svg'
 import imgCursos from '/src/assets/cursos.svg'
 import imgBoletines from '/src/assets/boletines.svg'
+import imgAdmin from '/src/assets/admin.svg'
 
 export const MenuAdmin = () => {
 
@@ -77,6 +78,15 @@ export const MenuAdmin = () => {
                         </Accordion.Header>
                         <Accordion.Body className='bg-negro'>
                             <Nav.Link href="/boletines/aprobar" eventKey="link-1" className='nav-link-custom'>Aprobar boletines</Nav.Link>
+                        </Accordion.Body>
+                    </Accordion.Item>
+                    <Accordion.Item eventKey="4" >
+                        <Accordion.Header className='accHeader'>
+                            <img className='m-1' src={imgAdmin} alt="Administración" />
+                            Administración
+                        </Accordion.Header>
+                        <Accordion.Body className='bg-negro'>
+                            <Nav.Link href="/inscripciones/aumentarCuotasIPC" eventKey="link-1" className='nav-link-custom'>Aumento IPC</Nav.Link>
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>
