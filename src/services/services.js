@@ -353,7 +353,6 @@ export const actualizarAlumnoService = (id, a, token) => {
             throw new Error(error ? error : "Hubo un error")
         }
         )
-
 }
 
 export const eliminarAlumnoService = (id, token) => {
@@ -380,9 +379,6 @@ export const eliminarAlumnoService = (id, token) => {
             throw new Error(error ? error : "Hubo un error")
         }
         )
-
-
-
 }
 
 //CURSOS
@@ -854,5 +850,120 @@ export const obtenerBoletinesPendientesService = (token) => {
             throw new Error(error ? error : "Hubo un error")
         }
         )
+}
 
+//GASTOS
+
+export const obtenerGastosService = (token) => {
+    let myHeaders = new Headers()
+    myHeaders.append("Content-Type", "application/json")
+    myHeaders.append("Authorization", `Bearer ${token}`)
+
+    let requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+    }
+
+    return fetch(`${urlBase}/gastos`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
+                })
+            }
+            return response.json()
+        })
+        .then(result => result)
+        .catch((error) => {
+            throw new Error(error ? error : "Hubo un error")
+        }
+        )
+}
+
+export const agregarGastoService = (token, g) => {
+
+    let myHeaders = new Headers()
+    myHeaders.append("Content-Type", "application/json")
+    myHeaders.append("Authorization", `Bearer ${token}`)
+
+    let raw = JSON.stringify({
+        "id": g.id,
+        "monto": g.monto,
+        "fecha": g.fecha,
+        "concepto": g.concepto,
+        "categoriaGastoId": g.categoriaGastoId
+    })
+
+    let requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw
+    }
+
+    return fetch(`${urlBase}/gastos`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
+                })
+            }
+            return response.json()
+        })
+        .then(result => result)
+        .catch((error) => {
+            throw new Error(error ? error : "Hubo un error")
+        }
+        )
+}
+
+export const eliminarGastoService = (token, id) => {
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json")
+    myHeaders.append("Authorization", `Bearer ${token}`)
+
+    let requestOptions = {
+        method: 'DELETE',
+        headers: myHeaders
+    }
+
+    return fetch(`${urlBase}/gastos/${id}`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
+                })
+            }
+            return response
+        })
+        .then(result => result)
+        .catch((error) => {
+            throw new Error(error ? error : "Hubo un error")
+        }
+        )
+}
+
+export const obtenerCategoriasGastosService = (token) => {
+    let myHeaders = new Headers()
+    myHeaders.append("Content-Type", "application/json")
+    myHeaders.append("Authorization", `Bearer ${token}`)
+
+    let requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+    }
+
+    return fetch(`${urlBase}/CategoriasGastos`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
+                })
+            }
+            return response.json()
+        })
+        .then(result => result)
+        .catch((error) => {
+            throw new Error(error ? error : "Hubo un error")
+        }
+        )
 }

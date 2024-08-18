@@ -22,6 +22,12 @@ export const MenuAdmin = () => {
             case '/cursos/agregar':
             case '/cursos/listado':
                 return "2"; // índice del Accordion para Cursos
+            case '/boletines/aprobar':
+                return "3"; // índice del Accordion para Boletines
+            case '/gastos/agregar':
+            case '/gastos/resumen':
+            case '/inscripciones/aumentarCuotasIPC':
+                return "4"; // índice del Accordion para Administracion
             default:
                 return null;
         }
@@ -86,7 +92,9 @@ export const MenuAdmin = () => {
                             Administración
                         </Accordion.Header>
                         <Accordion.Body className='bg-negro'>
-                            <Nav.Link href="/inscripciones/aumentarCuotasIPC" eventKey="link-1" className='nav-link-custom'>Aumento IPC</Nav.Link>
+                            <Nav.Link href="/gastos/agregar" eventKey="link-1" className='nav-link-custom'>Registrar gasto</Nav.Link>
+                            <Nav.Link href="/gastos/resumen" eventKey="link-2" className='nav-link-custom'>Resumen de gastos</Nav.Link>
+                            <Nav.Link href="/inscripciones/aumentarCuotasIPC" eventKey="link-3" className='nav-link-custom'>Aumento IPC</Nav.Link>
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>

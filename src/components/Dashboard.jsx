@@ -4,7 +4,7 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import Row from 'react-bootstrap/Row'
 import { Col } from 'react-bootstrap'
 import { Header } from './Header'
-import { obtenerUsuariosService, obtenerAlumnosService, obtenerCursosService, obtenerInscripcionesService, obtenerPagosService } from '../services/services'
+import { obtenerUsuariosService, obtenerAlumnosService, obtenerCursosService, obtenerInscripcionesService, obtenerPagosService, obtenerCategoriasGastosService } from '../services/services'
 import { cargaInicialUsuarios } from '../redux/features/usuariosSlice'
 import { cargaInicialAlumnos } from '../redux/features/alumnosSlice'
 import { Menu } from './Menu'
@@ -12,6 +12,7 @@ import { Alertas } from './Alertas'
 import { cargaInicialInscripciones } from '../redux/features/inscripcionesSlice'
 import { cargaInicialCursos } from '../redux/features/cursosSlice'
 import { cargaInicialPagos } from '../redux/features/pagosSlice'
+import { cargaInicialCategorias } from '../redux/features/categoriasSlice'
 
 
 export const Dashboard = () => {
@@ -38,6 +39,7 @@ export const Dashboard = () => {
             obtenerCursosCall(loggedAux)
             obtenerInscripcionesCall(loggedAux)
             obtenerPagosCall(loggedAux)
+            obtenerCategoriasCall(loggedAux)
             // Llamadas a obtener cursos, alumnos, etc.
         }
     }, [])
@@ -84,6 +86,16 @@ export const Dashboard = () => {
         try {
             const pagos = await obtenerPagosService(token)
             dispatch(cargaInicialPagos(pagos))
+        } catch (error) {
+            setAlerta(error.mensaje)
+        }
+    }
+
+    const obtenerCategoriasCall = async (token) => {
+        try {
+            const cat = await obtenerCategoriasGastosService(token)
+            dispatch(cargaInicialCategorias(cat))
+
         } catch (error) {
             setAlerta(error.mensaje)
         }
