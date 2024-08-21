@@ -258,3 +258,7 @@ a {
     --bs-accordion-bg: var(--blanco);
 
 }
+
+.text-area-boletin {
+    height: 90px;
+}

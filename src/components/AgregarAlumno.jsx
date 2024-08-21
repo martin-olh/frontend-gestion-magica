@@ -88,8 +88,17 @@ export const AgregarAlumno = () => {
         const { name, type, checked, value } = e.target;
         const inputValue = type === 'checkbox' ? checked : value;
 
-        setInfoDetalleAux({ ...infoDetalleAux, [name]: inputValue });
-        setAlumno({ ...alumno, infoDetalle: infoDetalleAux });
+        setInfoDetalleAux(prevState => ({
+            ...prevState,
+            [name]: inputValue
+        }))
+        setAlumno(prevState => ({
+            ...prevState,
+            infoDetalle: {
+                ...prevState.infoDetalle,
+                [name]: inputValue
+            }
+        }))
 
         setAlerta('');
         setExito('');
@@ -193,11 +202,6 @@ export const AgregarAlumno = () => {
         if (alumno.responsables[0].email == "") {
             throw new Error("El email del responsable no puede estar vacío")
         }
-        // if (alumno.responsable[1].cedula.length > 0) {
-        //     if (alumno.responsables[1].cedula.length != 8) {
-        //         throw new Error("La cédula debe tener 8 digitos (no incluir puntos ni guiones)")
-        //     }
-        // }
     }
 
     const validarSegundoResponsableVacio = () => {
@@ -205,6 +209,7 @@ export const AgregarAlumno = () => {
             && alumno.responsables[1].apellido == ""
             && alumno.responsables[1].email == ""
             && alumno.responsables[1].telefono == ""
+            && alumno.responsables[1].cedula == ""
     }
 
     return (

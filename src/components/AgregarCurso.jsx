@@ -45,11 +45,11 @@ export const AgregarCurso = () => {
             const resultado = await agregarCursoService(sessionStorage.getItem('token'), curso)
             curso.id = resultado.id //guardo id del curso creado, devuelto por la API   
             dispatch(agregarCurso(curso))
-            setCurso(cursoVacio)
             setExito("Curso registrado exitosamente")
             setAlerta('')
             setTimeout(() => {
                 navigate(`/cursos/listado/`)
+                window.location.reload()
             }, 2000)
         } catch (error) {
             setAlerta(error.message)
