@@ -42,7 +42,7 @@ export const AumentarCuotasIPC = () => {
             </Row>
 
             <Row>
-                <Col>
+                <Col xs={4}>
                     <Form onSubmit={onSubmit}>
 
                         <Form.Group className="mb-3" controlId="porcentaje">

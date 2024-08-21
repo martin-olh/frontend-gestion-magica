@@ -63,14 +63,14 @@ export const ListadoCursos = () => {
     const handleEliminar = async (id) => {
         const token = sessionStorage.getItem('token')
         try {
-            const confirmar = window.confirm("Esta seguro de eliminar?");
+            const confirmar = window.confirm("Esta seguro de eliminar?")
             if (confirmar) {
-                await eliminarCursoService(id, token);
-                dispatch(eliminarCurso(id));
-                setWarning('Curso eliminado');
+                await eliminarCursoService(id, token)
+                dispatch(eliminarCurso(id))
+                setWarning('Curso eliminado')
             }
         } catch (error) {
-            setAlerta(error.message);
+            setAlerta(error.message)
         }
     }
 
@@ -87,8 +87,8 @@ export const ListadoCursos = () => {
     }
 
     const obtenerNombreMaestro = (id) => {
-        const maestro = listaMaestros.find(m => m.id === id);
-        return maestro ? `${maestro.apellido}, ${maestro.nombre}` : 'N/A';
+        const maestro = listaMaestros.find(m => m.id === id)
+        return maestro ? `${maestro.apellido}, ${maestro.nombre}` : 'N/A'
     }
 
     return (
@@ -134,6 +134,13 @@ export const ListadoCursos = () => {
                                     <td>
                                         <Button className='btn-edit' title="Ver alumnos" onClick={() => handleAlumnos(c.id)}> <img src={imgAlumnos} alt="Alumnos" /></Button>
                                         <Button title="Inasistencias" onClick={() => handleInasistencias(c.id)}><img src={imgInasistencias} alt="Inasistencias" /></Button>
+                                    </td>
+                                    :
+                                    <></>
+                                }
+                                {tipoUsuario === "Maestro" ?
+                                    <td>
+                                        <Button className='btn-edit' title="Ver alumnos" onClick={() => handleAlumnos(c.id)}> <img src={imgAlumnos} alt="Alumnos" /></Button>
                                     </td>
                                     :
                                     <></>

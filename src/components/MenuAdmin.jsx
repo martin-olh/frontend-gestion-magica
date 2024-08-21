@@ -13,21 +13,22 @@ export const MenuAdmin = () => {
 
     const getInitialActiveKey = (pathname) => {
         switch (pathname) {
-            case '/usuarios/agregar':
-            case '/usuarios/listado':
-                return "0"; // índice del Accordion para Usuarios
+
             case '/alumnos/registrar':
             case '/alumnos/listado':
-                return "1"; // índice del Accordion para Alumnos
+                return "0"; // índice del Accordion para Alumnos
             case '/cursos/agregar':
             case '/cursos/listado':
-                return "2"; // índice del Accordion para Cursos
+                return "1"; // índice del Accordion para Cursos
             case '/boletines/aprobar':
-                return "3"; // índice del Accordion para Boletines
+                return "2"; // índice del Accordion para Boletines
             case '/gastos/agregar':
             case '/gastos/resumen':
             case '/inscripciones/aumentarCuotasIPC':
-                return "4"; // índice del Accordion para Administracion
+                return "3"; // índice del Accordion para Administracion
+            case '/usuarios/agregar':
+            case '/usuarios/listado':
+                return "4"; // índice del Accordion para Usuarios
             default:
                 return null;
         }
@@ -47,17 +48,8 @@ export const MenuAdmin = () => {
         <div className='menu'>
             <Nav defaultActiveKey="/home" className="flex-column">
                 <Accordion className="mt-2" activeKey={activeKey} onSelect={handleSelect}>
+
                     <Accordion.Item eventKey="0" >
-                        <Accordion.Header className='accHeader'>
-                            <img className='m-1' src={imgUsuarios} alt="Usuarios" />
-                            Usuarios
-                        </Accordion.Header>
-                        <Accordion.Body className='bg-negro'>
-                            <Nav.Link href="/usuarios/agregar" eventKey="link-1" className='nav-link-custom'>Agregar usuario</Nav.Link>
-                            <Nav.Link href="/usuarios/listado" eventKey="link-2" className='nav-link-custom'>Listado usuarios</Nav.Link>
-                        </Accordion.Body>
-                    </Accordion.Item>
-                    <Accordion.Item eventKey="1" >
                         <Accordion.Header className='accHeader'>
                             <img className='m-1' src={imgAlumnos} alt="Alumnos" />
                             Alumnos
@@ -67,7 +59,7 @@ export const MenuAdmin = () => {
                             <Nav.Link href="/alumnos/listado" eventKey="link-2" className='nav-link-custom'>Listado alumnos</Nav.Link>
                         </Accordion.Body>
                     </Accordion.Item>
-                    <Accordion.Item eventKey="2" >
+                    <Accordion.Item eventKey="1" >
                         <Accordion.Header className='accHeader'>
                             <img className='m-1' src={imgCursos} alt="Cursos" />
                             Cursos
@@ -77,7 +69,7 @@ export const MenuAdmin = () => {
                             <Nav.Link href="/cursos/listado" eventKey="link-2" className='nav-link-custom'>Listado cursos</Nav.Link>
                         </Accordion.Body>
                     </Accordion.Item>
-                    <Accordion.Item eventKey="3" >
+                    <Accordion.Item eventKey="2" >
                         <Accordion.Header className='accHeader'>
                             <img className='m-1' src={imgBoletines} alt="Boletines" />
                             Boletines
@@ -86,7 +78,7 @@ export const MenuAdmin = () => {
                             <Nav.Link href="/boletines/aprobar" eventKey="link-1" className='nav-link-custom'>Aprobar boletines</Nav.Link>
                         </Accordion.Body>
                     </Accordion.Item>
-                    <Accordion.Item eventKey="4" >
+                    <Accordion.Item eventKey="3" >
                         <Accordion.Header className='accHeader'>
                             <img className='m-1' src={imgAdmin} alt="Administración" />
                             Administración
@@ -95,6 +87,16 @@ export const MenuAdmin = () => {
                             <Nav.Link href="/gastos/agregar" eventKey="link-1" className='nav-link-custom'>Registrar gasto</Nav.Link>
                             <Nav.Link href="/gastos/resumen" eventKey="link-2" className='nav-link-custom'>Resumen de gastos</Nav.Link>
                             <Nav.Link href="/inscripciones/aumentarCuotasIPC" eventKey="link-3" className='nav-link-custom'>Aumento IPC</Nav.Link>
+                        </Accordion.Body>
+                    </Accordion.Item>
+                    <Accordion.Item eventKey="4" >
+                        <Accordion.Header className='accHeader'>
+                            <img className='m-1' src={imgUsuarios} alt="Usuarios" />
+                            Usuarios
+                        </Accordion.Header>
+                        <Accordion.Body className='bg-negro'>
+                            <Nav.Link href="/usuarios/agregar" eventKey="link-1" className='nav-link-custom'>Agregar usuario</Nav.Link>
+                            <Nav.Link href="/usuarios/listado" eventKey="link-2" className='nav-link-custom'>Listado usuarios</Nav.Link>
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>

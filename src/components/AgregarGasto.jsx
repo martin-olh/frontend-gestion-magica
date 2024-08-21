@@ -68,17 +68,17 @@ export const AgregarGasto = () => {
             <Row>
                 <Col xs={12} md={10} lg={10}>
                     <Form onSubmit={onSubmit}>
-                        {categorias.length > 0 &&
-                            <Form.Group className="mb-3" controlId="categoriaGastoId">
-                                <Form.Label>Categoría</Form.Label>
-                                <Form.Select required onChange={handleChange} value={gasto.categoriaGastoId} name="categoriaGastoId">
-                                    <option>Seleccionar</option>
-                                    {
-                                        categorias.map(c => <option key={c.id} value={c.id}>{`${c.nombre}`}</option>)
-                                    }
-                                </Form.Select>
-                            </Form.Group >
-                        }
+
+                        <Form.Group className="mb-3" controlId="categoriaGastoId">
+                            <Form.Label>Categoría</Form.Label>
+                            <Form.Select required onChange={handleChange} value={gasto.categoriaGastoId} name="categoriaGastoId">
+                                <option>Seleccionar</option>
+                                {categorias.length > 0 &&
+                                    categorias.map(c => <option key={c.id} value={c.id}>{`${c.nombre}`}</option>)
+                                }
+                            </Form.Select>
+                        </Form.Group >
+
                         <Form.Group className="mb-3" controlId="concepto">
                             <Form.Label>* Concepto</Form.Label>
                             <Form.Control onChange={handleChange} type="text" placeholder="Ingrese el concepto" value={gasto.concepto} name="concepto" />
