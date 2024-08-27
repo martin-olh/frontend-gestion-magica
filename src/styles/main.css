@@ -260,5 +260,5 @@ a {
 }
 
 .text-area-boletin {
-    height: 90px;
+    height: 150px !important;
 }
