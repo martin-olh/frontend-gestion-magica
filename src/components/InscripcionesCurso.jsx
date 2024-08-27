@@ -84,30 +84,38 @@ export const InscripcionesCurso = () => {
                         </>
                         :
                         <>
-                            <Table >
-                                <thead>
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Primer boletín</th>
-                                        <th>Segundo boletín</th>
-                                        <th>Tercer boletín</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    {listaInscCurso.slice().sort((a, b) => obtenerNombreAlumno(a.alumnoId).localeCompare(obtenerNombreAlumno(b.alumnoId))).map(i =>
-                                        <tr key={i.id}>
-                                            <td>
-                                                <a href={`/alumnos/detalles/${i.alumnoId}`}>{obtenerNombreAlumno(i.alumnoId)}</a>
-                                            </td>
-                                            <td><a href={`/boletines/editar/${i.id}/${i.boletin1Id}`}>Editar boletín</a></td>
-                                            <td><a href={`/boletines/editar/${i.id}/${i.boletin2Id}`}>Editar boletín</a></td>
-                                            <td><a href={`/boletines/editar/${i.id}/${i.boletin3Id}`}>Editar boletín</a></td>
+                            {cursoActual &&
+                                <Table >
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>{cursoActual.tipoCurso == "Primaria" ? `Primer boletín` : `Boletín`}</th>
+                                            {cursoActual.tipoCurso == "Primaria" &&
+                                                <>
+                                                    <th>Segundo boletín</th>
+                                                    <th>Tercer boletín</th>
+                                                </>}
                                         </tr>
-                                    )}
-                                </tbody>
+                                    </thead>
 
-                            </Table>
+                                    <tbody>
+                                        {listaInscCurso.slice().sort((a, b) => obtenerNombreAlumno(a.alumnoId).localeCompare(obtenerNombreAlumno(b.alumnoId))).map(i =>
+                                            <tr key={i.id}>
+                                                <td>
+                                                    <a href={`/alumnos/detalles/${i.alumnoId}`}>{obtenerNombreAlumno(i.alumnoId)}</a>
+                                                </td>
+                                                <td><a href={`/boletines/editar/${i.id}/${i.boletin1Id}`}>Editar boletín</a></td>
+                                                {cursoActual.tipoCurso == "Primaria" &&
+                                                    <>
+                                                        <td><a href={`/boletines/editar/${i.id}/${i.boletin2Id}`}>Editar boletín</a></td>
+                                                        <td><a href={`/boletines/editar/${i.id}/${i.boletin3Id}`}>Editar boletín</a></td>
+                                                    </>}
+                                            </tr>
+                                        )}
+                                    </tbody>
+
+                                </Table>
+                            }
                         </>
                     :
                     <p>Curso sin inscripciones</p>

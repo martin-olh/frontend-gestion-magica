@@ -792,15 +792,10 @@ export const actualizarBoletinService = (id, b, token) => {
         "id": b.id,
         "trimestre": b.trimestre,
         "fecha": new Date().toISOString(),
-        "espCientificoMatematico": b.espCientificoMatematico,
-        "espComunicacion": b.espComunicacion,
-        "espCienciasSociales": b.espCienciasSociales,
-        "espDesarrolloPersonal": b.espDesarrolloPersonal,
-        "espIngles": b.espIngles,
-        "valoracionFinal": b.valoracionFinal,
         "editado": b.editado,
         "finalizado": b.finalizado,
-        "inscripcionId": b.inscripcionId
+        "inscripcionId": b.inscripcionId,
+        "asignaturas": b.asignaturas
     })
 
     let requestOptions = {
@@ -851,6 +846,34 @@ export const obtenerBoletinesPendientesService = (token) => {
         }
         )
 }
+
+export const obtenerEspaciosConocimientoService = (token) => {
+
+    let myHeaders = new Headers()
+    myHeaders.append("Content-Type", "application/json")
+    myHeaders.append("Authorization", `Bearer ${token}`)
+
+    let requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+    }
+
+    return fetch(`${urlBase}/EspaciosConocimientos/`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
+                })
+            }
+            return response.json()
+        })
+        .then(result => result)
+        .catch((error) => {
+            throw new Error(error ? error : "Hubo un error")
+        }
+        )
+}
+
 
 //GASTOS
 

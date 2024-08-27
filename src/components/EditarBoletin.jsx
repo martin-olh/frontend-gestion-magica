@@ -1,64 +1,77 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { useNavigate, useParams } from 'react-router-dom'
-import { actualizarBoletinService, obtenerBoletinService } from '../services/services'
-import { Form, Col, Container, Row, Button } from 'react-bootstrap'
-import { Alertas } from './Alertas'
-import BoletinPDF from './BoletinPDF'
-import { pdf } from '@react-pdf/renderer'
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { actualizarBoletinService, obtenerBoletinService } from '../services/services';
+import { Form, Col, Container, Row, Button, FloatingLabel } from 'react-bootstrap';
+import { Alertas } from './Alertas';
+import BoletinPDF from './BoletinPDF';
+import { pdf } from '@react-pdf/renderer';
 
 export const EditarBoletin = () => {
+    const { idInscripcion, idBoletin } = useParams();
+    const token = sessionStorage.getItem("token");
+    const tipoUsuario = sessionStorage.getItem("tipoUsuario");
 
-    const { idInscripcion, idBoletin } = useParams()
-    const token = sessionStorage.getItem("token")
+    const navigate = useNavigate();
 
-    const tipoUsuario = sessionStorage.getItem("tipoUsuario")
+    const [alerta, setAlerta] = useState('');
+    const [exito, setExito] = useState('');
 
-    const navigate = useNavigate()
+    const listaInscripciones = useSelector(store => store.listaInscripciones);
+    const listaAlumnos = useSelector(store => store.listaAlumnos);
+    const listaCursos = useSelector(store => store.listaCursos);
+    const listaEspaciosConocimiento = useSelector(store => store.listaEspaciosConocimiento);
 
-    const [alerta, setAlerta] = useState('')
-    const [exito, setExito] = useState('')
+    const [alumno, setAlumno] = useState(null);
+    const [curso, setCurso] = useState(null);
+    const [boletin, setBoletin] = useState(null);
 
-    const listaInscripciones = useSelector(store => store.listaInscripciones)
-    const listaAlumnos = useSelector(store => store.listaAlumnos)
-    const listaCursos = useSelector(store => store.listaCursos)
-
-    const [alumno, setAlumno] = useState(null)
-    const [curso, setCurso] = useState(null)
-    const [boletin, setBoletin] = useState(null)
+    const asignaturaVacia = {
+        id: 0,
+        titulo: "",
+        juicio: "",
+        espacioConocimientoId: 0
+    };
 
     useEffect(() => {
-        const insc = listaInscripciones.find(i => i.id == idInscripcion)
+        const insc = listaInscripciones.find(i => i.id == idInscripcion);
         if (insc) {
-            const alumnoFind = listaAlumnos.find(a => a.id == insc.alumnoId)
+            const alumnoFind = listaAlumnos.find(a => a.id == insc.alumnoId);
             if (alumnoFind) {
-                setAlumno(alumnoFind)
+                setAlumno(alumnoFind);
             }
-            const cursoFind = listaCursos.find(c => c.id == insc.cursoId)
+            const cursoFind = listaCursos.find(c => c.id == insc.cursoId);
             if (cursoFind) {
-                setCurso(cursoFind)
+                setCurso(cursoFind);
             }
         }
-        obtenerBoletinCall(token, idBoletin)
-
-    }, [listaInscripciones, listaAlumnos, listaCursos, idInscripcion, idBoletin])
+        obtenerBoletinCall(token, idBoletin);
+    }, [listaInscripciones, listaAlumnos, listaCursos, idInscripcion, idBoletin]);
 
     const obtenerBoletinCall = async (token, id) => {
         try {
-            const boletinFind = await obtenerBoletinService(token, id)
-            setBoletin(boletinFind)
+            const boletinFind = await obtenerBoletinService(token, id);
+            setBoletin(boletinFind);
         } catch (error) {
-            setAlerta(error.mensaje)
+            setAlerta(error.mensaje);
         }
-    }
+    };
 
-    const handleChange = (e) => {
-        const { name, type, checked, value } = e.target;
-        const inputValue = type === 'checkbox' ? checked : value;
-        setBoletin(prevBoletin => ({ ...prevBoletin, [name]: inputValue }))
-        setAlerta('')
-        setExito('')
-    }
+    const handleChangeAsignatura = (e, index) => {
+        const { name, value } = e.target;
+        const nuevasAsignaturas = [...boletin.asignaturas];
+        nuevasAsignaturas[index] = { ...nuevasAsignaturas[index], [name]: value };
+        setBoletin(prevBoletin => ({ ...prevBoletin, asignaturas: nuevasAsignaturas }));
+        setAlerta('');
+        setExito('');
+    };
+
+    const agregarAsignatura = () => {
+        setBoletin(prevBoletin => ({
+            ...prevBoletin,
+            asignaturas: [...prevBoletin.asignaturas, asignaturaVacia]
+        }));
+    };
 
     const handleOpenPDF = async (boletinId) => {
         try {
@@ -71,35 +84,46 @@ export const EditarBoletin = () => {
         }
     };
 
-    const onSubmit = async (event) => {
-        event.preventDefault()
-        try {
-            const updatedBol = { ...boletin, editado: true }
-            setBoletin(updatedBol)
-            await actualizarBoletinService(idBoletin, updatedBol, token)
-            setExito("Boletin actualizado exitosamente")
-            if (boletin.finalizado) {
-                handleOpenPDF(idBoletin) //Exporta PDF antes de redirigir
-            }
-            setAlerta('')
-            if (tipoUsuario == 'Maestro') {
-                setTimeout(() => {
-                    const inscRedirect = listaInscripciones.find(i => i.id == idInscripcion)
-                    navigate(`/cursos/inscripciones/${inscRedirect.cursoId}`)
-                }, 2000)
+    const handleAprobar = (e) => {
+        const { name, type, checked, value } = e.target;
+        const inputValue = type === 'checkbox' ? checked : value
+        setBoletin(prevBoletin => ({ ...prevBoletin, [name]: inputValue }))
 
-            } else {
-                setTimeout(() => {
-                    navigate(`/boletines/aprobar/`)
-                }, 2000)
-
-            }
-        } catch (error) {
-            setAlerta(error.message)
-            setExito('')
-        }
     }
 
+    const onSubmit = async (event) => {
+        event.preventDefault();
+
+        const asignaturasInvalidas = boletin.asignaturas.some(asignatura => asignatura.espacioConocimientoId === "" || asignatura.espacioConocimientoId === 0);
+        if (asignaturasInvalidas) {
+            setAlerta("Debes seleccionar un espacio de conocimiento válido para todas las asignaturas.");
+            return;
+        }
+
+        try {
+            const updatedBol = { ...boletin, editado: true };
+            setBoletin(updatedBol);
+            await actualizarBoletinService(idBoletin, updatedBol, token);
+            setExito("Boletin actualizado exitosamente");
+            if (boletin.finalizado) {
+                handleOpenPDF(idBoletin); //Exporta PDF antes de redirigir
+            }
+            setAlerta('');
+            if (tipoUsuario == 'Maestro') {
+                setTimeout(() => {
+                    const inscRedirect = listaInscripciones.find(i => i.id == idInscripcion);
+                    navigate(`/cursos/inscripciones/${inscRedirect.cursoId}`);
+                }, 2000);
+            } else {
+                setTimeout(() => {
+                    navigate(`/boletines/aprobar/`);
+                }, 2000);
+            }
+        } catch (error) {
+            setAlerta(error.message);
+            setExito('');
+        }
+    };
 
     return (
         <>
@@ -119,43 +143,65 @@ export const EditarBoletin = () => {
                             <p>Alumno: <strong>{alumno.nombre} {alumno.apellido}</strong></p> : ""
                         }
                     </Row>
+                    <hr />
                     <Row>
-                        <Col xs={12} md={10} lg={10}>
+                        <Col xs={10}>
                             <Form onSubmit={onSubmit}>
-                                <Form.Group className="mb-3" controlId="espCientificoMatematico">
-                                    <Form.Label>Ciencia y matemática</Form.Label>
-                                    <Form.Control className='text-area-boletin' onChange={handleChange} disabled={boletin.finalizado} as="textarea" placeholder="Ingresar juicio" value={boletin.espCientificoMatematico ?? ""} name="espCientificoMatematico" />
-                                </Form.Group >
-                                <Form.Group className="mb-3" controlId="espComunicacion">
-                                    <Form.Label>Comunicación</Form.Label>
-                                    <Form.Control className='text-area-boletin' onChange={handleChange} disabled={boletin.finalizado} as="textarea" placeholder="Ingresar juicio" value={boletin.espComunicacion ?? ""} name="espComunicacion" />
-                                </Form.Group >
-                                <Form.Group className="mb-3" controlId="espCienciasSociales">
-                                    <Form.Label>Ciencias sociales</Form.Label>
-                                    <Form.Control className='text-area-boletin' onChange={handleChange} disabled={boletin.finalizado} as="textarea" placeholder="Ingresar juicio" value={boletin.espCienciasSociales ?? ""} name="espCienciasSociales" />
-                                </Form.Group >
-                                <Form.Group className="mb-3" controlId="espDesarrolloPersonal">
-                                    <Form.Label>Desarrollo personal</Form.Label>
-                                    <Form.Control className='text-area-boletin' onChange={handleChange} disabled={boletin.finalizado} as="textarea" placeholder="Ingresar juicio" value={boletin.espDesarrolloPersonal ?? ""} name="espDesarrolloPersonal" />
-                                </Form.Group >
-                                <Form.Group className="mb-3" controlId="espIngles">
-                                    <Form.Label>Inglés</Form.Label>
-                                    <Form.Control className='text-area-boletin' onChange={handleChange} disabled={boletin.finalizado} as="textarea" placeholder="Ingresar juicio" value={boletin.espIngles ?? ""} name="espIngles" />
-                                </Form.Group >
-                                {boletin.trimestre == 3 &&
-                                    <Form.Group className="mb-3" controlId="valoracionFinal">
-                                        <Form.Label>Valoración final</Form.Label>
-                                        <Form.Control className='text-area-boletin' onChange={handleChange} disabled={boletin.finalizado} as="textarea" placeholder="Ingresar juicio" value={boletin.valoracionFinal ?? ""} name="valoracionFinal" />
-                                    </Form.Group >
-                                }
+                                {boletin.asignaturas.map((asignatura, index) => (
+                                    <Row key={`row-${index}`}>
+                                        <Form.Group className="mb-3">
+                                            <Form.Group className="mb-2" controlId={`espacioConocimientoId-${index}`}>
+                                                {/* <Form.Label>Asignatura</Form.Label> */}
+                                                <FloatingLabel label="Espacio de conocimiento">
+                                                    <Form.Select onChange={(e) => handleChangeAsignatura(e, index)} disabled={boletin.finalizado} value={asignatura.espacioConocimientoId} name="espacioConocimientoId">
+                                                        <option>Seleccionar espacio de conocimiento</option>
+                                                        {curso && curso.tipoCurso == "Primaria" && listaEspaciosConocimiento.length > 0 ?
+                                                            listaEspaciosConocimiento.filter(e => e.tipoCurso == "Primaria" || e.tipoCurso == "General")
+                                                                .map(e => <option key={e.id} value={e.id}>{`${e.nombre}`}</option>)
+                                                            :
+                                                            listaEspaciosConocimiento.filter(e => e.tipoCurso == "Inicial" || e.tipoCurso == "General")
+                                                                .map(e => <option key={e.id} value={e.id}>{`${e.nombre}`}</option>)
+                                                        }
+                                                    </Form.Select>
+                                                </FloatingLabel>
+                                            </Form.Group >
+                                            <Form.Group className="mb-2" controlId={`titulo-${index}`}>
+                                                <FloatingLabel label="Ingresar título">
+                                                    <Form.Control onChange={(e) => handleChangeAsignatura(e, index)} disabled={boletin.finalizado} type="text" value={asignatura.titulo ?? ""} name="titulo" />
+                                                </FloatingLabel>
+                                            </Form.Group>
+                                            <Form.Group className="mb-2" label="juicio">
+                                                <FloatingLabel label="Ingresar juicio">
+                                                    <Form.Control className='text-area-boletin' onChange={(e) => handleChangeAsignatura(e, index)} disabled={boletin.finalizado} as="textarea" value={asignatura.juicio ?? ""} name="juicio" />
+                                                </FloatingLabel>
+                                            </Form.Group>
+                                        </Form.Group>
+                                        <hr />
+                                    </Row>
+                                ))}
+                                <Row>
+                                    <Col xs={4}>
+                                        <Button variant="secondary" className="mb-3" onClick={agregarAsignatura}>
+                                            Agregar Asignatura
+                                        </Button>
+                                        <hr />
+                                    </Col>
+                                </Row>
+
                                 {tipoUsuario != "Maestro" &&
-                                    <Form.Group className="mb-3" controlId="finalizado">
-                                        <Form.Check className='text-area-boletin' onChange={handleChange} type="switch" checked={boletin.finalizado} name="finalizado" label="Aprobar boletín" />
-                                    </Form.Group >
+                                    <Row>
+                                        <Form.Group className="mb-3" controlId="finalizado">
+                                            <Form.Check onChange={handleAprobar} type="switch" checked={boletin.finalizado} name="finalizado" label="Aprobar boletín" />
+                                        </Form.Group >
+                                    </Row>
                                 }
-                                <Button variant="primary" type="submit">
-                                    Guardar
-                                </Button>
+                                <Row>
+                                    <Col>
+                                        <Button variant="primary" type="submit">
+                                            Guardar
+                                        </Button>
+                                    </Col>
+                                </Row>
                             </Form>
                         </Col>
                     </Row>
@@ -164,6 +210,5 @@ export const EditarBoletin = () => {
                 <></>
             }
         </>
-
-    )
-}
+    );
+};
