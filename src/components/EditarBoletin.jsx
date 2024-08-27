@@ -181,7 +181,7 @@ export const EditarBoletin = () => {
                                 ))}
                                 <Row>
                                     <Col xs={4}>
-                                        <Button variant="secondary" className="mb-3" onClick={agregarAsignatura}>
+                                        <Button disabled={boletin.finalizado} variant="secondary" className="mb-3" onClick={agregarAsignatura}>
                                             Agregar Asignatura
                                         </Button>
                                         <hr />
