@@ -44,14 +44,17 @@ export const AgregarGasto = () => {
     }
 
     const validarDatosGasto = () => {
+        if (gasto.categoriaGastoId == 0) {
+            throw new Error("Debe selecciona una categoría")
+        }
         if (gasto.concepto == "") {
             throw new Error("Debe ingresar un concepto")
         }
-        if (gasto.monto <= 0) {
-            throw new Error("Debe ingresar un monto válido")
-        }
         if (gasto.fecha == "") {
             throw new Error("Debe ingresar una fecha")
+        }
+        if (gasto.monto <= 0) {
+            throw new Error("Debe ingresar un monto válido")
         }
     }
 

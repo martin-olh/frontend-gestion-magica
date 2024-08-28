@@ -22,8 +22,9 @@ export const ResumenGastos = () => {
                 const token = sessionStorage.getItem('token')
                 const gastos = await obtenerGastosCall(token)
                 if (gastos) {
-                    setListaGastos(gastos)
-                    setListaFiltrada(gastos)
+                    const gastosOrdenados = gastos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+                    setListaGastos(gastosOrdenados)
+                    setListaFiltrada(gastosOrdenados)
                 }
             } catch (error) {
                 console.error('Error al obtener gastos:', error)
