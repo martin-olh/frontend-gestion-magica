@@ -27,7 +27,7 @@ export const EditarBoletin = () => {
     const [boletin, setBoletin] = useState(null);
 
     const asignaturaVacia = {
-        id: 0,
+        id: Date.now() % 2147483647,  // Cambio para asegurar que cada asignatura tiene un ID único, haciendole % % 2147483647 (max rango int) para que no de error desde el back.
         titulo: "",
         juicio: "",
         espacioConocimientoId: 0
@@ -69,14 +69,21 @@ export const EditarBoletin = () => {
     const agregarAsignatura = () => {
         setBoletin(prevBoletin => ({
             ...prevBoletin,
-            asignaturas: [...prevBoletin.asignaturas, asignaturaVacia]
+            asignaturas: [...prevBoletin.asignaturas, { ...asignaturaVacia, id: Date.now() % 2147483647 }]
         }));
     };
 
     const handleOpenPDF = async (boletinId) => {
         try {
             const boletinData = await obtenerBoletinService(token, boletinId);
-            const blob = await pdf(<BoletinPDF boletin={boletinData} />).toBlob();
+            const blob = await pdf(
+                <BoletinPDF
+                    boletin={boletinData}
+                    espaciosConocimiento={listaEspaciosConocimiento}
+                    curso={curso}
+                    alumno={alumno}
+                />
+            ).toBlob();
             const url = URL.createObjectURL(blob);
             window.open(url, '_blank');
         } catch (error) {
@@ -88,7 +95,6 @@ export const EditarBoletin = () => {
         const { name, type, checked, value } = e.target;
         const inputValue = type === 'checkbox' ? checked : value
         setBoletin(prevBoletin => ({ ...prevBoletin, [name]: inputValue }))
-
     }
 
     const onSubmit = async (event) => {
@@ -103,13 +109,15 @@ export const EditarBoletin = () => {
         try {
             const updatedBol = { ...boletin, editado: true };
             setBoletin(updatedBol);
+            console.log(updatedBol)
             await actualizarBoletinService(idBoletin, updatedBol, token);
-            setExito("Boletin actualizado exitosamente");
             if (boletin.finalizado) {
                 handleOpenPDF(idBoletin); //Exporta PDF antes de redirigir
+                setExito("Boletin aprobado");
             }
             setAlerta('');
             if (tipoUsuario == 'Maestro') {
+                setExito("Boletin actualizado exitosamente");
                 setTimeout(() => {
                     const inscRedirect = listaInscripciones.find(i => i.id == idInscripcion);
                     navigate(`/cursos/inscripciones/${inscRedirect.cursoId}`);
@@ -148,10 +156,9 @@ export const EditarBoletin = () => {
                         <Col xs={10}>
                             <Form onSubmit={onSubmit}>
                                 {boletin.asignaturas.map((asignatura, index) => (
-                                    <Row key={`row-${index}`}>
+                                    <Row key={`row-${asignatura.id}`}>  {/* Usar un ID único aquí */}
                                         <Form.Group className="mb-3">
                                             <Form.Group className="mb-2" controlId={`espacioConocimientoId-${index}`}>
-                                                {/* <Form.Label>Asignatura</Form.Label> */}
                                                 <FloatingLabel label="Espacio de conocimiento">
                                                     <Form.Select onChange={(e) => handleChangeAsignatura(e, index)} disabled={boletin.finalizado} value={asignatura.espacioConocimientoId} name="espacioConocimientoId">
                                                         <option>Seleccionar espacio de conocimiento</option>
@@ -170,7 +177,7 @@ export const EditarBoletin = () => {
                                                     <Form.Control onChange={(e) => handleChangeAsignatura(e, index)} disabled={boletin.finalizado} type="text" value={asignatura.titulo ?? ""} name="titulo" />
                                                 </FloatingLabel>
                                             </Form.Group>
-                                            <Form.Group className="mb-2" label="juicio">
+                                            <Form.Group className="mb-2" controlId={`juicio-${index}`}>
                                                 <FloatingLabel label="Ingresar juicio">
                                                     <Form.Control className='text-area-boletin' onChange={(e) => handleChangeAsignatura(e, index)} disabled={boletin.finalizado} as="textarea" value={asignatura.juicio ?? ""} name="juicio" />
                                                 </FloatingLabel>
