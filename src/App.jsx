@@ -47,7 +47,7 @@ export const App = () => {
         <Route path="/alumnos/detalles/:id" element={<ProtectedRoute component={DetallesAlumno} allowedRoles={['Administrador', 'Maestro', 'Coordinador']} />}></Route>
         <Route path="/alumnos/editar/:id" element={<ProtectedRoute component={EditarAlumno} allowedRoles={['Administrador']} />}></Route>
         <Route path="/alumnos/estado-cuenta/:id" element={<ProtectedRoute component={EstadoDeCuentaAlumno} allowedRoles={['Administrador']} />}></Route>
-        <Route path="/alumnos/boletines/:id" element={<ProtectedRoute component={ListadoBoletinesAlumno} allowedRoles={['Administrador']} />}></Route>
+        <Route path="/alumnos/boletines/:id" element={<ProtectedRoute component={ListadoBoletinesAlumno} allowedRoles={['Administrador', 'Coordinador', 'Maestro']} />}></Route>
         <Route path="/alumnos/inasistencias/:idAlumno" element={<ProtectedRoute component={ListadoInasistenciasAlumno} allowedRoles={['Administrador', 'Coordinador']} />}></Route>
 
         <Route path="/cursos/agregar" element={<ProtectedRoute component={AgregarCurso} allowedRoles={['Administrador']} />}></Route>
