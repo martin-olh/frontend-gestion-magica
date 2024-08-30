@@ -36,8 +36,8 @@ export const DetallesAlumno = () => {
                 (<Container className="container-fluid">
 
                     <Card>
-                        {tipoUsuario !== 'Maestro' ?
-                            <Card.Header className="bg-negro-suave">
+                        {tipoUsuario === 'Administrador' ?
+                            <Card.Header className="bg-negro">
                                 <Row className="d-flex justify-content-between text-center">
                                     <Col>
                                         <Card.Link href={`/alumnos/editar/${id}`}>Editar información</Card.Link>
@@ -68,14 +68,26 @@ export const DetallesAlumno = () => {
                                     </Col>
                                 </Row>
                             </Card.Header>
-                            :
-                            <Card.Header>
-                                <Row className="d-flex justify-content-between text-center">
-                                    <Col>
-                                        <Card.Link href={`/alumnos/boletines/${id}`}>Ver boletines</Card.Link>
-                                    </Col>
-                                </Row>
-                            </Card.Header>
+                            : tipoUsuario === 'Coordinador' ?
+                                <Card.Header className="bg-negro">
+                                    <Row className="d-flex justify-content-between text-center">
+                                        <Col>
+                                            <Card.Link href={`/alumnos/boletines/${id}`}>Ver boletines</Card.Link>
+                                        </Col>
+                                        <Col className="blanco"><span>|</span></Col>
+                                        <Col>
+                                            <Card.Link href={`/alumnos/inasistencias/${id}`}>Ver inasistencias</Card.Link>
+                                        </Col>
+                                    </Row>
+                                </Card.Header>
+                                :
+                                <Card.Header className="bg-negro">
+                                    <Row className="d-flex justify-content-between text-center">
+                                        <Col>
+                                            <Card.Link href={`/alumnos/boletines/${id}`}>Ver boletines</Card.Link>
+                                        </Col>
+                                    </Row>
+                                </Card.Header>
                         }
                         <Card.Body>
 
