@@ -71,6 +71,11 @@ export const ListadoAlumno = () => {
         return cursoActivo ? `${cursoActivo.anio} - ${cursoActivo.grado} - ${cursoActivo.tipoCurso}` : <span className="text-danger fw-bold">Sin inscripción</span>
     }
 
+    const formatCedula = (cedula) => {
+        const str = cedula.toString()
+        return str.slice(0, -1) + '-' + str.slice(-1)
+    }
+
     const handleEditar = (id) => {
         navigate(`/alumnos/editar/${id}`)
     }
@@ -101,7 +106,7 @@ export const ListadoAlumno = () => {
                             <th>Nombre</th>
                             <th>Cédula</th>
                             <th>Curso inscripto</th>
-                            <th></th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
 
@@ -110,7 +115,7 @@ export const ListadoAlumno = () => {
                             <tr key={a.id}>
                                 <td>{a.apellido}</td>
                                 <td>{a.nombre}</td>
-                                <td>{a.cedula}</td>
+                                <td>{formatCedula(a.cedula)}</td>
                                 <td>{nombreCurso(a.id)}</td>
 
                                 <td>

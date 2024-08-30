@@ -50,7 +50,7 @@ export const ListadoUsuarios = () => {
                             <th>Dirección</th>
                             <th>Teléfono</th>
                             <th>Tipo de usuario</th>
-                            <th></th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
 

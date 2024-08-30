@@ -19,19 +19,19 @@ export const Header = () => {
         navigate(`/usuarios/settings/${id}`)
     }
 
-
-
     return (
         <>
             <div className='header'>
                 <Navbar className="bg-violeta">
                     <Container className='justify-content-between'>
                         <Navbar.Brand >
-                            <img
-                                src={logoHeader}
-                                height="50"
-                                className="d-inline-block align-top"
-                            />
+                            <a href="/">
+                                <img
+                                    src={logoHeader}
+                                    height="50"
+                                    className="d-inline-block align-top"
+                                />
+                            </a>
                         </Navbar.Brand>
                         <div>
                             <a href="" onClick={editarUsuario} className='blanco p-2' style={{ textDecoration: "none" }}><img src={settings} height="25" /></a>

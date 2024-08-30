@@ -107,7 +107,7 @@ export const ListadoCursos = () => {
                             <th>Maestro Sec.</th>
                             <th>Teacher</th>
                             <th>Maestro Ed. Fis.</th>
-                            <th></th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
 
@@ -135,7 +135,7 @@ export const ListadoCursos = () => {
                                     {tipoUsuario === "Coordinador" ?
                                         <td>
                                             <Button className='btn-edit' title="Ver alumnos" onClick={() => handleAlumnos(c.id)}> <img src={imgAlumnos} alt="Alumnos" /></Button>
-                                            <Button title="Inasistencias" onClick={() => handleInasistencias(c.id)}><img src={imgInasistencias} alt="Inasistencias" /></Button>
+                                            <Button className='btn-edit' title="Inasistencias" onClick={() => handleInasistencias(c.id)}><img src={imgInasistencias} alt="Inasistencias" /></Button>
                                         </td>
                                         :
                                         <></>

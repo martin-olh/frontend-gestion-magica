@@ -69,7 +69,7 @@ export const TablaGastos = ({ listaFiltrada }) => {
                                 <th>Categoría</th>
                                 <th>Concepto</th>
                                 <th>Monto</th>
-                                <th></th>
+                                <th>Eliminar</th>
                             </tr>
                         </thead>
                         <tbody>
