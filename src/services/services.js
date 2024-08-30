@@ -684,6 +684,51 @@ export const aumentarCuotasIPCService = (token, porcentaje) => {
         )
 }
 
+export const modificarCuotaInscripcionService = (token, i, idInscripcion) => {
+
+    let myHeaders = new Headers()
+    myHeaders.append("Content-Type", "application/json")
+    myHeaders.append("Authorization", `Bearer ${token}`)
+
+    let raw = JSON.stringify({
+        "id": i.id,
+        "fecha": i.fecha,
+        "cursoId": i.cursoId,
+        "montoCuota": i.montoCuota,
+        "dobleHorario": i.dobleHorario,
+        "observaciones": i.observaciones,
+        "piscina": i.piscina,
+        "alumnoId": i.alumnoId,
+        "boletin1Id": i.boletin1Id,
+        "boletin2Id": i.boletin2Id,
+        "boletin3Id": i.boletin3Id,
+        "activa": i.activa
+    })
+
+    let requestOptions = {
+        method: 'PUT',
+        headers: myHeaders,
+        body: raw
+    }
+
+    return fetch(`${urlBase}/inscripciones/${idInscripcion}`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.mensaje ? error.mensaje : "Hubo un error")
+                })
+            }
+            return response.json()
+        })
+        .then(result => result)
+        .catch((error) => {
+            throw new Error(error ? error : "Hubo un error")
+        }
+        )
+}
+
+
+
 //PAGOS
 //---------------------------------------
 

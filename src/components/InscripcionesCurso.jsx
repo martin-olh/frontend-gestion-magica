@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { Container, Table } from 'react-bootstrap'
+import { Button, Container, Table } from 'react-bootstrap'
 import { Alertas } from './Alertas'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import imgEdit from '/src/assets/edit.svg'
 
 export const InscripcionesCurso = () => {
 
     const { id } = useParams()
+
+    const navigate = useNavigate()
 
     const [listaInscCurso, setListaInscCurso] = useState(null)
     const [cursoActual, setCursoActual] = useState({ anio: '', grado: '', tipoCurso: '' })
@@ -40,6 +43,10 @@ export const InscripcionesCurso = () => {
         return new Intl.NumberFormat('es-UY', { style: 'currency', currency: 'UYU' }).format(monto);
     }
 
+    const handleModificar = (id) => {
+        navigate(`/inscripciones/modificarCuota/${id}`)
+    }
+
 
     return (
         <>
@@ -64,6 +71,10 @@ export const InscripcionesCurso = () => {
                                         <th>Doble Horario</th>
                                         <th>Piscina</th>
                                         <th>Monto cuota</th>
+                                        {
+                                            tipoUsuario === "Administrador" &&
+                                            <th>Modificar cuota</th>
+                                        }
                                     </tr>
                                 </thead>
 
@@ -76,6 +87,11 @@ export const InscripcionesCurso = () => {
                                             <td>{i.dobleHorario ? '✅' : '❌'}</td>
                                             <td>{i.piscina ? '✅' : '❌'}</td>
                                             <td>{formatMonto(i.montoCuota)}</td>
+                                            {
+                                                tipoUsuario === "Administrador" &&
+                                                <td><Button className='btn-edit' title="Modificar" onClick={() => handleModificar(i.id)}><img src={imgEdit} alt="Modificar" /></Button></td>
+
+                                            }
                                         </tr>
                                     )}
                                 </tbody>
