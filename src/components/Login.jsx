@@ -9,6 +9,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { Alertas } from './Alertas'
 import logo from '/src/assets/logo.jpg'
+import { Spinner } from 'react-bootstrap'
 
 export const Login = () => {
 
@@ -17,6 +18,7 @@ export const Login = () => {
     const [user, setUser] = useState('')
     const [pass, setPass] = useState('')
     const [alerta, setAlerta] = useState('')
+    const [loading, setLoading] = useState(false)
 
     const handleUserChange = (e) => {
         setUser(e.target.value)
@@ -30,6 +32,7 @@ export const Login = () => {
 
     const onSubmit = async (event) => {
         event.preventDefault()
+        setLoading(true)
 
         try {
             const resultado = await loginService(user, pass)
@@ -49,6 +52,7 @@ export const Login = () => {
             navigate('/dashboard')
         } catch (error) {
             setAlerta(error.message)
+            setLoading(false)
         }
     }
 
@@ -78,9 +82,10 @@ export const Login = () => {
                                     <Form.Label>Contraseña</Form.Label>
                                     <Form.Control onChange={handlePassChange} type="password" placeholder="Ingrese contraseña" />
                                 </Form.Group>
-                                <Button className='bg-naranja' variant="primary" type="submit" disabled={loginDisabled}>
-                                    Ingresar
+                                <Button className='bg-naranja' variant="primary" type="submit" disabled={loginDisabled || loading}>
+                                    {loading ? <Spinner animation="border" size="sm" /> : "Ingresar"}
                                 </Button>
+
                             </Form>
 
                         </Card.Body>

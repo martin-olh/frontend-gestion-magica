@@ -141,6 +141,10 @@ a {
     align-self: flex-start;
 }
 
+.welcome {
+    text-align: center;
+}
+
 .accordion {
     --bs-accordion-color: var(--blanco);
     --bs-accordion-bg: var(--negro);
