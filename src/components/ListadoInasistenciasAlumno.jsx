@@ -28,7 +28,6 @@ export const ListadoInasistenciasAlumno = () => {
             setInasistenciasAlumno(inasistencias)
         }
         fetchInasistencias()
-        console.log("Inasistencias", inasistenciasAlumno)
 
     }, [listaAlumnos, idAlumno]);
 

@@ -38,24 +38,23 @@ export const AgregarInasistencias = () => {
     }, [listaCursos, listaInscripciones, listaAlumnos])
 
     const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
+        const { name, value, type, checked } = e.target
         if (type === 'date') {
             setInasistenciasDia(prevState => ({
                 ...prevState,
                 fecha: value
-            }));
-            console.log("inasDia", inasistenciasDia)
+            }))
         } else if (type === 'checkbox') {
-            const inscripcionId = parseInt(name);
+            const inscripcionId = parseInt(name)
             setInasistenciasDia(prevState => {
                 const newInscripcionesId = checked
                     ? [...prevState.inscripcionesId, inscripcionId]
-                    : prevState.inscripcionesId.filter(id => id !== inscripcionId);
+                    : prevState.inscripcionesId.filter(id => id !== inscripcionId)
                 return {
                     ...prevState,
                     inscripcionesId: newInscripcionesId
-                };
-            });
+                }
+            })
         }
     }
 
@@ -70,6 +69,7 @@ export const AgregarInasistencias = () => {
             validarDatosInasistencias()
             const resultado = await agregarInasistenciasDiaService(sessionStorage.getItem("token"), inasistenciasDia)
             setExito("Inasistencias registradas exitosamente")
+            setAlerta('')
             setInasistenciasDia(inasistenciasDiaVacio)
 
         } catch (error) {
