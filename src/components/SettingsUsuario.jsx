@@ -44,31 +44,31 @@ export const SettingsUsuario = () => {
         event.preventDefault()
         try {
             if (usuario.email == "") {
-                throw new Error("El email no puede estar vacío")
+                throw new Error("El email no puede estar vacío.")
             }
             if (usuario.password == "") {
-                throw new Error("La contraseña no puede estar vacía")
+                throw new Error("La contraseña no puede estar vacía.")
             }
             if (usuario.password.length < 8) {
-                throw new Error("La contraseña debe tener al menos 8 caracteres")
+                throw new Error("La contraseña debe tener al menos 8 caracteres.")
             }
             if (usuario.password !== password2) {
-                throw new Error("Las contraseñas no coinciden")
+                throw new Error("Las contraseñas no coinciden.")
             }
             if (usuario.nombre == "") {
-                throw new Error("El nombre no puede estar vacío")
+                throw new Error("El nombre no puede estar vacío.")
             }
             if (usuario.apellido == "") {
-                throw new Error("El apellido no puede estar vacío")
+                throw new Error("El apellido no puede estar vacío.")
             }
             if (usuario.tipoUsuario == "") {
-                throw new Error("El tipo de usuario no puede estar vacío")
+                throw new Error("El tipo de usuario no puede estar vacío.")
             }
 
             await actualizarUsuarioService(id, usuario, sessionStorage.getItem('token'))
             dispatch(actualizarUsuario(usuario))
             actualizarSession(usuario)
-            toast.success("Usuario actualizado con éxito", { position: "top-center", theme: "dark", })
+            toast.success("Usuario actualizado con éxito.", { position: "top-center", theme: "dark", })
             setTimeout(() => {
                 navigate(`/`)
             }, 2000)
