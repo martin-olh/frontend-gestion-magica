@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Container, Table, Form, Button } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { Alertas } from './Alertas'
 import { agregarInasistenciasDiaService } from '../services/services'
+import { ToastContainer, toast } from 'react-toastify'
 
 export const AgregarInasistencias = () => {
 
@@ -15,9 +15,6 @@ export const AgregarInasistencias = () => {
 
     const [curso, setCurso] = useState()
     const [listaInscCurso, setListaInscCurso] = useState()
-
-    const [alerta, setAlerta] = useState('')
-    const [exito, setExito] = useState('')
 
     const inasistenciasDiaVacio = {
         fecha: "",
@@ -68,13 +65,10 @@ export const AgregarInasistencias = () => {
         try {
             validarDatosInasistencias()
             const resultado = await agregarInasistenciasDiaService(sessionStorage.getItem("token"), inasistenciasDia)
-            setExito("Inasistencias registradas exitosamente")
-            setAlerta('')
+            toast.success("Inasistencias registradas exitosamente", { position: "top-center", theme: "dark", })
             setInasistenciasDia(inasistenciasDiaVacio)
-
         } catch (error) {
-            setAlerta(error.message)
-            setExito("")
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 
@@ -91,7 +85,7 @@ export const AgregarInasistencias = () => {
     return (
         <>
             <Container>
-                <Alertas error={alerta} exito={exito}></Alertas>
+                <ToastContainer autoClose={2500} />
                 {curso ?
                     <>
                         <h2>Registrar inasistencias</h2>

@@ -1,53 +1,53 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Container, Row, Table } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { Alertas } from './Alertas';
-import pdfIcon from '/src/assets/pdf-icon.svg';
-import { obtenerBoletinService } from '../services/services';
-import { PDFViewer, pdf } from '@react-pdf/renderer';
-import BoletinPDF from './BoletinPDF';
+import React, { useEffect, useState } from 'react'
+import { Button, Container, Row, Table } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import pdfIcon from '/src/assets/pdf-icon.svg'
+import { obtenerBoletinService } from '../services/services'
+import { PDFViewer, pdf } from '@react-pdf/renderer'
+import BoletinPDF from './BoletinPDF'
+import { ToastContainer, toast } from 'react-toastify'
+
 
 export const ListadoBoletinesAlumno = () => {
-    const { id } = useParams();
-    const [alerta, setAlerta] = useState('');
+    const { id } = useParams()
 
     const token = sessionStorage.getItem('token')
 
-    const listaInscripciones = useSelector(store => store.listaInscripciones);
-    const listaAlumnos = useSelector(store => store.listaAlumnos);
-    const listaCursos = useSelector(store => store.listaCursos);
+    const listaInscripciones = useSelector(store => store.listaInscripciones)
+    const listaAlumnos = useSelector(store => store.listaAlumnos)
+    const listaCursos = useSelector(store => store.listaCursos)
     const listaEspaciosConocimiento = useSelector(store => store.listaEspaciosConocimiento)
-    const [inscAlumno, setInscAlumno] = useState([]);
-    const [alumno, setAlumno] = useState();
-    const [boletin, setBoletin] = useState(null);
+    const [inscAlumno, setInscAlumno] = useState([])
+    const [alumno, setAlumno] = useState()
+    const [boletin, setBoletin] = useState(null)
 
     useEffect(() => {
-        const inscFind = listaInscripciones.filter(i => i.alumnoId == id);
+        const inscFind = listaInscripciones.filter(i => i.alumnoId == id)
         if (inscFind && inscFind.length > 0) {
-            setInscAlumno(inscFind);
+            setInscAlumno(inscFind)
         }
-        const alumnoFind = listaAlumnos.find(a => a.id == id);
+        const alumnoFind = listaAlumnos.find(a => a.id == id)
         if (alumnoFind) {
-            setAlumno(alumnoFind);
+            setAlumno(alumnoFind)
         }
-    }, [listaInscripciones, listaAlumnos, listaCursos, id]);
+    }, [listaInscripciones, listaAlumnos, listaCursos, id])
 
     const nombreCurso = (cursoId) => {
-        let curso = null;
-        curso = listaCursos.find(c => c.id == cursoId);
-        return curso ? `${curso.anio} - ${curso.grado} - ${curso.tipoCurso}` : '';
-    };
+        let curso = null
+        curso = listaCursos.find(c => c.id == cursoId)
+        return curso ? `${curso.anio} - ${curso.grado} - ${curso.tipoCurso}` : ''
+    }
 
     const tipoCurso = (cursoId) => {
-        let curso = null;
-        curso = listaCursos.find(c => c.id == cursoId);
-        return curso ? `${curso.tipoCurso}` : '';
+        let curso = null
+        curso = listaCursos.find(c => c.id == cursoId)
+        return curso ? `${curso.tipoCurso}` : ''
     }
 
     const handleOpenPDF = async (boletinId, cursoId) => {
         try {
-            const boletinData = await obtenerBoletinService(token, boletinId);
+            const boletinData = await obtenerBoletinService(token, boletinId)
             const blob = await pdf(
                 <BoletinPDF
                     boletin={boletinData}
@@ -55,17 +55,17 @@ export const ListadoBoletinesAlumno = () => {
                     curso={listaCursos.find(c => c.id == cursoId)}
                     alumno={alumno}
                 />
-            ).toBlob();
-            const url = URL.createObjectURL(blob);
-            window.open(url, '_blank');
+            ).toBlob()
+            const url = URL.createObjectURL(blob)
+            window.open(url, '_blank')
         } catch (error) {
-            setAlerta(error.message);
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
-    };
+    }
 
     return (
         <Container>
-            <Alertas error={alerta}></Alertas>
+            <ToastContainer autoClose={2500} />
             <h2>Boletines</h2>
             {alumno ? <p><strong>{`${alumno.nombre} ${alumno.apellido}`}</strong></p> : <></>}
             <Table>

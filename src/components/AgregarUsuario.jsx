@@ -4,16 +4,13 @@ import { useDispatch } from 'react-redux'
 import { agregarUsuario } from '../redux/features/usuariosSlice'
 import { agregarUsuarioService } from '../services/services'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
-import { Alertas } from './Alertas'
 import { useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
 
 export const AgregarUsuario = () => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
-    const [alerta, setAlerta] = useState('')
-    const [exito, setExito] = useState('')
 
     const usuarioVacio = {
         id: 0,
@@ -30,8 +27,6 @@ export const AgregarUsuario = () => {
 
     const handleChange = (e) => {
         setUsuario({ ...usuario, [e.target.name]: e.target.value })
-        setAlerta('')
-        setExito('')
     }
 
     const onSubmit = async (event) => {
@@ -43,17 +38,14 @@ export const AgregarUsuario = () => {
             usuario.id = resultado.id //guardo id del usuario creado, devuelto por la API
             dispatch(agregarUsuario(usuario))
             setUsuario(usuarioVacio)
-            setExito("Usuario creado con éxito")
-            setAlerta('')
+            toast.success("Usuario creado con éxito", { position: "top-center", theme: "dark", })
             setTimeout(() => {
                 navigate(`/usuarios/listado/`)
             }, 2000)
 
 
         } catch (error) {
-            setAlerta(error.message)
-            setExito('')
-
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 
@@ -80,11 +72,9 @@ export const AgregarUsuario = () => {
 
     return (
         <Container className='container-fluid'>
+            <ToastContainer autoClose={2500} />
             <Row>
                 <h2>Crear usuario</h2>
-            </Row>
-            <Row>
-                <Alertas error={alerta} exito={exito}></Alertas>
             </Row>
             <Row>
                 <Col xs={12} md={10} lg={10}>

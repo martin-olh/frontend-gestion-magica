@@ -3,8 +3,9 @@ import { useDispatch } from 'react-redux'
 import { agregarAlumno } from '../redux/features/alumnosSlice'
 import { agregarAlumnoService } from '../services/services'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
-import { Alertas } from './Alertas'
 import { useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
+
 
 
 export const AgregarAlumno = () => {
@@ -12,8 +13,6 @@ export const AgregarAlumno = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const [alerta, setAlerta] = useState('')
-    const [exito, setExito] = useState('')
     const [seleccion, setSeleccion] = useState('basica')
 
     const alumnoVacio = {
@@ -80,13 +79,11 @@ export const AgregarAlumno = () => {
 
     const handleChange = (e) => {
         setAlumno({ ...alumno, [e.target.name]: e.target.value })
-        setAlerta('')
-        setExito('')
     }
 
     const handleChangeInfoDet = (e) => {
-        const { name, type, checked, value } = e.target;
-        const inputValue = type === 'checkbox' ? checked : value;
+        const { name, type, checked, value } = e.target
+        const inputValue = type === 'checkbox' ? checked : value
 
         setInfoDetalleAux(prevState => ({
             ...prevState,
@@ -99,9 +96,6 @@ export const AgregarAlumno = () => {
                 [name]: inputValue
             }
         }))
-
-        setAlerta('');
-        setExito('');
     }
 
     const handleChangeResp0 = (e) => {
@@ -109,17 +103,15 @@ export const AgregarAlumno = () => {
         const nameBase = name.split('.')[1]
 
         // Actualiza el objeto auxiliar del responsable 0
-        const updatedResponsable0 = { ...responsable0Aux, [nameBase]: value };
-        setResponsable0Aux(updatedResponsable0);
+        const updatedResponsable0 = { ...responsable0Aux, [nameBase]: value }
+        setResponsable0Aux(updatedResponsable0)
 
         // Crea una nueva copia del array responsables, actualiza el índice 0 con los nuevos datos
-        const updatedResponsables = [...alumno.responsables];
-        updatedResponsables[0] = updatedResponsable0;
+        const updatedResponsables = [...alumno.responsables]
+        updatedResponsables[0] = updatedResponsable0
 
         // Actualiza el estado de alumno con los nuevos responsables
-        setAlumno({ ...alumno, responsables: updatedResponsables });
-        setAlerta('')
-        setExito('')
+        setAlumno({ ...alumno, responsables: updatedResponsables })
     }
 
     const handleChangeResp1 = (e) => {
@@ -128,16 +120,14 @@ export const AgregarAlumno = () => {
 
         // Actualiza el objeto auxiliar del responsable 0
         const updatedResponsable1 = { ...responsable1Aux, [nameBase]: value };
-        setResponsable1Aux(updatedResponsable1);
+        setResponsable1Aux(updatedResponsable1)
 
         // Crea una nueva copia del array responsables, actualiza el índice 0 con los nuevos datos
-        const updatedResponsables = [...alumno.responsables];
-        updatedResponsables[1] = updatedResponsable1;
+        const updatedResponsables = [...alumno.responsables]
+        updatedResponsables[1] = updatedResponsable1
 
         // Actualiza el estado de alumno con los nuevos responsables
-        setAlumno({ ...alumno, responsables: updatedResponsables });
-        setAlerta('')
-        setExito('')
+        setAlumno({ ...alumno, responsables: updatedResponsables })
     }
 
     const onSubmit = async (event) => {
@@ -150,20 +140,21 @@ export const AgregarAlumno = () => {
                 }
             }
             const resultado = await agregarAlumnoService(sessionStorage.getItem('token'), alumno)
-            alumno.id = resultado.id //guardo id del alumno creado, devuelto por la API            
+            alumno.id = resultado.id //guardo id del alumno creado, devuelto por la API
             dispatch(agregarAlumno(alumno))
             setAlumno(alumnoVacio)
             setInfoDetalleAux(alumnoVacio.infoDetalle)
             setResponsable0Aux(alumnoVacio.responsables[0])
             setResponsable1Aux(alumnoVacio.responsables[1])
-            setExito("Alumno registrado exitosamente")
-            setAlerta('')
+
+            toast.success("Alumno registrado exitosamente", { position: "top-center", theme: "dark", })
+
+
             setTimeout(() => {
                 navigate(`/inscripciones/agregar/${alumno.id}`)
             }, 2000)
         } catch (error) {
-            setAlerta(error.message)
-            setExito('')
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 
@@ -214,11 +205,9 @@ export const AgregarAlumno = () => {
 
     return (
         <Container className='container-fluid'>
+            <ToastContainer autoClose={2500} />
             <Row className='mb-3'>
                 <h2>Registrar alumno</h2>
-            </Row>
-            <Row>
-                <Alertas error={alerta} exito={exito}></Alertas>
             </Row>
             <Row className='mb-3'>
                 <Col>

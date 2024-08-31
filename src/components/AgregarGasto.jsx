@@ -1,13 +1,10 @@
 import React, { useState } from 'react'
-import { Alertas } from './Alertas'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { agregarGastoService } from '../services/services'
+import { ToastContainer, toast } from 'react-toastify'
 
 export const AgregarGasto = () => {
-
-    const [alerta, setAlerta] = useState('')
-    const [exito, setExito] = useState('')
 
     const gastoVacio = {
         id: 0,
@@ -25,8 +22,6 @@ export const AgregarGasto = () => {
         const { name, value } = e.target;
 
         setGasto(prevGasto => ({ ...prevGasto, [name]: value }))
-        setAlerta('')
-        setExito('')
     }
 
     const onSubmit = async (event) => {
@@ -34,12 +29,10 @@ export const AgregarGasto = () => {
         try {
             validarDatosGasto()
             const resultado = await agregarGastoService(sessionStorage.getItem('token'), gasto)
-            setExito("Gasto registrado correctamente")
-            setAlerta('')
+            toast.success("Gasto registrado correctamente", { position: "top-center", theme: "dark", })
             setGasto(gastoVacio)
         } catch (error) {
-            setAlerta(error.message)
-            setExito('')
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 
@@ -61,13 +54,10 @@ export const AgregarGasto = () => {
 
     return (
         <Container className='container-fluid'>
+            <ToastContainer autoClose={2500} />
             <Row>
                 <h2>Registrar gasto</h2>
             </Row>
-            <Row>
-                <Alertas error={alerta} exito={exito}></Alertas>
-            </Row>
-
             <Row>
                 <Col xs={12} md={10} lg={10}>
                     <Form onSubmit={onSubmit}>

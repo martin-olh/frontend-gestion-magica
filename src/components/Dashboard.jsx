@@ -4,7 +4,6 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import { Col, Row } from 'react-bootstrap'
 import { Header } from './Header'
 import { Menu } from './Menu'
-import { Alertas } from './Alertas'
 import {
     obtenerUsuariosService,
     obtenerAlumnosService,
@@ -21,12 +20,11 @@ import { cargaInicialCursos } from '../redux/features/cursosSlice'
 import { cargaInicialPagos } from '../redux/features/pagosSlice'
 import { cargaInicialCategorias } from '../redux/features/categoriasSlice'
 import { cargaInicialEspaciosConocimiento } from '../redux/features/espaciosConocimientoSlice'
-
+import { ToastContainer, toast } from 'react-toastify'
 
 export const Dashboard = () => {
 
     const [logged, setLogged] = useState(undefined)
-    const [alerta, setAlerta] = useState('')
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -60,7 +58,7 @@ export const Dashboard = () => {
             dispatch(cargaInicialUsuarios(usuarios))
 
         } catch (error) {
-            setAlerta(error.mensaje)
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 
@@ -70,7 +68,7 @@ export const Dashboard = () => {
             dispatch(cargaInicialAlumnos(alumnos))
 
         } catch (error) {
-            setAlerta(error.mensaje)
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 
@@ -79,7 +77,7 @@ export const Dashboard = () => {
             const cursos = await obtenerCursosService(token)
             dispatch(cargaInicialCursos(cursos))
         } catch (error) {
-            setAlerta(error.mensaje)
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 
@@ -88,7 +86,7 @@ export const Dashboard = () => {
             const inscripciones = await obtenerInscripcionesService(token)
             dispatch(cargaInicialInscripciones(inscripciones))
         } catch (error) {
-            setAlerta(error.mensaje)
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 
@@ -97,7 +95,7 @@ export const Dashboard = () => {
             const pagos = await obtenerPagosService(token)
             dispatch(cargaInicialPagos(pagos))
         } catch (error) {
-            setAlerta(error.mensaje)
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 
@@ -107,7 +105,7 @@ export const Dashboard = () => {
             dispatch(cargaInicialCategorias(cat))
 
         } catch (error) {
-            setAlerta(error.mensaje)
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 
@@ -117,7 +115,7 @@ export const Dashboard = () => {
             dispatch(cargaInicialEspaciosConocimiento(espCon))
 
         } catch (error) {
-            setAlerta(error.mensaje)
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 
@@ -130,11 +128,11 @@ export const Dashboard = () => {
                         <>
                             <Header></Header>
                             <Row className='justify-content-center contenido'>
+                                <ToastContainer autoClose={2500} />
                                 <Col xs={2}>
                                     <Menu></Menu>
                                 </Col>
                                 <Col className='mt-2'>
-                                    <Alertas error={alerta}></Alertas>
                                     <Outlet></Outlet>
                                 </Col>
                             </Row>

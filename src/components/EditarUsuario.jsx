@@ -4,7 +4,7 @@ import { actualizarUsuario } from '../redux/features/usuariosSlice'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import { actualizarUsuarioService } from '../services/services'
-import { Alertas } from './Alertas'
+import { ToastContainer, toast } from 'react-toastify'
 
 export const EditarUsuario = () => {
 
@@ -38,9 +38,6 @@ export const EditarUsuario = () => {
 
     const handleChange = (e) => {
         setUsuario({ ...usuario, [e.target.name]: e.target.value })
-        setAlerta('')
-        setExito('')
-        console.log(usuario)
     }
 
     const onSubmit = async (event) => {
@@ -49,12 +46,9 @@ export const EditarUsuario = () => {
             validarDatosUsuario()
             await actualizarUsuarioService(id, usuario, sessionStorage.getItem('token'))
             dispatch(actualizarUsuario(usuario))
-            setExito("Usuario actualizado con éxito")
-            setAlerta('')
-
+            toast.success("Usuario actualizado con éxito", { position: "top-center", theme: "dark", })
         } catch (error) {
-            setAlerta(error.message)
-            setExito('')
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 
@@ -77,12 +71,11 @@ export const EditarUsuario = () => {
     return (
 
         <Container className='container-fluid'>
+            <ToastContainer autoClose={2500} />
             <Row>
                 <h2>Editar usuario</h2>
             </Row>
-            <Row>
-                <Alertas error={alerta} exito={exito}></Alertas>
-            </Row>
+
             <Row>
                 <Col xs={12} md={10} lg={10}>
                     <Form onSubmit={onSubmit}>

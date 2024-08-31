@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Form, Row } from "react-bootstrap"
 import { useDispatch, useSelector } from 'react-redux'
-import { Alertas } from "./Alertas"
 import { useNavigate, useParams } from 'react-router-dom'
 import { agregarPago } from '../redux/features/pagosSlice'
 import { agregarPagoService } from '../services/services'
 import { actualizarInscripcion } from '../redux/features/inscripcionesSlice'
+import { ToastContainer, toast } from 'react-toastify'
 
 export const AgregarPago = () => {
 
   const { idAlumno } = useParams()
-
-  const [alerta, setAlerta] = useState('')
-  const [exito, setExito] = useState('')
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -57,8 +54,6 @@ export const AgregarPago = () => {
     const { name, type, checked, value } = e.target;
     const inputValue = type === 'checkbox' ? checked : value;
     setPago(prevPago => ({ ...prevPago, [name]: inputValue }))
-    setAlerta('')
-    setExito('')
   }
 
   const onSubmit = async (event) => {
@@ -75,14 +70,12 @@ export const AgregarPago = () => {
 
       dispatch(actualizarInscripcion(updatedInsc))
       dispatch(agregarPago(pago))
-      setExito("Pago registrado correctamente")
-      setAlerta('')
+      toast.success("Pago registrado correctamente", { position: "top-center", theme: "dark", })
       setTimeout(() => {
         navigate(`/alumnos/estado-cuenta/${idAlumno}`)
       }, 2000)
     } catch (error) {
-      setAlerta(error.message)
-      setExito('')
+      toast.error(error.message, { position: "top-center", theme: "dark", })
     }
   }
 
@@ -104,11 +97,9 @@ export const AgregarPago = () => {
 
   return (
     <Container className='container-fluid'>
+      <ToastContainer autoClose={2500} />
       <Row>
         <h2>Registrar pago</h2>
-      </Row>
-      <Row>
-        <Alertas error={alerta} exito={exito}></Alertas>
       </Row>
 
       <Row>

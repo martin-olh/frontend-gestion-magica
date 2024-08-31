@@ -1,12 +1,10 @@
 import React, { useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
-import { Alertas } from './Alertas'
 import { aumentarCuotasIPCService } from '../services/services'
+import { ToastContainer, toast } from 'react-toastify'
 
 export const AumentarCuotasIPC = () => {
 
-    const [alerta, setAlerta] = useState('')
-    const [exito, setExito] = useState('')
     const [porcentaje, setPorcentaje] = useState(0)
 
     const handleChange = (e) => {
@@ -21,12 +19,10 @@ export const AumentarCuotasIPC = () => {
             const confirmar = window.confirm("Confirmar aumento de cuotas?")
             if (confirmar) {
                 await aumentarCuotasIPCService(sessionStorage.getItem('token'), porcentaje)
-                setExito("Incremento aplicado exitosamente")
-                setAlerta('')
+                toast.success("Incremento aplicado exitosamente", { position: "top-center", theme: "dark", })
             }
         } catch (error) {
-            setAlerta(error.message)
-            setExito('')
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 
@@ -34,13 +30,10 @@ export const AumentarCuotasIPC = () => {
     return (
 
         <Container className='container-fluid'>
+            <ToastContainer autoClose={2500} />
             <Row>
                 <h2>Aumentar cuotas - Ajuste IPC</h2>
             </Row>
-            <Row>
-                <Alertas error={alerta} exito={exito}></Alertas>
-            </Row>
-
             <Row>
                 <Col xs={4}>
                     <Form onSubmit={onSubmit}>

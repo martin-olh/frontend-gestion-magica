@@ -2,14 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { Accordion, Container, Row, Table } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { Alertas } from './Alertas'
 
 export const EstadoDeCuentaAlumno = () => {
 
     const { id } = useParams()
-
-    const [alerta, setAlerta] = useState('')
-    const [exito, setExito] = useState('')
 
     const listaAlumnos = useSelector(store => store.listaAlumnos)
     const listaInscripciones = useSelector(store => store.listaInscripciones)
@@ -62,9 +58,6 @@ export const EstadoDeCuentaAlumno = () => {
                 </Row>
                 <Row >
                     <p><a href={`../../alumnos/detalles/${id}`}>{`${alumno.nombre} ${alumno.apellido} `}</a></p>
-                </Row>
-                <Row>
-                    <Alertas error={alerta} exito={exito}></Alertas>
                 </Row>
                 {inscAlumno.length > 0 ?
                     <Accordion className='estado-cuenta-body' defaultActiveKey={inscAlumno.length > 0 ? inscAlumno[0].id.toString() : "0"}>

@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 export const ListadoInasistenciasAlumno = () => {
 
     const { idAlumno } = useParams();
-    const [alerta, setAlerta] = useState('');
 
     const token = sessionStorage.getItem('token')
 

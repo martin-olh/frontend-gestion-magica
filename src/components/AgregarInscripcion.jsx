@@ -2,18 +2,14 @@ import { useEffect, useState } from "react"
 import { Button, Col, Container, Form, Row } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { agregarInscripcionService } from "../services/services"
-import { Alertas } from "./Alertas"
 import { useNavigate, useParams } from "react-router-dom"
 import { actualizarInscripcion, agregarInscripcion } from "../redux/features/inscripcionesSlice"
+import { ToastContainer, toast } from 'react-toastify'
 
 
 export const AgregarInscripcion = () => {
 
     const { idAlumno } = useParams()
-
-    const [alerta, setAlerta] = useState('')
-    const [exito, setExito] = useState('')
-
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -47,23 +43,17 @@ export const AgregarInscripcion = () => {
 
     useEffect(() => {
         const alumnoFind = listaAlumnos.find(a => a.id == idAlumno)
-        console.log('alumnoFind', alumnoFind)
         if (alumnoFind) {
             setAlumno(alumnoFind)
             const inscFind = listaInscripciones.find(i => i.alumnoId == alumnoFind.id && i.activa)
-            console.log('insc Find', inscFind)
             if (inscFind) {
                 setUltimaInsc(inscFind)
                 const cursoFind = listaCursos.find(c => c.id == inscFind.cursoId)
                 if (cursoFind) {
-                    console.log('cursoFind', cursoFind)
-
                     setCursoActivo(cursoFind)
                 }
             }
-
         }
-
     }, [listaAlumnos, listaCursos, listaInscripciones, idAlumno])
 
     const handleChange = (e) => {
@@ -71,8 +61,6 @@ export const AgregarInscripcion = () => {
         const inputValue = type === 'checkbox' ? checked : value;
 
         setInscripcion({ ...inscripcion, [name]: inputValue })
-        setAlerta('')
-        setExito('')
         if (name == "cursoId") {
             seleccionarCurso(value)
         }
@@ -100,14 +88,12 @@ export const AgregarInscripcion = () => {
             setUltimaInsc(nuevaUltimaInsc)
             dispatch(actualizarInscripcion(nuevaUltimaInsc))
             dispatch(agregarInscripcion(inscripcion))
-            setExito("Alumno inscripto correctamente")
-            setAlerta('')
+            toast.success("Alumno inscripto correctamente", { position: "top-center", theme: "dark", })
             setTimeout(() => {
                 navigate(`/alumnos/listado/`)
             }, 2000)
         } catch (error) {
-            setAlerta(error.message)
-            setExito('')
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 
@@ -126,11 +112,9 @@ export const AgregarInscripcion = () => {
 
     return (
         <Container className='container-fluid'>
+            <ToastContainer autoClose={2500} />
             <Row>
                 <h2>Inscribir alumno</h2>
-            </Row>
-            <Row>
-                <Alertas error={alerta} exito={exito}></Alertas>
             </Row>
 
             <Row>
@@ -168,11 +152,11 @@ export const AgregarInscripcion = () => {
                         </Form.Group >
                         <Form.Group className="mb-3" controlId="observaciones">
                             <Form.Label>Observaciones</Form.Label>
-                            <Form.Control onChange={handleChange} type="text" placeholder="Ej.: 5 horas por día (Inscripción en curso Inicial)" value={inscripcion.observaciones} name="observaciones" />
+                            <Form.Control onChange={handleChange} type="text" value={inscripcion.observaciones} name="observaciones" />
                         </Form.Group >
                         <Form.Group className="mb-4" controlId="montoCuota">
                             <Form.Label>* Monto cuota</Form.Label>
-                            <Form.Control onChange={handleChange} type="number" placeholder="Ingrese monto de la cuota" value={inscripcion.montoCuota} name="montoCuota" />
+                            <Form.Control onChange={handleChange} type="number" value={inscripcion.montoCuota} name="montoCuota" />
                         </Form.Group >
 
                         <Button variant="primary" type="submit">

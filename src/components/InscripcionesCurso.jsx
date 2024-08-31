@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Container, Table } from 'react-bootstrap'
-import { Alertas } from './Alertas'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import imgEdit from '/src/assets/edit.svg'
@@ -13,9 +12,6 @@ export const InscripcionesCurso = () => {
 
     const [listaInscCurso, setListaInscCurso] = useState(null)
     const [cursoActual, setCursoActual] = useState({ anio: '', grado: '', tipoCurso: '' })
-
-    const [alerta, setAlerta] = useState()
-    const [warning, setWarning] = useState()
 
     const listaCursos = useSelector(store => store.listaCursos)
     const listaAlumnos = useSelector(store => store.listaAlumnos)
@@ -51,7 +47,6 @@ export const InscripcionesCurso = () => {
     return (
         <>
             <Container>
-                <Alertas error={alerta} warning={warning}></Alertas>
                 {cursoActual ?
                     <>
                         <h2>Listado de inscriptos</h2>

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { eliminarAlumnoService } from '../services/services'
 import { eliminarAlumno } from '../redux/features/alumnosSlice'
 import { useNavigate } from 'react-router-dom'
-import { Alertas } from './Alertas'
+import { ToastContainer, toast } from 'react-toastify'
 import imgEdit from '/src/assets/edit.svg'
 import imgDelete from '/src/assets/delete.svg'
 import imgInfo from '/src/assets/info.svg'
@@ -13,11 +13,8 @@ import imgInscribir from '/src/assets/inscribir.svg'
 export const ListadoAlumno = () => {
 
     const dispatch = useDispatch()
-
     const navigate = useNavigate()
 
-    const [alerta, setAlerta] = useState()
-    const [warning, setWarning] = useState()
     const [filtro, setFiltro] = useState('')
 
     const [listaAlumnosFiltro, setListaAlumnosFiltro] = useState([])
@@ -38,20 +35,20 @@ export const ListadoAlumno = () => {
     const handleEliminar = async (id) => {
         const token = sessionStorage.getItem('token')
         try {
-            const confirmar = window.confirm("Esta seguro de eliminar?");
+            const confirmar = window.confirm("Esta seguro de eliminar?")
             if (confirmar) {
-                await eliminarAlumnoService(id, token);
-                dispatch(eliminarAlumno(id));
-                setWarning('Alumno eliminado');
+                await eliminarAlumnoService(id, token)
+                dispatch(eliminarAlumno(id))
+                toast.warn("Alumno eliminado", { position: "top-center", theme: "dark", })
             }
         } catch (error) {
-            setAlerta(error.message);
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 
     const handleChange = (e) => {
 
-        const { value } = e.target;
+        const { value } = e.target
         setFiltro(value)
 
         const listaAux = listaAlumnos.filter(a =>
@@ -92,7 +89,8 @@ export const ListadoAlumno = () => {
     return (
         <>
             <Container>
-                <Alertas error={alerta} warning={warning}></Alertas>
+                <ToastContainer autoClose={2500} />
+
                 <h2 className='mb-3'>Lista de alumnos</h2>
 
                 <Form.Group className="mb-3" controlId="filtro">
