@@ -1,24 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { Alertas } from './Alertas'
 import { Button, Container, Table } from 'react-bootstrap'
 import imgEdit from '/src/assets/edit.svg'
 import imgDelete from '/src/assets/delete.svg'
 import imgInasistencias from '/src/assets/inasistencias.svg'
 import imgAlumnos from '/src/assets/alumnos-b.svg'
-
 import { eliminarCursoService } from '../services/services'
 import { eliminarCurso } from '../redux/features/cursosSlice'
+import { ToastContainer, toast } from 'react-toastify'
 
 export const ListadoCursos = () => {
 
     const dispatch = useDispatch()
-
     const navigate = useNavigate()
 
-    const [alerta, setAlerta] = useState()
-    const [warning, setWarning] = useState()
     const [listaCursosMostrar, setListaCursosMostrar] = useState([])
 
     const listaCursos = useSelector(store => store.listaCursos)
@@ -68,10 +64,10 @@ export const ListadoCursos = () => {
             if (confirmar) {
                 await eliminarCursoService(id, token)
                 dispatch(eliminarCurso(id))
-                setWarning('Curso eliminado')
+                toast.warn("Curso eliminado", { position: "top-center", theme: "dark", })
             }
         } catch (error) {
-            setAlerta(error.message)
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 
@@ -95,7 +91,7 @@ export const ListadoCursos = () => {
     return (
         <>
             <Container>
-                <Alertas error={alerta} warning={warning}></Alertas>
+                <ToastContainer autoClose={2500} />
                 <h2>Lista de cursos</h2>
                 <Table >
                     <thead>

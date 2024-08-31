@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Row, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Alertas } from './Alertas'
 import { actualizarCursoService } from '../services/services'
 import { actualizarCurso } from '../redux/features/cursosSlice'
 import imgDelete from '/src/assets/delete.svg'
+import { ToastContainer, toast } from 'react-toastify'
 
 export const EditarCurso = () => {
 
@@ -15,9 +15,6 @@ export const EditarCurso = () => {
     const listaMaestros = listaUsuarios.filter(u => u.tipoUsuario === 'Maestro')
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
-    const [alerta, setAlerta] = useState('')
-    const [exito, setExito] = useState('')
 
     const cursoVacio = {
         id: 0,
@@ -37,14 +34,12 @@ export const EditarCurso = () => {
         if (cursoAEditar) {
             setCurso({ ...cursoAEditar })
         }
-    }, [listaCursos]);
+    }, [listaCursos])
 
 
 
     const handleChange = (e) => {
         setCurso({ ...curso, [e.target.name]: e.target.value })
-        setAlerta('')
-        setExito('')
     }
 
     const handleEliminar = (nombre) => {
@@ -73,14 +68,12 @@ export const EditarCurso = () => {
             validarDatosCurso()
             await actualizarCursoService(id, curso, sessionStorage.getItem('token'))
             dispatch(actualizarCurso(curso))
-            setExito("Curso actualizado exitosamente")
-            setAlerta('')
+            toast.success("Curso actualizado exitosamente", { position: "top-center", theme: "dark", })
             setTimeout(() => {
                 navigate(`/cursos/listado`)
             }, 2000)
         } catch (error) {
-            setAlerta(error.message)
-            setExito('')
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 
@@ -98,12 +91,11 @@ export const EditarCurso = () => {
 
     return (
         <Container className='container-fluid'>
+            <ToastContainer autoClose={2500} />
             <Row>
                 <h2>Editar curso</h2>
             </Row>
-            <Row>
-                <Alertas error={alerta} exito={exito}></Alertas>
-            </Row>
+
             <Row>
                 <Col xs={12} md={10} lg={10}>
                     <Form onSubmit={onSubmit}>

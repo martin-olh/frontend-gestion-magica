@@ -3,7 +3,7 @@ import { obtenerGastosService } from '../services/services'
 import { Button, Card, Col, Container, FloatingLabel, Form, Row } from 'react-bootstrap'
 import { GraficaGastos } from './GraficaGastos'
 import { TablaGastos } from './TablaGastos'
-import { Alertas } from './Alertas'
+import { ToastContainer, toast } from 'react-toastify'
 
 export const ResumenGastos = () => {
 
@@ -27,8 +27,7 @@ export const ResumenGastos = () => {
                     setListaFiltrada(gastosOrdenados)
                 }
             } catch (error) {
-                console.error('Error al obtener gastos:', error)
-                setAlerta(error.mensaje)
+                toast.error(error.message, { position: "top-center", theme: "dark", })
             }
         }
 
@@ -41,7 +40,7 @@ export const ResumenGastos = () => {
             const gastos = await obtenerGastosService(token)
             return gastos
         } catch (error) {
-            setAlerta(error.mensaje)
+            toast.error(error.message, { position: "top-center", theme: "dark", })
             return []
         }
     }
@@ -55,8 +54,6 @@ export const ResumenGastos = () => {
 
             fin.setHours(23, 59, 59, 999)
 
-
-
             const filtrados = listaGastos.filter(gasto => {
                 const fechaGasto = new Date(gasto.fecha)
                 return fechaGasto >= inicio && fechaGasto <= fin
@@ -65,7 +62,7 @@ export const ResumenGastos = () => {
             setListaFiltrada(filtrados)
 
         } else {
-            setAlerta('Por favor, seleccione ambas fechas para filtrar los gastos.');
+            toast.error("Por favor, seleccione ambas fechas para filtrar los gastos.", { position: "top-center", theme: "dark", })
         }
 
     }
@@ -84,8 +81,7 @@ export const ResumenGastos = () => {
 
     return (
         <Container>
-            <Row><Alertas error={alerta}></Alertas></Row>
-
+            <ToastContainer autoClose={2500} />
             <Row className='mb-3'><h2>Resumen de gastos</h2></Row>
 
             <Row className='mb-2'>

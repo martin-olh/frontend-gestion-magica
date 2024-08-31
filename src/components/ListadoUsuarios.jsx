@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { eliminarUsuarioService } from '../services/services'
 import { eliminarUsuario } from '../redux/features/usuariosSlice'
 import { useNavigate } from 'react-router-dom'
-import { Alertas } from './Alertas'
+import { ToastContainer, toast } from 'react-toastify'
 import imgEdit from '/src/assets/edit.svg'
 import imgDelete from '/src/assets/delete.svg'
 
@@ -22,14 +22,14 @@ export const ListadoUsuarios = () => {
     const handleEliminar = async (id) => {
         const token = sessionStorage.getItem('token')
         try {
-            const confirmar = window.confirm("Esta seguro de eliminar?");
+            const confirmar = window.confirm("Esta seguro de eliminar?")
             if (confirmar) {
-                await eliminarUsuarioService(id, token);
-                dispatch(eliminarUsuario(id));
-                setWarning('Usuario eliminado');
+                await eliminarUsuarioService(id, token)
+                dispatch(eliminarUsuario(id))
+                toast.warn("Usuario eliminado", { position: "top-center", theme: "dark", })
             }
         } catch (error) {
-            setAlerta(error.message);
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 
@@ -40,7 +40,7 @@ export const ListadoUsuarios = () => {
     return (
         <>
             <Container>
-                <Alertas error={alerta} warning={warning}></Alertas>
+                <ToastContainer autoClose={2500} />
                 <h2>Lista de usuarios</h2>
                 <Table >
                     <thead>

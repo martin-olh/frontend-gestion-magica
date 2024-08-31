@@ -3,8 +3,6 @@ import { Card, Col, Container, Row } from "react-bootstrap"
 import { useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 
-
-
 export const DetallesAlumno = () => {
 
     const { id } = useParams()

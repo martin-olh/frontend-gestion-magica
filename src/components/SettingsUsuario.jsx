@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { actualizarUsuario } from '../redux/features/usuariosSlice'
-import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap'
+import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router-dom'
 import { actualizarUsuarioService } from '../services/services'
 import { actualizarSession } from '../helpers/actualizarSession'
@@ -31,9 +31,6 @@ export const SettingsUsuario = () => {
 
     const [password2, setPassword2] = useState(usuario.password)
 
-    const [alerta, setAlerta] = useState('')
-    const [exito, setExito] = useState('')
-
     const handleChange = (e) => {
         if (e.target.name === "password2") {
             setPassword2(e.target.value)
@@ -41,8 +38,6 @@ export const SettingsUsuario = () => {
         else {
             setUsuario({ ...usuario, [e.target.name]: e.target.value })
         }
-        setAlerta('')
-        setExito('')
     }
 
     const onSubmit = async (event) => {
@@ -73,12 +68,13 @@ export const SettingsUsuario = () => {
             await actualizarUsuarioService(id, usuario, sessionStorage.getItem('token'))
             dispatch(actualizarUsuario(usuario))
             actualizarSession(usuario)
-            setExito("Usuario actualizado con éxito")
-            setAlerta('')
+            toast.success("Usuario actualizado con éxito", { position: "top-center", theme: "dark", })
+            setTimeout(() => {
+                navigate(`/`)
+            }, 2000)
 
         } catch (error) {
-            setAlerta(error.message)
-            setExito('')
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 

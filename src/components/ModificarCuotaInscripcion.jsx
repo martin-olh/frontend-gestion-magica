@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Alertas } from './Alertas'
+import { ToastContainer, toast } from 'react-toastify'
 import { Button, Col, Container, FloatingLabel, Form, Row } from 'react-bootstrap'
 import { modificarCuotaInscripcionService } from '../services/services'
 import { actualizarInscripcion } from '../redux/features/inscripcionesSlice'
@@ -44,38 +44,32 @@ export const ModificarCuotaInscripcion = () => {
         const { name, value } = e.target;
 
         setInscripcion(prevInscripcion => ({ ...prevInscripcion, [name]: value }))
-        setAlerta('')
-        setExito('')
     }
 
     const onSubmit = async (e) => {
         e.preventDefault()
         if (inscripcion.montoCuota <= 0) {
-            setAlerta("Ingresar un monto válido")
+            toast.error("Ingresar un monto válido", { position: "top-center", theme: "dark", })
             return
         }
         try {
             await modificarCuotaInscripcionService(sessionStorage.getItem('token'), inscripcion, idInscripcion)
             dispatch(actualizarInscripcion(inscripcion))
-            setExito("Cuota actualizada exitosamente")
-            setAlerta('')
+            toast.success("Cuota actualizada exitosamente", { position: "top-center", theme: "dark", })
             setTimeout(() => {
                 navigate(`/cursos/inscripciones/${curso.id}`)
             }, 2000)
 
         } catch (error) {
-            setAlerta(error.message)
-            setExito('')
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 
     return (
         <Container className='container-fluid'>
+            <ToastContainer autoClose={2500} />
             <Row className='mb-3'>
                 <h2>Aumentar cuota de inscripción</h2>
-            </Row>
-            <Row>
-                <Alertas error={alerta} exito={exito}></Alertas>
             </Row>
             <Row>
                 <Col xs={12} md={10} lg={10}>

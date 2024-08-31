@@ -7,9 +7,9 @@ import Card from 'react-bootstrap/Card'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import { Alertas } from './Alertas'
 import logo from '/src/assets/logo.jpg'
 import { Spinner } from 'react-bootstrap'
+import { ToastContainer, toast } from 'react-toastify'
 
 export const Login = () => {
 
@@ -51,7 +51,7 @@ export const Login = () => {
             setAlerta(`Bienvenido ${resultado.usuario.nombre}!`)
             navigate('/dashboard')
         } catch (error) {
-            setAlerta(error.message)
+            toast.error(error.message, { position: "top-center", theme: "dark", })
             setLoading(false)
         }
     }
@@ -59,14 +59,10 @@ export const Login = () => {
 
     return (
         <Container className='container-fluid mt-4'>
+            <ToastContainer autoClose={2500} />
             <Row className='justify-content-center mb-3'>
                 <Col xs={10} sm={10} md={8} lg={6}>
                     <h2>Iniciar sesión</h2>
-                </Col>
-            </Row>
-            <Row className='justify-content-center'>
-                <Col xs={10} sm={10} md={8} lg={6}>
-                    <Alertas error={alerta}></Alertas>
                 </Col>
             </Row>
             <Row className='justify-content-center mb-3'>

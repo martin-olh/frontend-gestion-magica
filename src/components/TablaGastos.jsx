@@ -1,13 +1,10 @@
 import React, { useState } from 'react'
 import { Container, Table, Pagination, Row, Col, Button } from 'react-bootstrap'
 import imgDelete from '/src/assets/delete.svg'
-import { Alertas } from './Alertas'
+import { ToastContainer, toast } from 'react-toastify'
 import { eliminarGastoService } from '../services/services'
 
 export const TablaGastos = ({ listaFiltrada }) => {
-
-    const [alerta, setAlerta] = useState()
-    const [warning, setWarning] = useState()
 
     const [paginaActual, setPaginaActual] = useState(1)
     const itemsPorPagina = 10
@@ -49,17 +46,18 @@ export const TablaGastos = ({ listaFiltrada }) => {
             const confirmar = window.confirm("Esta seguro de eliminar?")
             if (confirmar) {
                 await eliminarGastoService(token, id)
-                    .then(setWarning('Gasto eliminado'))
+                    .then(toast.warn("Gasto eliminado", { position: "top-center", theme: "dark", })
+                    )
             }
             window.location.reload()
         } catch (error) {
-            setAlerta(error.message)
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 
     return (
         <Container>
-            <Row><Alertas error={alerta} warning={warning}></Alertas></Row>
+            <ToastContainer autoClose={2500} />
             {listaFiltrada.length > 0 ?
                 <>
                     <Table>

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Container, Table } from 'react-bootstrap'
-import { Alertas } from './Alertas'
 import { obtenerBoletinesPendientesService } from '../services/services'
+import { ToastContainer, toast } from 'react-toastify'
+
 
 export const AprobarBoletines = () => {
-
-    const [alerta, setAlerta] = useState(null)
 
     const token = sessionStorage.getItem('token')
 
@@ -26,7 +25,7 @@ export const AprobarBoletines = () => {
             }
             return []
         } catch (error) {
-            setAlerta(error.mensaje)
+            toast.error(error.message, { position: "top-center", theme: "dark", })
             return []
         }
     }
@@ -66,7 +65,7 @@ export const AprobarBoletines = () => {
     return (
         <>
             <Container>
-                <Alertas error={alerta}></Alertas>
+                <ToastContainer autoClose={2500} />
                 <h2 className='mb-3'>Boletines pendientes de aprobar</h2>
                 {boletinesPend && boletinesPend.length > 0 ?
 

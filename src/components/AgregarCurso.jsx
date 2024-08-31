@@ -3,10 +3,9 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { agregarCursoService } from '../services/services'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
-import { Alertas } from './Alertas'
 import { agregarCurso } from '../redux/features/cursosSlice'
 import { useNavigate } from 'react-router-dom'
-
+import { ToastContainer, toast } from 'react-toastify'
 
 export const AgregarCurso = () => {
 
@@ -14,9 +13,6 @@ export const AgregarCurso = () => {
     const navigate = useNavigate()
     const listaUsuarios = useSelector(store => store.listaUsuarios)
     const listaMaestros = listaUsuarios.filter(u => u.tipoUsuario === 'Maestro')
-
-    const [alerta, setAlerta] = useState('')
-    const [exito, setExito] = useState('')
 
     const cursoVacio = {
         id: 0,
@@ -34,8 +30,6 @@ export const AgregarCurso = () => {
 
     const handleChange = (e) => {
         setCurso({ ...curso, [e.target.name]: e.target.value })
-        setAlerta('')
-        setExito('')
     }
 
     const onSubmit = async (event) => {
@@ -45,15 +39,13 @@ export const AgregarCurso = () => {
             const resultado = await agregarCursoService(sessionStorage.getItem('token'), curso)
             curso.id = resultado.id //guardo id del curso creado, devuelto por la API   
             dispatch(agregarCurso(curso))
-            setExito("Curso registrado exitosamente")
-            setAlerta('')
+            toast.success("Curso registrado exitosamente", { position: "top-center", theme: "dark", })
             setTimeout(() => {
                 navigate(`/cursos/listado/`)
                 window.location.reload()
             }, 2000)
         } catch (error) {
-            setAlerta(error.message)
-            setExito('')
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 
@@ -71,11 +63,9 @@ export const AgregarCurso = () => {
 
     return (
         <Container className='container-fluid'>
+            <ToastContainer autoClose={2500} />
             <Row>
                 <h2>Crear curso</h2>
-            </Row>
-            <Row>
-                <Alertas error={alerta} exito={exito}></Alertas>
             </Row>
             <Row>
                 <Col xs={12} md={10} lg={10}>

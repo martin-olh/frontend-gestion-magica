@@ -4,7 +4,7 @@ import { actualizarAlumnoService, agregarAlumnoService } from '../services/servi
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router-dom'
 import { actualizarAlumno } from '../redux/features/alumnosSlice'
-import { Alertas } from './Alertas'
+import { ToastContainer, toast } from 'react-toastify'
 
 export const EditarAlumno = () => {
 
@@ -14,8 +14,6 @@ export const EditarAlumno = () => {
     const { id } = useParams()
     const listaAlumnos = useSelector(store => store.listaAlumnos)
 
-    const [alerta, setAlerta] = useState('')
-    const [exito, setExito] = useState('')
     const [seleccion, setSeleccion] = useState('basica')
 
     const [alumno, setAlumno] = useState({
@@ -115,8 +113,6 @@ export const EditarAlumno = () => {
             ...prevState,
             [name]: value
         }))
-        setAlerta('')
-        setExito('')
     }
 
     const handleChangeInfoDet = (e) => {
@@ -134,9 +130,6 @@ export const EditarAlumno = () => {
                 [name]: inputValue
             }
         }))
-
-        setAlerta('')
-        setExito('')
     }
 
     const handleChangeResp0 = (e) => {
@@ -159,8 +152,6 @@ export const EditarAlumno = () => {
                 responsables: updatedResponsables
             }
         })
-        setAlerta('')
-        setExito('')
     }
 
     const handleChangeResp1 = (e) => {
@@ -183,9 +174,6 @@ export const EditarAlumno = () => {
                 responsables: updatedResponsables
             }
         })
-
-        setAlerta('')
-        setExito('')
     }
 
     const onSubmit = async (event) => {
@@ -197,14 +185,12 @@ export const EditarAlumno = () => {
             }
             await actualizarAlumnoService(id, alumno, sessionStorage.getItem('token'))
             dispatch(actualizarAlumno(alumno))
-            setExito("Alumno modificado exitosamente")
-            setAlerta('')
+            toast.success("Alumno modificado exitosamente", { position: "top-center", theme: "dark", })
             setTimeout(() => {
                 navigate(`/alumnos/detalles/${id}`)
             }, 2000)
         } catch (error) {
-            setAlerta(error.message)
-            setExito('')
+            toast.error(error.message, { position: "top-center", theme: "dark", })
         }
     }
 
@@ -251,6 +237,7 @@ export const EditarAlumno = () => {
 
     return (
         <Container className='container-fluid'>
+            <ToastContainer autoClose={2500} />
             <Row className='mb-3'>
                 <h2>Editar alumno</h2>
             </Row>
