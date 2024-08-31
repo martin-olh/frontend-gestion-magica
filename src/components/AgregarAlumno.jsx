@@ -6,8 +6,6 @@ import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 
-
-
 export const AgregarAlumno = () => {
 
     const dispatch = useDispatch()
