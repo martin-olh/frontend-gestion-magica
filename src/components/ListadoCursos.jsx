@@ -109,7 +109,14 @@ export const ListadoCursos = () => {
 
                     <tbody>
                         {listaCursosMostrar.length > 0 &&
-                            listaCursosMostrar.slice().sort((a, b) => b.anio - a.anio).map(c =>
+                            listaCursosMostrar.slice().sort((a, b) => {
+                                // Ordenar primero por año de forma descendente
+                                if (b.anio !== a.anio) {
+                                    return b.anio - a.anio;
+                                }
+                                // Si el año es el mismo, ordenar por tipoCurso de forma ascendente
+                                return a.tipoCurso.localeCompare(b.tipoCurso);
+                            }).map(c =>
                                 <tr key={c.id}>
                                     <td>{c.tipoCurso}</td>
                                     <td>{c.grado}</td>
@@ -146,6 +153,7 @@ export const ListadoCursos = () => {
                                 </tr>
                             )}
                     </tbody>
+
 
                 </Table>
             </Container>
