@@ -49,7 +49,9 @@ export const TablaGastos = ({ listaFiltrada }) => {
                     .then(toast.warn("Gasto eliminado", { position: "top-center", theme: "dark", })
                     )
             }
-            window.location.reload()
+            setTimeout(() => {
+                window.location.reload()
+            }, 2000)
         } catch (error) {
             toast.error(error.message, { position: "top-center", theme: "dark", })
         }
