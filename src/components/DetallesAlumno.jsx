@@ -14,7 +14,9 @@ export const DetallesAlumno = () => {
 
     useEffect(() => {
         const alumnoMostrar = listaAlumnos.find(a => a.id == id)
-        setAlumno(alumnoMostrar)
+        if (alumnoMostrar) {
+            setAlumno(alumnoMostrar)
+        }
     }, [listaAlumnos, id])
 
     const formatDate = (dateString) => {
