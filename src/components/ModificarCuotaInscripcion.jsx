@@ -69,7 +69,7 @@ export const ModificarCuotaInscripcion = () => {
         <Container className='container-fluid'>
             <ToastContainer autoClose={2500} />
             <Row className='mb-3'>
-                <h2>Aumentar cuota de inscripción</h2>
+                <h2>Modificar cuota de inscripción</h2>
             </Row>
             <Row>
                 <Col xs={12} md={10} lg={10}>
