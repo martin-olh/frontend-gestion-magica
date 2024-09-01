@@ -82,7 +82,7 @@ export const AprobarBoletines = () => {
                                 <tr key={b.id}>
                                     <td>{getCurso(b.inscripcionId)}</td>
                                     <td>{obtenerNombreAlumno(b.inscripcionId)}</td>
-                                    <td><a href={`/boletines/editar/${b.inscripcionId}/${b.id}`}>Aprobar Boletin {b.trimestre}</a></td>
+                                    <td><a href={`/boletines/editar/${b.inscripcionId}/${b.id}`}>Aprobar boletín</a></td>
 
                                 </tr>
                             )}

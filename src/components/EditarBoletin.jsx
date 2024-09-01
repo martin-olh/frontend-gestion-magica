@@ -138,8 +138,11 @@ export const EditarBoletin = () => {
                         <h2>Editar boletín</h2>
                     </Row>
                     <Row>
-                        {curso ?
-                            <p>Boletin {boletin.trimestre} - {curso.grado} {`(${curso.anio})`}</p> : ""
+                        {curso && curso.tipoCurso == "Primaria" ?
+                            <p>Boletin {boletin.trimestre} - {curso.grado} {`(${curso.anio})`}</p> : <></>
+                        }
+                        {curso && curso.tipoCurso == "Inicial" ?
+                            <p>Boletin - {curso.grado} {`(${curso.anio})`}</p> : <></>
                         }
                         {alumno ?
                             <p>Alumno: <strong>{alumno.nombre} {alumno.apellido}</strong></p> : ""
