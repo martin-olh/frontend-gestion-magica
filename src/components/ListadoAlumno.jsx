@@ -35,7 +35,7 @@ export const ListadoAlumno = () => {
     const handleEliminar = async (id) => {
         const token = sessionStorage.getItem('token')
         try {
-            const confirmar = window.confirm("Esta seguro de eliminar?")
+            const confirmar = window.confirm("Al eliminar el alumno también se perderán los registros de inscripciones, boletines, pagos, etc.\n\n¿Está seguro de eliminar?")
             if (confirmar) {
                 await eliminarAlumnoService(id, token)
                 dispatch(eliminarAlumno(id))

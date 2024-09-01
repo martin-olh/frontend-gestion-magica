@@ -15,8 +15,8 @@ export const Home = () => {
                     <Card className='welcome'>
                         <Card.Body >
                             <h3 className='mb-3'>Bienvenido/a {nombre}!</h3>
-                            <img className='mb-3' src={imgHome} alt="" />
                             <p> Seleccionar una opción del menú para comenzar</p>
+                            <img className='mb-3' src={imgHome} alt="" />
 
 
                         </Card.Body>
