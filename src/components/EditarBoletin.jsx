@@ -198,7 +198,7 @@ export const EditarBoletin = () => {
                                 }
                                 <Row>
                                     <Col>
-                                        <Button variant="primary" type="submit">
+                                        <Button disabled={boletin.finalizado && tipoUsuario == "Maestro"} variant="primary" type="submit">
                                             Guardar
                                         </Button>
                                     </Col>

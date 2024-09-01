@@ -310,15 +310,15 @@ export const actualizarAlumnoService = (id, a, token) => {
     };
 
     let responsables = a.responsables.map(responsable => ({
-        "id": responsable.id,
-        "nombre": responsable.nombre,
-        "apellido": responsable.apellido,
-        "cedula": responsable.cedula,
-        "telefono": responsable.telefono,
-        "email": responsable.email,
-        "ocupacion": responsable.ocupacion,
-        "horarioTrabajo": responsable.horarioTrabajo,
-        "horarioNino": responsable.horarioNino
+        "id": responsable.id ? responsable.id : 0,
+        "nombre": responsable.nombre ? responsable.nombre : "",
+        "apellido": responsable.apellido ? responsable.apellido : "",
+        "cedula": responsable.cedula ? responsable.cedula : "",
+        "telefono": responsable.telefono ? responsable.telefono : "",
+        "email": responsable.email ? responsable.email : "",
+        "ocupacion": responsable.ocupacion ? responsable.ocupacion : "",
+        "horarioTrabajo": responsable.horarioTrabajo ? responsable.horarioTrabajo : "",
+        "horarioNino": responsable.horarioNino ? responsable.horarioNino : ""
     }))
 
     let raw = JSON.stringify({

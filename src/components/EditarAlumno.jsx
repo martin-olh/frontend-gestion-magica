@@ -94,12 +94,12 @@ export const EditarAlumno = () => {
         if (alumnoAEditar) {
             const updatedAlumno = {
                 ...alumnoAEditar,
-                fechaNac: alumnoAEditar.fechaNac.split('T')[0] // Format the date
+                fechaNac: alumnoAEditar.fechaNac.split('T')[0] // Formateo la fecha para que la levante el input de tipo Date
             }
             setAlumno(updatedAlumno)
             setInfoDetalleAux({ ...updatedAlumno.infoDetalle })
             setResponsable0Aux({ ...updatedAlumno.responsables[0] })
-            if (updatedAlumno.responsables[1] == null) {
+            if (updatedAlumno.responsables.length == 1) {
                 setResponsable1Aux(responsableVacio)
             } else {
                 setResponsable1Aux({ ...updatedAlumno.responsables[1] })
@@ -240,9 +240,6 @@ export const EditarAlumno = () => {
             <ToastContainer autoClose={2500} />
             <Row className='mb-3'>
                 <h2>Editar alumno</h2>
-            </Row>
-            <Row>
-                <Alertas error={alerta} exito={exito}></Alertas>
             </Row>
             <Row className='mb-3'>
                 <Col>

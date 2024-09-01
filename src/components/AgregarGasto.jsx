@@ -86,7 +86,7 @@ export const AgregarGasto = () => {
                         </Form.Group >
 
                         <Button variant="primary" type="submit">
-                            Registrar pago
+                            Registrar gasto
                         </Button>
                     </Form>
                 </Col>
